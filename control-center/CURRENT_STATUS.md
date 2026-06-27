@@ -14,16 +14,17 @@ Full ERP MVP - Missions 001-011
 ## Status
 Mission queue 001-011 is complete and deployed as MVP.
 
-The public CEO Dashboard now runs version 9 with Customer, Vehicle, Invoice, Payment, Allocation, Statement, Workshop, Documents, Reports, and QA status.
+The public CEO Dashboard now runs version 10 with bilingual TH/EN support and the existing ERP MVP modules.
 
 ## Dashboard
 - Type: Google Apps Script Web App
-- UI language: Thai
+- UI language: Thai and English
+- Design system: `design/DESIGN_SYSTEM.md` applied for bilingual support before expanding more screens
 - Data mode: Google Sheets ERP data with demo seed fallback
 - Layout: Mobile-first, dark mode, card layout, large buttons
 - Live URL: `https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`
-- Live Apps Script deployment: `AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @9`
-- Verification: `HTTP 200`; markers detected for ERP Operations MVP, Invoice, Payment + Allocation, Customer Statement, Workshop, Documents, Reports + QA, and Mission 011
+- Live Apps Script deployment: `AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @10`
+- Verification: `HTTP 200`; markers detected for `lang-toggle`, `data-lang`, `const i18n`, `setLang`, English strings, and ERP Operations MVP
 
 ## Implemented Modules
 - Customer list/detail/create/edit/search/status/stats
@@ -36,11 +37,12 @@ The public CEO Dashboard now runs version 9 with Customer, Vehicle, Invoice, Pay
 - Documents metadata and Drive URL records
 - Reports for CEO/finance/workshop/customer/profit sharing
 - QA deploy smoke test
+- Bilingual TH/EN UI dictionary and language toggle
 
 ## GitHub
 - Remote: `https://github.com/pennat-max/VIGO4U-OS.git`
 - Push target: `origin/master`
-- Status files are updated for full MVP completion.
+- Status files are updated for bilingual TH/EN support.
 
 ## Approval
 No active approval blocker.

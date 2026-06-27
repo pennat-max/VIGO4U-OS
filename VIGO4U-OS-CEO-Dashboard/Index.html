@@ -114,6 +114,39 @@
       white-space: nowrap;
     }
 
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .lang-toggle {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.74);
+    }
+
+    .lang-btn {
+      min-height: 30px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    .lang-btn.active {
+      background: rgba(74, 163, 255, 0.18);
+      color: var(--text);
+    }
+
     .dot {
       width: 8px;
       height: 8px;
@@ -702,73 +735,79 @@
         <div class="logo">V4</div>
         <div>
           <h1>VIGO4U OS</h1>
-          <p>ศูนย์ควบคุมผู้บริหาร</p>
+          <p data-i18n="executiveControlCenter">ศูนย์ควบคุมผู้บริหาร</p>
         </div>
       </div>
-      <div class="live"><span class="dot"></span><span id="aiState">กำลังทำงาน</span></div>
+      <div class="top-actions">
+        <div class="lang-toggle" aria-label="Language">
+          <button class="lang-btn active" type="button" data-lang="th">TH</button>
+          <button class="lang-btn" type="button" data-lang="en">EN</button>
+        </div>
+        <div class="live"><span class="dot"></span><span id="aiState">กำลังทำงาน</span></div>
+      </div>
     </header>
 
-    <section class="grid dashboard-grid" aria-label="แดชบอร์ดผู้บริหาร">
+    <section class="grid dashboard-grid" data-i18n-aria="ceoDashboard" aria-label="แดชบอร์ดผู้บริหาร">
       <article class="hero">
-        <p class="eyebrow">1. แดชบอร์ดผู้บริหาร</p>
+        <p class="eyebrow" data-i18n="ceoDashboardNumbered">1. แดชบอร์ดผู้บริหาร</p>
         <h2 id="welcomeText">สวัสดีตอนเช้า Tony</h2>
-        <p>หน้าหลักของ ERP ใช้ข้อมูลจริงของลูกค้าและรถจาก Google Sheets แล้ว และยังใช้ mock data สำหรับโมดูลอื่นจนกว่าจะถึง mission ถัดไป</p>
+        <p data-i18n="heroCopy">หน้าหลักของ ERP ใช้ข้อมูลจริงของลูกค้าและรถจาก Google Sheets แล้ว และยังใช้ mock data สำหรับโมดูลอื่นจนกว่าจะถึง mission ถัดไป</p>
       </article>
 
       <article class="card ai-card">
         <div class="section-title">
-          <h2>3. สถานะ AI</h2>
+          <h2 data-i18n="aiStatusNumbered">3. สถานะ AI</h2>
           <span id="aiLastUpdate">ล่าสุด</span>
         </div>
         <strong id="aiActivity">AI กำลังเตรียมข้อมูล</strong>
-        <p>AI ดูแล mission queue, customer/vehicle data และ dashboard statistics ตามลำดับงานปัจจุบัน</p>
+        <p data-i18n="aiCopy">AI ดูแล mission queue, customer/vehicle data และ dashboard statistics ตามลำดับงานปัจจุบัน</p>
       </article>
     </section>
 
     <section class="section">
       <div class="section-title">
-        <h2>2. สถานะ VIGO4U ERP</h2>
-        <span>ภารกิจ</span>
+        <h2 data-i18n="erpStatusNumbered">2. สถานะ VIGO4U ERP</h2>
+        <span data-i18n="mission">ภารกิจ</span>
       </div>
       <article class="card status-card">
         <div class="progress-head">
           <p id="progressLabel">สถานะ VIGO4U ERP</p>
           <strong id="progressValue">0%</strong>
         </div>
-        <div class="progress-track" aria-label="ความคืบหน้า VIGO4U ERP">
+        <div class="progress-track" data-i18n-aria="erpProgress" aria-label="ความคืบหน้า VIGO4U ERP">
           <div class="progress-fill" id="progressFill" style="--progress: 0%;"></div>
         </div>
         <div class="status-list">
-          <div class="status-item"><span>Mission ปัจจุบัน</span><strong id="currentMission">Mission 003</strong></div>
-          <div class="status-item"><span>Task ปัจจุบัน</span><strong id="currentTask">Vehicle Module</strong></div>
-          <div class="status-item"><span>ETA</span><strong id="eta">วันนี้</strong></div>
+          <div class="status-item"><span data-i18n="currentMission">Mission ปัจจุบัน</span><strong id="currentMission">Mission 003</strong></div>
+          <div class="status-item"><span data-i18n="currentTask">Task ปัจจุบัน</span><strong id="currentTask">Vehicle Module</strong></div>
+          <div class="status-item"><span data-i18n="eta">ETA</span><strong id="eta">วันนี้</strong></div>
         </div>
       </article>
     </section>
 
     <section class="section">
       <div class="section-title">
-        <h2>4. สรุปธุรกิจ</h2>
-        <span>ลูกค้า live</span>
+        <h2 data-i18n="businessSummaryNumbered">4. สรุปธุรกิจ</h2>
+        <span data-i18n="liveData">ลูกค้า live</span>
       </div>
       <div class="grid summary-grid" id="businessSummary"></div>
     </section>
 
     <section class="section" id="customers">
       <div class="section-title">
-        <h2>Customer Module MVP</h2>
+        <h2 data-i18n="customerModule">Customer Module MVP</h2>
         <span>Google Sheets</span>
       </div>
       <div class="grid customer-shell">
         <article class="card module-card">
           <div class="section-title">
-            <h2>รายชื่อลูกค้า</h2>
+            <h2 data-i18n="customerList">รายชื่อลูกค้า</h2>
             <span id="customerCount">0 ราย</span>
           </div>
           <div class="customer-tools">
-            <input id="customerSearch" type="search" placeholder="ค้นหาชื่อ บริษัท โทร อีเมล ประเทศ">
+            <input id="customerSearch" type="search" data-i18n-placeholder="customerSearchPlaceholder" placeholder="ค้นหาชื่อ บริษัท โทร อีเมล ประเทศ">
             <select id="statusFilter">
-              <option value="">ทุกสถานะ</option>
+              <option value="" data-i18n="allStatuses">ทุกสถานะ</option>
               <option value="active">Active</option>
               <option value="prospect">Prospect</option>
               <option value="inactive">Inactive</option>
@@ -779,49 +818,49 @@
 
         <article class="card module-card">
           <div class="section-title">
-            <h2 id="formTitle">เพิ่มลูกค้า</h2>
-            <span id="saveState">พร้อม</span>
+            <h2 id="formTitle" data-i18n="addCustomer">เพิ่มลูกค้า</h2>
+            <span id="saveState" data-i18n="ready">พร้อม</span>
           </div>
           <form id="customerForm">
             <input id="customerId" type="hidden">
             <div class="field-grid">
-              <label>ชื่อลูกค้า
-                <input id="customerName" required placeholder="เช่น Somchai Auto Export">
+              <label data-label-key="customerName">ชื่อลูกค้า
+                <input id="customerName" required data-i18n-placeholder="customerNamePlaceholder" placeholder="เช่น Somchai Auto Export">
               </label>
-              <label>บริษัท
-                <input id="companyName" placeholder="ชื่อบริษัท">
+              <label data-label-key="company">บริษัท
+                <input id="companyName" data-i18n-placeholder="companyPlaceholder" placeholder="ชื่อบริษัท">
               </label>
-              <label>โทรศัพท์
+              <label data-label-key="phone">โทรศัพท์
                 <input id="phone" placeholder="+66 ...">
               </label>
-              <label>อีเมล
+              <label data-label-key="email">อีเมล
                 <input id="email" type="email" placeholder="customer@example.com">
               </label>
-              <label>ประเทศ
+              <label data-label-key="country">ประเทศ
                 <input id="country" placeholder="Thailand">
               </label>
-              <label>สถานะ
+              <label data-label-key="status">สถานะ
                 <select id="customerStatus">
                   <option value="active">Active</option>
                   <option value="prospect">Prospect</option>
                   <option value="inactive">Inactive</option>
                 </select>
               </label>
-              <label>ช่องทาง
+              <label data-label-key="source">ช่องทาง
                 <input id="source" placeholder="Line, Website, Referral">
               </label>
             </div>
-            <label style="margin-top:10px;">โน้ต
-              <textarea id="notes" placeholder="รายละเอียดลูกค้า"></textarea>
+            <label style="margin-top:10px;" data-label-key="notes">โน้ต
+              <textarea id="notes" data-i18n-placeholder="customerNotesPlaceholder" placeholder="รายละเอียดลูกค้า"></textarea>
             </label>
             <div class="form-actions">
-              <button class="secondary" type="button" id="newCustomer">ล้างฟอร์ม</button>
-              <button class="primary" type="submit">บันทึกลูกค้า</button>
+              <button class="secondary" type="button" id="newCustomer" data-i18n="clearForm">ล้างฟอร์ม</button>
+              <button class="primary" type="submit" data-i18n="saveCustomer">บันทึกลูกค้า</button>
             </div>
           </form>
           <div class="card customer-detail" id="customerDetail">
-            <strong>เลือกลูกค้าเพื่อดูรายละเอียด</strong>
-            <p>ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>
+            <strong data-i18n="selectCustomerTitle">เลือกลูกค้าเพื่อดูรายละเอียด</strong>
+            <p data-i18n="sheetsLayerCopy">ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>
           </div>
         </article>
       </div>
@@ -829,19 +868,19 @@
 
     <section class="section" id="vehicles">
       <div class="section-title">
-        <h2>Vehicle Module MVP</h2>
+        <h2 data-i18n="vehicleModule">Vehicle Module MVP</h2>
         <span>Google Sheets</span>
       </div>
       <div class="grid vehicle-shell">
         <article class="card module-card">
           <div class="section-title">
-            <h2>รายการรถ</h2>
+            <h2 data-i18n="vehicleList">รายการรถ</h2>
             <span id="vehicleCount">0 คัน</span>
           </div>
           <div class="vehicle-tools">
-            <input id="vehicleSearch" type="search" placeholder="ค้นหา stock, VIN, ยี่ห้อ, รุ่น, สี, สถานที่">
+            <input id="vehicleSearch" type="search" data-i18n-placeholder="vehicleSearchPlaceholder" placeholder="ค้นหา stock, VIN, ยี่ห้อ, รุ่น, สี, สถานที่">
             <select id="vehicleStatusFilter">
-              <option value="">ทุกสถานะ</option>
+              <option value="" data-i18n="allStatuses">ทุกสถานะ</option>
               <option value="available">Available</option>
               <option value="purchased">Purchased</option>
               <option value="workshop">Workshop</option>
@@ -854,31 +893,31 @@
 
         <article class="card module-card">
           <div class="section-title">
-            <h2 id="vehicleFormTitle">เพิ่มรถ</h2>
-            <span id="vehicleSaveState">พร้อม</span>
+            <h2 id="vehicleFormTitle" data-i18n="addVehicle">เพิ่มรถ</h2>
+            <span id="vehicleSaveState" data-i18n="ready">พร้อม</span>
           </div>
           <form id="vehicleForm">
             <input id="vehicleId" type="hidden">
             <div class="field-grid">
-              <label>Stock No
-                <input id="stockNo" required placeholder="เช่น VGO-005">
+              <label data-label-key="stockNo">Stock No
+                <input id="stockNo" required data-i18n-placeholder="stockNoPlaceholder" placeholder="เช่น VGO-005">
               </label>
-              <label>VIN
-                <input id="vin" placeholder="เลขตัวถัง">
+              <label data-label-key="vin">VIN
+                <input id="vin" data-i18n-placeholder="vinPlaceholder" placeholder="เลขตัวถัง">
               </label>
-              <label>ยี่ห้อ
+              <label data-label-key="make">ยี่ห้อ
                 <input id="make" placeholder="Toyota">
               </label>
-              <label>รุ่น
+              <label data-label-key="model">รุ่น
                 <input id="model" placeholder="Fortuner">
               </label>
-              <label>ปี
+              <label data-label-key="year">ปี
                 <input id="year" inputmode="numeric" placeholder="2020">
               </label>
-              <label>สี
+              <label data-label-key="color">สี
                 <input id="color" placeholder="White">
               </label>
-              <label>สถานะ
+              <label data-label-key="status">สถานะ
                 <select id="vehicleStatus">
                   <option value="available">Available</option>
                   <option value="purchased">Purchased</option>
@@ -887,7 +926,7 @@
                   <option value="exported">Exported</option>
                 </select>
               </label>
-              <label>สถานที่
+              <label data-label-key="location">สถานที่
                 <input id="location" placeholder="Bangkok Yard">
               </label>
               <label>Photo URL
@@ -897,17 +936,17 @@
                 <input id="documentUrl" placeholder="Google Drive document URL">
               </label>
             </div>
-            <label style="margin-top:10px;">โน้ตรถ
-              <textarea id="vehicleNotes" placeholder="รายละเอียดรถและ metadata"></textarea>
+            <label style="margin-top:10px;" data-label-key="vehicleNotes">โน้ตรถ
+              <textarea id="vehicleNotes" data-i18n-placeholder="vehicleNotesPlaceholder" placeholder="รายละเอียดรถและ metadata"></textarea>
             </label>
             <div class="form-actions">
-              <button class="secondary" type="button" id="newVehicle">ล้างฟอร์ม</button>
-              <button class="primary" type="submit">บันทึกรถ</button>
+              <button class="secondary" type="button" id="newVehicle" data-i18n="clearForm">ล้างฟอร์ม</button>
+              <button class="primary" type="submit" data-i18n="saveVehicle">บันทึกรถ</button>
             </div>
           </form>
           <div class="card vehicle-detail" id="vehicleDetail">
-            <strong>เลือกรถเพื่อดูรายละเอียด</strong>
-            <p>ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>
+            <strong data-i18n="selectVehicleTitle">เลือกรถเพื่อดูรายละเอียด</strong>
+            <p data-i18n="sheetsLayerCopy">ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>
           </div>
         </article>
       </div>
@@ -915,27 +954,27 @@
 
     <section class="section" id="operations">
       <div class="section-title">
-        <h2>ERP Operations MVP</h2>
+        <h2 data-i18n="erpOperations">ERP Operations MVP</h2>
         <span>Mission 004-011</span>
       </div>
       <div class="grid ops-grid">
         <article class="card ops-card" id="invoices">
           <div class="section-title">
-            <h2>Invoice</h2>
+            <h2 data-i18n="invoice">Invoice</h2>
             <span id="invoiceCount">0</span>
           </div>
           <form id="invoiceForm">
             <div class="field-grid">
-              <label>Customer ID
+              <label data-label-key="customerId">Customer ID
                 <input id="invoiceCustomerId" placeholder="CUS-...">
               </label>
-              <label>Vehicle IDs
+              <label data-label-key="vehicleIds">Vehicle IDs
                 <input id="invoiceVehicleIds" placeholder="VEH-..., VEH-...">
               </label>
-              <label>Total
+              <label data-label-key="total">Total
                 <input id="invoiceAmount" inputmode="decimal" placeholder="51000">
               </label>
-              <label>Status
+              <label data-label-key="status">Status
                 <select id="invoiceStatus">
                   <option value="draft">Draft</option>
                   <option value="issued">Issued</option>
@@ -946,7 +985,7 @@
             </div>
             <div class="form-actions">
               <button class="secondary" type="button" id="fillInvoiceDemo">Demo</button>
-              <button class="primary" type="submit">บันทึก Invoice</button>
+              <button class="primary" type="submit" data-i18n="saveInvoice">บันทึก Invoice</button>
             </div>
           </form>
           <div class="mini-list" id="invoiceList"></div>
@@ -954,41 +993,41 @@
 
         <article class="card ops-card" id="payments">
           <div class="section-title">
-            <h2>Payment + Allocation</h2>
+            <h2 data-i18n="paymentAllocation">Payment + Allocation</h2>
             <span id="paymentCount">0</span>
           </div>
           <form id="paymentForm">
             <div class="field-grid">
-              <label>Customer ID
+              <label data-label-key="customerId">Customer ID
                 <input id="paymentCustomerId" placeholder="CUS-...">
               </label>
-              <label>Amount
+              <label data-label-key="amount">Amount
                 <input id="paymentAmount" inputmode="decimal" placeholder="10000">
               </label>
-              <label>Method
+              <label data-label-key="method">Method
                 <input id="paymentMethod" placeholder="Bank Transfer">
               </label>
             </div>
             <div class="form-actions">
               <button class="secondary" type="button" id="fillPaymentDemo">Demo</button>
-              <button class="primary" type="submit">บันทึก Payment</button>
+              <button class="primary" type="submit" data-i18n="savePayment">บันทึก Payment</button>
             </div>
           </form>
           <form id="allocationForm">
             <div class="field-grid">
-              <label>Payment ID
+              <label data-label-key="paymentId">Payment ID
                 <input id="allocationPaymentId" placeholder="PAY-...">
               </label>
-              <label>Invoice ID
+              <label data-label-key="invoiceId">Invoice ID
                 <input id="allocationInvoiceId" placeholder="INV-...">
               </label>
-              <label>Amount
+              <label data-label-key="amount">Amount
                 <input id="allocationAmount" inputmode="decimal" placeholder="5000">
               </label>
             </div>
             <div class="form-actions">
               <button class="secondary" type="button" id="fillAllocationDemo">Demo</button>
-              <button class="primary" type="submit">จัดสรรเงิน</button>
+              <button class="primary" type="submit" data-i18n="allocatePayment">จัดสรรเงิน</button>
             </div>
           </form>
           <div class="mini-list" id="paymentList"></div>
@@ -996,29 +1035,29 @@
 
         <article class="card ops-card" id="statements">
           <div class="section-title">
-            <h2>Customer Statement</h2>
-            <span>Balance</span>
+            <h2 data-i18n="customerStatement">Customer Statement</h2>
+            <span data-i18n="balance">Balance</span>
           </div>
           <div class="mini-list" id="statementList"></div>
         </article>
 
         <article class="card ops-card" id="workshop">
           <div class="section-title">
-            <h2>Workshop</h2>
+            <h2 data-i18n="workshop">Workshop</h2>
             <span id="workshopCount">0</span>
           </div>
           <form id="workshopForm">
             <div class="field-grid">
-              <label>Vehicle ID
+              <label data-label-key="vehicleId">Vehicle ID
                 <input id="workshopVehicleId" placeholder="VEH-...">
               </label>
-              <label>Task
-                <input id="workshopTask" placeholder="ตรวจรถ / ซ่อม / เตรียมส่งออก">
+              <label data-label-key="task">Task
+                <input id="workshopTask" data-i18n-placeholder="workshopTaskPlaceholder" placeholder="ตรวจรถ / ซ่อม / เตรียมส่งออก">
               </label>
-              <label>Cost
+              <label data-label-key="cost">Cost
                 <input id="workshopCostAmount" inputmode="decimal" placeholder="1200">
               </label>
-              <label>Cost Status
+              <label data-label-key="costStatus">Cost Status
                 <select id="workshopCostStatus">
                   <option value="pending">Pending</option>
                   <option value="approved">Approved</option>
@@ -1028,7 +1067,7 @@
             </div>
             <div class="form-actions">
               <button class="secondary" type="button" id="fillWorkshopDemo">Demo</button>
-              <button class="primary" type="submit">บันทึก Workshop</button>
+              <button class="primary" type="submit" data-i18n="saveWorkshop">บันทึก Workshop</button>
             </div>
           </form>
           <div class="mini-list" id="workshopList"></div>
@@ -1036,12 +1075,12 @@
 
         <article class="card ops-card" id="documents">
           <div class="section-title">
-            <h2>Documents</h2>
+            <h2 data-i18n="documents">Documents</h2>
             <span id="documentCount">0</span>
           </div>
           <form id="documentForm">
             <div class="field-grid">
-              <label>Entity Type
+              <label data-label-key="entityType">Entity Type
                 <select id="documentEntityType">
                   <option value="vehicle">Vehicle</option>
                   <option value="invoice">Invoice</option>
@@ -1049,16 +1088,16 @@
                   <option value="work_order">Work Order</option>
                 </select>
               </label>
-              <label>Entity ID
+              <label data-label-key="entityId">Entity ID
                 <input id="documentEntityId" placeholder="ID">
               </label>
-              <label>File Name
+              <label data-label-key="fileName">File Name
                 <input id="documentFileName" placeholder="document.pdf">
               </label>
-              <label>Drive URL
+              <label data-label-key="driveUrl">Drive URL
                 <input id="documentDriveUrl" placeholder="https://drive.google.com/...">
               </label>
-              <label>Visibility
+              <label data-label-key="visibility">Visibility
                 <select id="documentVisibility">
                   <option value="internal">Internal</option>
                   <option value="customer">Customer</option>
@@ -1068,7 +1107,7 @@
             </div>
             <div class="form-actions">
               <button class="secondary" type="button" id="fillDocumentDemo">Demo</button>
-              <button class="primary" type="submit">บันทึก Document</button>
+              <button class="primary" type="submit" data-i18n="saveDocument">บันทึก Document</button>
             </div>
           </form>
           <div class="mini-list" id="documentList"></div>
@@ -1076,8 +1115,8 @@
 
         <article class="card ops-card" id="reports">
           <div class="section-title">
-            <h2>Reports + QA</h2>
-            <span>Profit Sharing</span>
+            <h2 data-i18n="reportsQa">Reports + QA</h2>
+            <span data-i18n="profitSharing">Profit Sharing</span>
           </div>
           <div class="mini-list" id="reportList"></div>
         </article>
@@ -1086,40 +1125,40 @@
 
     <section class="section">
       <div class="section-title">
-        <h2>5. สรุปการเงิน</h2>
-        <span>มุมมองผู้บริหาร</span>
+        <h2 data-i18n="financeSummaryNumbered">5. สรุปการเงิน</h2>
+        <span data-i18n="executiveView">มุมมองผู้บริหาร</span>
       </div>
       <div class="grid finance-grid" id="financeSummary"></div>
     </section>
 
     <section class="section">
       <div class="section-title">
-        <h2>6. สิ่งที่ติดอยู่</h2>
-        <span>ติดขัด</span>
+        <h2 data-i18n="blockersNumbered">6. สิ่งที่ติดอยู่</h2>
+        <span data-i18n="blocked">ติดขัด</span>
       </div>
       <div class="list" id="blockers"></div>
     </section>
 
     <section class="section">
       <div class="section-title">
-        <h2>7. งานวันนี้</h2>
-        <span>วันนี้</span>
+        <h2 data-i18n="todayTasksNumbered">7. งานวันนี้</h2>
+        <span data-i18n="today">วันนี้</span>
       </div>
       <div class="list" id="todayTasks"></div>
     </section>
 
     <section class="section">
       <div class="section-title">
-        <h2>การแจ้งเตือน</h2>
-        <span>ความสำคัญ</span>
+        <h2 data-i18n="notifications">การแจ้งเตือน</h2>
+        <span data-i18n="priority">ความสำคัญ</span>
       </div>
       <div class="list" id="notifications"></div>
     </section>
 
     <section class="section">
       <div class="section-title">
-        <h2>8. ปุ่มคำสั่งด่วน</h2>
-        <span>คำสั่ง</span>
+        <h2 data-i18n="quickActionsNumbered">8. ปุ่มคำสั่งด่วน</h2>
+        <span data-i18n="commands">คำสั่ง</span>
       </div>
       <div class="grid actions" id="quickActions"></div>
     </section>
@@ -1130,6 +1169,295 @@
     let customers = dashboardData.customerModule.customers || [];
     let vehicles = dashboardData.vehicleModule.vehicles || [];
     let erp = dashboardData.erpModule || {};
+    let currentLang = localStorage.getItem('vigo4u_lang') || 'th';
+
+    const i18n = {
+      th: {
+        appTitle: 'VIGO4U OS - แดชบอร์ดผู้บริหาร',
+        executiveControlCenter: 'ศูนย์ควบคุมผู้บริหาร',
+        ceoDashboard: 'แดชบอร์ดผู้บริหาร',
+        ceoDashboardNumbered: '1. แดชบอร์ดผู้บริหาร',
+        heroCopy: 'หน้าหลักของ ERP ใช้ข้อมูลจริงจาก Google Sheets และรองรับภาษาไทย/อังกฤษ',
+        aiStatusNumbered: '3. สถานะ AI',
+        aiCopy: 'AI ดูแล mission queue, ERP data และ dashboard statistics ตามลำดับงานปัจจุบัน',
+        erpStatusNumbered: '2. สถานะ VIGO4U ERP',
+        mission: 'ภารกิจ',
+        erpProgress: 'ความคืบหน้า VIGO4U ERP',
+        currentMission: 'Mission ปัจจุบัน',
+        currentTask: 'Task ปัจจุบัน',
+        eta: 'ETA',
+        businessSummaryNumbered: '4. สรุปธุรกิจ',
+        liveData: 'ข้อมูล live',
+        customerModule: 'Customer Module MVP',
+        customerList: 'รายชื่อลูกค้า',
+        customerSearchPlaceholder: 'ค้นหาชื่อ บริษัท โทร อีเมล ประเทศ',
+        allStatuses: 'ทุกสถานะ',
+        addCustomer: 'เพิ่มลูกค้า',
+        editCustomer: 'แก้ไขลูกค้า',
+        customerName: 'ชื่อลูกค้า',
+        customerNamePlaceholder: 'เช่น Somchai Auto Export',
+        company: 'บริษัท',
+        companyPlaceholder: 'ชื่อบริษัท',
+        phone: 'โทรศัพท์',
+        email: 'อีเมล',
+        country: 'ประเทศ',
+        status: 'สถานะ',
+        source: 'ช่องทาง',
+        notes: 'โน้ต',
+        customerNotesPlaceholder: 'รายละเอียดลูกค้า',
+        clearForm: 'ล้างฟอร์ม',
+        saveCustomer: 'บันทึกลูกค้า',
+        selectCustomerTitle: 'เลือกลูกค้าเพื่อดูรายละเอียด',
+        sheetsLayerCopy: 'ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer',
+        vehicleModule: 'Vehicle Module MVP',
+        vehicleList: 'รายการรถ',
+        vehicleSearchPlaceholder: 'ค้นหา stock, VIN, ยี่ห้อ, รุ่น, สี, สถานที่',
+        addVehicle: 'เพิ่มรถ',
+        editVehicle: 'แก้ไขรถ',
+        stockNo: 'Stock No',
+        stockNoPlaceholder: 'เช่น VGO-005',
+        vin: 'VIN',
+        vinPlaceholder: 'เลขตัวถัง',
+        make: 'ยี่ห้อ',
+        model: 'รุ่น',
+        year: 'ปี',
+        color: 'สี',
+        location: 'สถานที่',
+        vehicleNotes: 'โน้ตรถ',
+        vehicleNotesPlaceholder: 'รายละเอียดรถและ metadata',
+        saveVehicle: 'บันทึกรถ',
+        selectVehicleTitle: 'เลือกรถเพื่อดูรายละเอียด',
+        erpOperations: 'ERP Operations MVP',
+        invoice: 'Invoice',
+        customerId: 'Customer ID',
+        vehicleIds: 'Vehicle IDs',
+        total: 'Total',
+        amount: 'Amount',
+        method: 'Method',
+        paymentId: 'Payment ID',
+        invoiceId: 'Invoice ID',
+        vehicleId: 'Vehicle ID',
+        task: 'Task',
+        workshopTaskPlaceholder: 'ตรวจรถ / ซ่อม / เตรียมส่งออก',
+        cost: 'Cost',
+        costStatus: 'Cost Status',
+        entityType: 'Entity Type',
+        entityId: 'Entity ID',
+        fileName: 'File Name',
+        driveUrl: 'Drive URL',
+        visibility: 'Visibility',
+        saveInvoice: 'บันทึก Invoice',
+        savePayment: 'บันทึก Payment',
+        allocatePayment: 'จัดสรรเงิน',
+        saveWorkshop: 'บันทึก Workshop',
+        saveDocument: 'บันทึก Document',
+        customerStatement: 'Customer Statement',
+        paymentAllocation: 'Payment + Allocation',
+        balance: 'Balance',
+        workshop: 'Workshop',
+        documents: 'Documents',
+        reportsQa: 'Reports + QA',
+        profitSharing: 'Profit Sharing',
+        financeSummaryNumbered: '5. สรุปการเงิน',
+        executiveView: 'มุมมองผู้บริหาร',
+        blockersNumbered: '6. สิ่งที่ติดอยู่',
+        blocked: 'ติดขัด',
+        todayTasksNumbered: '7. งานวันนี้',
+        today: 'วันนี้',
+        notifications: 'การแจ้งเตือน',
+        priority: 'ความสำคัญ',
+        quickActionsNumbered: '8. ปุ่มคำสั่งด่วน',
+        commands: 'คำสั่ง',
+        ready: 'พร้อม',
+        loading: 'กำลังโหลด',
+        saving: 'กำลังบันทึก',
+        saved: 'บันทึกแล้ว',
+        noCustomers: 'ไม่พบลูกค้า',
+        noVehicles: 'ไม่พบรถ',
+        customerUnit: 'ราย',
+        vehicleUnit: 'คัน',
+        invoiceUnit: 'ใบ',
+        paymentUnit: 'รายการ',
+        workUnit: 'งาน',
+        fileUnit: 'ไฟล์',
+        selectCustomerDetailHtml: '<strong>เลือกลูกค้าเพื่อดูรายละเอียด</strong><p>ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>',
+        selectVehicleDetailHtml: '<strong>เลือกรถเพื่อดูรายละเอียด</strong><p>ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>',
+        saveStateOpen: 'เปิด',
+        noInvoice: 'ยังไม่มี invoice',
+        noPayment: 'ยังไม่มี payment',
+        noStatement: 'ยังไม่มี statement',
+        noWorkshop: 'ยังไม่มี workshop',
+        noDocument: 'ยังไม่มี document',
+        receivable: 'ลูกหนี้',
+        received: 'รับเงินแล้ว',
+        approvedCosts: 'ต้นทุนอนุมัติ',
+        estimatedProfit: 'กำไรประมาณการ',
+        ownerShare: 'Owner 40%',
+        vigoShare: 'VIGO 60%',
+        qaPassed: 'ผ่าน deploy smoke test',
+        costsExcluded: 'Pending/rejected costs excluded from totals'
+      },
+      en: {
+        appTitle: 'VIGO4U OS - CEO Dashboard',
+        executiveControlCenter: 'Executive Control Center',
+        ceoDashboard: 'CEO Dashboard',
+        ceoDashboardNumbered: '1. CEO Dashboard',
+        heroCopy: 'The ERP home screen uses live Google Sheets data and supports Thai/English.',
+        aiStatusNumbered: '3. AI Status',
+        aiCopy: 'AI tracks the mission queue, ERP data, and dashboard statistics.',
+        erpStatusNumbered: '2. VIGO4U ERP Status',
+        mission: 'Mission',
+        erpProgress: 'VIGO4U ERP progress',
+        currentMission: 'Current Mission',
+        currentTask: 'Current Task',
+        eta: 'ETA',
+        businessSummaryNumbered: '4. Business Summary',
+        liveData: 'Live data',
+        customerModule: 'Customer Module MVP',
+        customerList: 'Customer List',
+        customerSearchPlaceholder: 'Search name, company, phone, email, country',
+        allStatuses: 'All statuses',
+        addCustomer: 'Add Customer',
+        editCustomer: 'Edit Customer',
+        customerName: 'Customer Name',
+        customerNamePlaceholder: 'e.g. Somchai Auto Export',
+        company: 'Company',
+        companyPlaceholder: 'Company name',
+        phone: 'Phone',
+        email: 'Email',
+        country: 'Country',
+        status: 'Status',
+        source: 'Source',
+        notes: 'Notes',
+        customerNotesPlaceholder: 'Customer details',
+        clearForm: 'Clear Form',
+        saveCustomer: 'Save Customer',
+        selectCustomerTitle: 'Select a customer to view details',
+        sheetsLayerCopy: 'Data comes from Google Sheets through the service/repository layer',
+        vehicleModule: 'Vehicle Module MVP',
+        vehicleList: 'Vehicle List',
+        vehicleSearchPlaceholder: 'Search stock, VIN, make, model, color, location',
+        addVehicle: 'Add Vehicle',
+        editVehicle: 'Edit Vehicle',
+        stockNo: 'Stock No',
+        stockNoPlaceholder: 'e.g. VGO-005',
+        vin: 'VIN',
+        vinPlaceholder: 'Vehicle identification number',
+        make: 'Make',
+        model: 'Model',
+        year: 'Year',
+        color: 'Color',
+        location: 'Location',
+        vehicleNotes: 'Vehicle Notes',
+        vehicleNotesPlaceholder: 'Vehicle details and metadata',
+        saveVehicle: 'Save Vehicle',
+        selectVehicleTitle: 'Select a vehicle to view details',
+        erpOperations: 'ERP Operations MVP',
+        invoice: 'Invoice',
+        customerId: 'Customer ID',
+        vehicleIds: 'Vehicle IDs',
+        total: 'Total',
+        amount: 'Amount',
+        method: 'Method',
+        paymentId: 'Payment ID',
+        invoiceId: 'Invoice ID',
+        vehicleId: 'Vehicle ID',
+        task: 'Task',
+        workshopTaskPlaceholder: 'Inspect / repair / prepare export',
+        cost: 'Cost',
+        costStatus: 'Cost Status',
+        entityType: 'Entity Type',
+        entityId: 'Entity ID',
+        fileName: 'File Name',
+        driveUrl: 'Drive URL',
+        visibility: 'Visibility',
+        saveInvoice: 'Save Invoice',
+        savePayment: 'Save Payment',
+        allocatePayment: 'Allocate Payment',
+        saveWorkshop: 'Save Workshop',
+        saveDocument: 'Save Document',
+        customerStatement: 'Customer Statement',
+        paymentAllocation: 'Payment + Allocation',
+        balance: 'Balance',
+        workshop: 'Workshop',
+        documents: 'Documents',
+        reportsQa: 'Reports + QA',
+        profitSharing: 'Profit Sharing',
+        financeSummaryNumbered: '5. Finance Summary',
+        executiveView: 'Executive View',
+        blockersNumbered: '6. Blockers',
+        blocked: 'Blocked',
+        todayTasksNumbered: '7. Today Tasks',
+        today: 'Today',
+        notifications: 'Notifications',
+        priority: 'Priority',
+        quickActionsNumbered: '8. Quick Actions',
+        commands: 'Commands',
+        ready: 'Ready',
+        loading: 'Loading',
+        saving: 'Saving',
+        saved: 'Saved',
+        noCustomers: 'No customers found',
+        noVehicles: 'No vehicles found',
+        customerUnit: 'customers',
+        vehicleUnit: 'vehicles',
+        invoiceUnit: 'invoices',
+        paymentUnit: 'payments',
+        workUnit: 'jobs',
+        fileUnit: 'files',
+        selectCustomerDetailHtml: '<strong>Select a customer to view details</strong><p>Data comes from Google Sheets through the service/repository layer</p>',
+        selectVehicleDetailHtml: '<strong>Select a vehicle to view details</strong><p>Data comes from Google Sheets through the service/repository layer</p>',
+        saveStateOpen: 'Open',
+        noInvoice: 'No invoices yet',
+        noPayment: 'No payments yet',
+        noStatement: 'No statements yet',
+        noWorkshop: 'No workshop jobs yet',
+        noDocument: 'No documents yet',
+        receivable: 'Receivable',
+        received: 'Received',
+        approvedCosts: 'Approved costs',
+        estimatedProfit: 'Estimated profit',
+        ownerShare: 'Owner 40%',
+        vigoShare: 'VIGO 60%',
+        qaPassed: 'Deploy smoke test passed',
+        costsExcluded: 'Pending/rejected costs excluded from totals'
+      }
+    };
+
+    function t(key) {
+      return (i18n[currentLang] && i18n[currentLang][key]) || i18n.th[key] || key;
+    }
+
+    function setLang(lang) {
+      currentLang = i18n[lang] ? lang : 'th';
+      localStorage.setItem('vigo4u_lang', currentLang);
+      document.documentElement.lang = currentLang;
+      document.title = t('appTitle');
+      document.querySelectorAll('[data-lang]').forEach((button) => {
+        button.classList.toggle('active', button.dataset.lang === currentLang);
+      });
+      applyStaticI18n();
+      renderDashboard(dashboardData);
+      renderCustomers(customers);
+      renderVehicles(vehicles);
+      renderErp(erp);
+    }
+
+    function applyStaticI18n() {
+      document.querySelectorAll('[data-i18n]').forEach((element) => {
+        element.textContent = t(element.dataset.i18n);
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
+        element.setAttribute('placeholder', t(element.dataset.i18nPlaceholder));
+      });
+      document.querySelectorAll('[data-i18n-aria]').forEach((element) => {
+        element.setAttribute('aria-label', t(element.dataset.i18nAria));
+      });
+      document.querySelectorAll('[data-label-key]').forEach((label) => {
+        const node = Array.from(label.childNodes).find((child) => child.nodeType === Node.TEXT_NODE);
+        if (node) node.textContent = t(label.dataset.labelKey) + '\n                ';
+      });
+    }
 
     const toneMap = {
       blue: '#4aa3ff',
@@ -1171,23 +1499,48 @@
       document.getElementById(targetId).innerHTML = rows.map((item) => `
         <article class="card list-card">
           <h3>${item.title}</h3>
-          <span class="tag">${item[tagKey] || item.status || 'เปิด'}</span>
+          <span class="tag">${item[tagKey] || item.status || t('saveStateOpen')}</span>
           <p>${item.detail || ''}</p>
         </article>
       `).join('');
     }
 
+    function metricLabel(label) {
+      const labels = {
+        'ลูกค้า': currentLang === 'en' ? 'Customers' : 'ลูกค้า',
+        'รถทั้งหมด': currentLang === 'en' ? 'Vehicles' : 'รถทั้งหมด',
+        'ใบแจ้งหนี้': currentLang === 'en' ? 'Invoices' : 'ใบแจ้งหนี้',
+        'การชำระเงิน': currentLang === 'en' ? 'Payments' : 'การชำระเงิน',
+        'รับเงิน': currentLang === 'en' ? 'Payments' : 'รับเงิน',
+        'เวิร์กช็อป': currentLang === 'en' ? 'Workshop' : 'เวิร์กช็อป',
+        'รถ': currentLang === 'en' ? 'Vehicles' : 'รถ',
+        'รายงาน': currentLang === 'en' ? 'Reports' : 'รายงาน',
+        'ตั้งค่า': currentLang === 'en' ? 'Settings' : 'ตั้งค่า'
+      };
+      return labels[label] || label;
+    }
+
+    function financeLabel(label) {
+      const labels = {
+        'เงินสด': currentLang === 'en' ? 'Cash' : 'เงินสด',
+        'ลูกหนี้': currentLang === 'en' ? 'Receivable' : 'ลูกหนี้',
+        'เจ้าหนี้': currentLang === 'en' ? 'Payable' : 'เจ้าหนี้',
+        'กำไร': currentLang === 'en' ? 'Profit' : 'กำไร'
+      };
+      return labels[label] || label;
+    }
+
     function renderDashboard(data) {
-      setText('welcomeText', `${data.user.greeting} ${data.user.name}`);
-      setText('aiState', data.aiStatus.state);
+      setText('welcomeText', currentLang === 'en' ? `Good Morning ${data.user.name}` : `${data.user.greeting} ${data.user.name}`);
+      setText('aiState', currentLang === 'en' ? 'Working' : data.aiStatus.state);
       setText('aiLastUpdate', data.aiStatus.lastUpdate);
-      setText('aiActivity', data.aiStatus.activity);
-      setText('progressLabel', data.companyStatus.progressLabel);
+      setText('aiActivity', currentLang === 'en' ? 'AI is maintaining the ERP MVP modules and dashboard statistics.' : data.aiStatus.activity);
+      setText('progressLabel', currentLang === 'en' ? 'VIGO4U ERP Status' : data.companyStatus.progressLabel);
       setText('progressValue', `${data.companyStatus.progress}%`);
       document.getElementById('progressFill').style.setProperty('--progress', `${data.companyStatus.progress}%`);
       setText('currentMission', data.companyStatus.currentMission);
       setText('currentTask', data.companyStatus.currentTask);
-      setText('eta', data.companyStatus.eta);
+      setText('eta', currentLang === 'en' ? 'Ready today' : data.companyStatus.eta);
 
       document.getElementById('businessSummary').innerHTML = data.businessSummary.map((item) => {
         const tone = toneMap[item.tone] || toneMap.blue;
@@ -1195,7 +1548,7 @@
           <article class="card metric" style="--tone: ${tone}">
             <div class="metric-mark"></div>
             <h3>${item.value}</h3>
-            <p>${item.label}</p>
+            <p>${metricLabel(item.label)}</p>
             <small>${item.trend}</small>
           </article>
         `;
@@ -1204,7 +1557,7 @@
       document.getElementById('financeSummary').innerHTML = data.financeSummary.map((item) => `
         <article class="card finance">
           <div>
-            <h3>${item.label}</h3>
+            <h3>${financeLabel(item.label)}</h3>
             <p>${item.note}</p>
           </div>
           <strong>${item.value}</strong>
@@ -1216,9 +1569,9 @@
       renderList('notifications', data.notifications, 'priority');
 
       document.getElementById('quickActions').innerHTML = data.quickActions.map((item) => `
-        <button class="action" type="button" data-target="${item.target || ''}" aria-label="${item.label}">
+        <button class="action" type="button" data-target="${item.target || ''}" aria-label="${metricLabel(item.label)}">
           <span class="action-icon">${icons[item.icon] || icons.settings}</span>
-          <span>${item.label}</span>
+          <span>${metricLabel(item.label)}</span>
         </button>
       `).join('');
 
@@ -1239,10 +1592,10 @@
 
     function renderCustomers(rows) {
       customers = rows || [];
-      setText('customerCount', `${customers.length} ราย`);
+      setText('customerCount', `${customers.length} ${t('customerUnit')}`);
       const list = document.getElementById('customerList');
       if (!customers.length) {
-        list.innerHTML = '<div class="card empty">ไม่พบลูกค้า</div>';
+        list.innerHTML = `<div class="card empty">${t('noCustomers')}</div>`;
         return;
       }
 
@@ -1265,20 +1618,20 @@
       fillForm(customer);
       document.getElementById('customerDetail').innerHTML = `
         <strong>${customer.customer_name || '-'}</strong>
-        <p>รหัส: ${customer.customer_id}</p>
-        <p>บริษัท: ${customer.company_name || '-'}</p>
-        <p>ติดต่อ: ${customer.phone || '-'} · ${customer.email || '-'}</p>
-        <p>ประเทศ: ${customer.country || '-'} · สถานะ: ${statusLabel[customer.status] || customer.status || '-'}</p>
+        <p>${currentLang === 'en' ? 'ID' : 'รหัส'}: ${customer.customer_id}</p>
+        <p>${t('company')}: ${customer.company_name || '-'}</p>
+        <p>${currentLang === 'en' ? 'Contact' : 'ติดต่อ'}: ${customer.phone || '-'} · ${customer.email || '-'}</p>
+        <p>${t('country')}: ${customer.country || '-'} · ${t('status')}: ${statusLabel[customer.status] || customer.status || '-'}</p>
         <p>${customer.notes || ''}</p>
       `;
     }
 
     function renderVehicles(rows) {
       vehicles = rows || [];
-      setText('vehicleCount', `${vehicles.length} คัน`);
+      setText('vehicleCount', `${vehicles.length} ${t('vehicleUnit')}`);
       const list = document.getElementById('vehicleList');
       if (!vehicles.length) {
-        list.innerHTML = '<div class="card empty">ไม่พบรถ</div>';
+        list.innerHTML = `<div class="card empty">${t('noVehicles')}</div>`;
         return;
       }
 
@@ -1301,10 +1654,10 @@
       fillVehicleForm(vehicle);
       document.getElementById('vehicleDetail').innerHTML = `
         <strong>${vehicle.stock_no || vehicle.vin || '-'}</strong>
-        <p>รหัส: ${vehicle.vehicle_id}</p>
-        <p>รถ: ${vehicle.year || '-'} ${vehicle.make || ''} ${vehicle.model || ''} · สี ${vehicle.color || '-'}</p>
+        <p>${currentLang === 'en' ? 'ID' : 'รหัส'}: ${vehicle.vehicle_id}</p>
+        <p>${currentLang === 'en' ? 'Vehicle' : 'รถ'}: ${vehicle.year || '-'} ${vehicle.make || ''} ${vehicle.model || ''} · ${t('color')} ${vehicle.color || '-'}</p>
         <p>VIN: ${vehicle.vin || '-'}</p>
-        <p>สถานที่: ${vehicle.location || '-'} · สถานะ: ${vehicleStatusLabel[vehicle.status] || vehicle.status || '-'}</p>
+        <p>${t('location')}: ${vehicle.location || '-'} · ${t('status')}: ${vehicleStatusLabel[vehicle.status] || vehicle.status || '-'}</p>
         <p>Photo: ${vehicle.photo_url || '-'}</p>
         <p>Document: ${vehicle.document_url || '-'}</p>
         <p>${vehicle.notes || ''}</p>
@@ -1312,7 +1665,7 @@
     }
 
     function fillForm(customer) {
-      document.getElementById('formTitle').textContent = customer.customer_id ? 'แก้ไขลูกค้า' : 'เพิ่มลูกค้า';
+      document.getElementById('formTitle').textContent = customer.customer_id ? t('editCustomer') : t('addCustomer');
       document.getElementById('customerId').value = customer.customer_id || '';
       document.getElementById('customerName').value = customer.customer_name || '';
       document.getElementById('companyName').value = customer.company_name || '';
@@ -1325,7 +1678,7 @@
     }
 
     function fillVehicleForm(vehicle) {
-      document.getElementById('vehicleFormTitle').textContent = vehicle.vehicle_id ? 'แก้ไขรถ' : 'เพิ่มรถ';
+      document.getElementById('vehicleFormTitle').textContent = vehicle.vehicle_id ? t('editVehicle') : t('addVehicle');
       document.getElementById('vehicleId').value = vehicle.vehicle_id || '';
       document.getElementById('stockNo').value = vehicle.stock_no || '';
       document.getElementById('vin').value = vehicle.vin || '';
@@ -1342,14 +1695,14 @@
 
     function clearForm() {
       fillForm({ status: 'prospect' });
-      document.getElementById('customerDetail').innerHTML = '<strong>เลือกลูกค้าเพื่อดูรายละเอียด</strong><p>ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>';
-      setText('saveState', 'พร้อม');
+      document.getElementById('customerDetail').innerHTML = t('selectCustomerDetailHtml');
+      setText('saveState', t('ready'));
     }
 
     function clearVehicleForm() {
       fillVehicleForm({ status: 'available' });
-      document.getElementById('vehicleDetail').innerHTML = '<strong>เลือกรถเพื่อดูรายละเอียด</strong><p>ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>';
-      setText('vehicleSaveState', 'พร้อม');
+      document.getElementById('vehicleDetail').innerHTML = t('selectVehicleDetailHtml');
+      setText('vehicleSaveState', t('ready'));
     }
 
     function collectForm() {
@@ -1384,7 +1737,7 @@
     }
 
     function loadCustomers() {
-      setText('customerCount', 'กำลังโหลด');
+      setText('customerCount', t('loading'));
       google.script.run
         .withSuccessHandler((response) => {
           renderCustomers(response.customers || []);
@@ -1400,7 +1753,7 @@
     }
 
     function loadVehicles() {
-      setText('vehicleCount', 'กำลังโหลด');
+      setText('vehicleCount', t('loading'));
       google.script.run
         .withSuccessHandler((response) => {
           renderVehicles(response.vehicles || []);
@@ -1448,46 +1801,46 @@
       const documents = erp.documents || [];
       const reports = erp.reports || {};
 
-      setText('invoiceCount', `${invoices.length} ใบ`);
-      setText('paymentCount', `${payments.length} รายการ`);
-      setText('workshopCount', `${workOrders.length} งาน`);
-      setText('documentCount', `${documents.length} ไฟล์`);
+      setText('invoiceCount', `${invoices.length} ${t('invoiceUnit')}`);
+      setText('paymentCount', `${payments.length} ${t('paymentUnit')}`);
+      setText('workshopCount', `${workOrders.length} ${t('workUnit')}`);
+      setText('documentCount', `${documents.length} ${t('fileUnit')}`);
 
       document.getElementById('invoiceList').innerHTML = invoices.map((invoice) => miniRow(
         invoice.invoice_no || invoice.invoice_id,
-        `${invoice.status || '-'} · ${money(invoice.subtotal)} · balance ${money(invoice.balance_amount)}`,
+        `${invoice.status || '-'} · ${money(invoice.subtotal)} · ${currentLang === 'en' ? 'balance' : 'คงเหลือ'} ${money(invoice.balance_amount)}`,
         `Customer ${invoice.customer_id || '-'} · ${invoice.notes || ''}`
-      )).join('') || '<div class="mini-row"><span>ยังไม่มี invoice</span></div>';
+      )).join('') || `<div class="mini-row"><span>${t('noInvoice')}</span></div>`;
 
       document.getElementById('paymentList').innerHTML = payments.map((payment) => miniRow(
         payment.payment_id,
-        `${payment.status || '-'} · ${money(payment.amount)} · credit ${money(payment.credit_amount)}`,
+        `${payment.status || '-'} · ${money(payment.amount)} · ${currentLang === 'en' ? 'credit' : 'เครดิต'} ${money(payment.credit_amount)}`,
         `${payment.method || '-'} · Customer ${payment.customer_id || '-'}`
-      )).join('') || '<div class="mini-row"><span>ยังไม่มี payment</span></div>';
+      )).join('') || `<div class="mini-row"><span>${t('noPayment')}</span></div>`;
 
       document.getElementById('statementList').innerHTML = statements.map((statement) => miniRow(
         statement.customer_id || '-',
-        `Invoices ${statement.invoice_count} · Payments ${statement.payment_count}`,
-        `Balance ${money(statement.balance)} · Credit ${money(statement.credit_total)}`
-      )).join('') || '<div class="mini-row"><span>ยังไม่มี statement</span></div>';
+        `${t('invoice')} ${statement.invoice_count} · ${currentLang === 'en' ? 'Payments' : 'Payments'} ${statement.payment_count}`,
+        `${currentLang === 'en' ? 'Balance' : 'คงเหลือ'} ${money(statement.balance)} · ${currentLang === 'en' ? 'Credit' : 'เครดิต'} ${money(statement.credit_total)}`
+      )).join('') || `<div class="mini-row"><span>${t('noStatement')}</span></div>`;
 
       document.getElementById('workshopList').innerHTML = workOrders.map((order) => {
         const orderCosts = costs.filter((cost) => cost.work_order_id === order.work_order_id);
         const approved = orderCosts.filter((cost) => cost.status === 'approved').reduce((total, cost) => total + Number(cost.amount || 0), 0);
         const pending = orderCosts.filter((cost) => cost.status === 'pending').reduce((total, cost) => total + Number(cost.amount || 0), 0);
-        return miniRow(order.work_order_id, `${order.status || '-'} · Vehicle ${order.vehicle_id || '-'}`, `${order.task || ''} · approved ${money(approved)} · pending ${money(pending)}`);
-      }).join('') || '<div class="mini-row"><span>ยังไม่มี workshop</span></div>';
+        return miniRow(order.work_order_id, `${order.status || '-'} · ${currentLang === 'en' ? 'Vehicle' : 'รถ'} ${order.vehicle_id || '-'}`, `${order.task || ''} · approved ${money(approved)} · pending ${money(pending)}`);
+      }).join('') || `<div class="mini-row"><span>${t('noWorkshop')}</span></div>`;
 
       document.getElementById('documentList').innerHTML = documents.map((doc) => miniRow(
         doc.file_name || doc.document_id,
         `${doc.entity_type || '-'} · ${doc.visibility || '-'}`,
         doc.drive_url || doc.notes || ''
-      )).join('') || '<div class="mini-row"><span>ยังไม่มี document</span></div>';
+      )).join('') || `<div class="mini-row"><span>${t('noDocument')}</span></div>`;
 
       document.getElementById('reportList').innerHTML = [
-        miniRow('CEO Report', `Receivable ${money(reports.receivable)}`, `Received ${money(reports.received)} · Approved costs ${money(reports.approvedCosts)}`),
-        miniRow('Profit Sharing', `Estimated profit ${money(reports.estimatedProfit)}`, `Owner 40% ${money(reports.ownerShare)} · VIGO 60% ${money(reports.vigoShare)}`),
-        miniRow('QA Status', 'Passed HTTP deploy smoke test required after deploy', reports.rule || 'Pending/rejected costs excluded from totals')
+        miniRow(currentLang === 'en' ? 'CEO Report' : 'รายงานผู้บริหาร', `${t('receivable')} ${money(reports.receivable)}`, `${t('received')} ${money(reports.received)} · ${t('approvedCosts')} ${money(reports.approvedCosts)}`),
+        miniRow(t('profitSharing'), `${t('estimatedProfit')} ${money(reports.estimatedProfit)}`, `${t('ownerShare')} ${money(reports.ownerShare)} · ${t('vigoShare')} ${money(reports.vigoShare)}`),
+        miniRow(currentLang === 'en' ? 'QA Status' : 'สถานะ QA', t('qaPassed'), reports.rule || t('costsExcluded'))
       ].join('');
     }
 
@@ -1511,6 +1864,10 @@
       return ((erp.payments || [])[0] || {}).payment_id || '';
     }
 
+    document.querySelectorAll('[data-lang]').forEach((button) => {
+      button.addEventListener('click', () => setLang(button.dataset.lang));
+    });
+
     document.getElementById('customerSearch').addEventListener('input', () => loadCustomers());
     document.getElementById('statusFilter').addEventListener('change', () => loadCustomers());
     document.getElementById('newCustomer').addEventListener('click', clearForm);
@@ -1519,10 +1876,10 @@
     document.getElementById('newVehicle').addEventListener('click', clearVehicleForm);
     document.getElementById('customerForm').addEventListener('submit', (event) => {
       event.preventDefault();
-      setText('saveState', 'กำลังบันทึก');
+      setText('saveState', t('saving'));
       google.script.run
         .withSuccessHandler((response) => {
-          setText('saveState', 'บันทึกแล้ว');
+          setText('saveState', t('saved'));
           renderCustomers(response.customers || []);
           updateCustomerStats(response.stats);
           fillForm(response.customer || {});
@@ -1534,10 +1891,10 @@
 
     document.getElementById('vehicleForm').addEventListener('submit', (event) => {
       event.preventDefault();
-      setText('vehicleSaveState', 'กำลังบันทึก');
+      setText('vehicleSaveState', t('saving'));
       google.script.run
         .withSuccessHandler((response) => {
-          setText('vehicleSaveState', 'บันทึกแล้ว');
+          setText('vehicleSaveState', t('saved'));
           renderVehicles(response.vehicles || []);
           updateVehicleStats(response.stats);
           fillVehicleForm(response.vehicle || {});
@@ -1658,10 +2015,7 @@
         });
     });
 
-    renderDashboard(dashboardData);
-    renderCustomers(customers);
-    renderVehicles(vehicles);
-    renderErp(erp);
+    setLang(currentLang);
   </script>
 </body>
 </html>
