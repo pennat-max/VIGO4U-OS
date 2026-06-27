@@ -66,6 +66,39 @@ function apiGetDashboardData() {
   return getDashboardData();
 }
 
+function setup() {
+  PropertiesService.getScriptProperties().setProperties({
+    APP_TITLE,
+    DASHBOARD_MODE: 'MOCK',
+    CURRENT_MISSION: 'Mission 001 - CEO Dashboard',
+    LAST_SETUP_AT: new Date().toISOString()
+  });
+
+  return {
+    ok: true,
+    message: 'VIGO4U OS CEO Dashboard setup completed.',
+    mode: 'MOCK'
+  };
+}
+
+function seedDemoData() {
+  PropertiesService.getScriptProperties().setProperty('MOCK_DATA_READY', 'true');
+
+  return {
+    ok: true,
+    message: 'Mock dashboard data is ready.',
+    sections: [
+      'Welcome Header',
+      'Company Status',
+      'AI Status',
+      'Business Summary',
+      'Finance Summary',
+      'Notifications',
+      'Quick Actions'
+    ]
+  };
+}
+
 function formatDashboardTime_(date) {
   return Utilities.formatDate(date, Session.getScriptTimeZone(), 'MMM d, yyyy HH:mm');
 }
