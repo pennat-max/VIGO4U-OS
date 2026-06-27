@@ -1,37 +1,51 @@
 # MISSION
 
-Current mission: Full ERP MVP complete.
+Current mission: Production Hardening Gate 001
 
-Goal: Mission queue 001-011 completed for MVP.
+Goal: make the deployed VIGO4U OS MVP safer and closer to real production use before adding more features.
 
-## Completed Modules
-- CEO Dashboard
-- Customer Module
-- Vehicle Module
-- Invoice Module
-- Payment Module
-- Allocation Module
-- Customer Statement
-- Workshop Module
-- Documents Module
-- Reports Module
-- QA and Deployment smoke verification
+## Current State
+MVP modules 001-011 are complete and deployed with bilingual TH/EN support.
 
-## Current Deployed URL
+Live URL:
 `https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`
 
-## Architecture Rules Preserved
-- UI uses service layer.
-- Service layer uses repository layer.
-- Repository handles Google Sheets.
-- Stable IDs are used for business records.
-- Header mapping is used.
-- Row numbers are not used as business IDs.
-- One customer has many invoices.
-- One invoice has many vehicles.
-- One payment can allocate across invoice items or vehicles.
-- Pending and rejected workshop costs do not affect totals.
-- Profit sharing is 40% owner and 60% VIGO.
+## Hardening Scope
+1. Role enforcement in UI and API
+   - Admin sees everything.
+   - Finance sees finance workflows only.
+   - Staff must not see buy price, sale price, profit, customer statement, customer payments, or profit sharing.
+   - Customer sees own invoices, vehicles, documents, payments, and balance only.
 
-## Next Phase
-Production hardening: role-based UI enforcement, audit log, stronger validation, real Drive upload flow, and production data migration planning.
+2. Audit log
+   - Record create/update/delete or approval actions.
+   - Include timestamp, user/role, entity type, entity id, action, before/after summary where practical.
+
+3. Data validation
+   - Validate required IDs and amounts.
+   - Prevent negative payments/costs.
+   - Prevent double-counted approved workshop costs.
+   - Validate invoice/payment/allocation relationships.
+
+4. Document handling
+   - Keep metadata and Drive URL in Sheets.
+   - Prepare real Drive upload path or document the exact blocker.
+
+5. Demo fallback governance
+   - Keep demo seed fallback safe.
+   - Make production/test mode clear in UI.
+
+6. QA checklist
+   - Add manual QA cases for all major flows.
+   - Update CURRENT_STATUS, DAILY_REPORT, NEXT_ACTION, and BLOCKERS.
+
+## Do Not Do Yet
+- Do not add new business modules.
+- Do not redesign the whole app.
+- Do not migrate to Supabase yet.
+
+## Done Means
+- Production risks above are implemented or clearly documented as blockers.
+- Status files are updated.
+- App is redeployed if code changed.
+- GitHub has latest commit pushed.
