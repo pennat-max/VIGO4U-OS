@@ -50,7 +50,7 @@ GitHub remote:
 
 - Repository: `https://github.com/pennat-max/VIGO4U-OS`
 - Branch: `master`
-- Latest pushed commit: `8390374 Record Apps Script deployment`
+- Push status: deployment files and status are pushed to `origin/master`.
 
 Apps Script deployment:
 
