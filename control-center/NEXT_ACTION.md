@@ -1,10 +1,22 @@
 # NEXT ACTION
 
 ## Immediate
-Codex should pull latest master and read control-center/MISSION.md.
+Authorize the Apps Script project in Google so version 7 can use Google Sheets.
 
 ## Current Mission
-Build Customer Module MVP and connect customer statistics to the Thai CEO Dashboard.
+Customer Module MVP is implemented in code and pushed to Apps Script version 7.
+
+Final open verification is blocked by Google authorization for the new Google Sheets scope.
+
+The public CEO Dashboard remains open on version 6 until authorization is complete.
+
+After authorization:
+- Open the dashboard URL.
+- Confirm the Thai dashboard loads.
+- Confirm the Customer Module renders.
+- Confirm demo customers seed into Google Sheets.
+- Confirm create/edit/search/status filter works.
+- Commit any follow-up status updates.
 
 ## Must Do Before Stopping
 - Commit completed work

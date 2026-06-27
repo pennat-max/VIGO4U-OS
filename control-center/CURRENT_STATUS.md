@@ -8,7 +8,7 @@ VIGO4U-OS
 
 ## Mission
 
-CEO Dashboard MVP
+Mission 002 - Customer Module MVP
 
 ## Branch
 
@@ -16,24 +16,45 @@ CEO Dashboard MVP
 
 ## Status
 
-Completed and deployed.
+Code complete and pushed to Apps Script version 7.
+
+Customer Module open verification is blocked by Google authorization for the new Google Sheets scope.
+
+The existing public CEO Dashboard remains open on version 6.
 
 ## Dashboard
 
 - Type: Google Apps Script Web App
 - UI language: Thai
-- Data mode: Mock data
+- Live data mode: Mock dashboard data on version 6
+- Customer Module data mode: Google Sheets customer data with demo seed fallback on version 7
 - Layout: Mobile-first, dark mode, card layout, large buttons
 - Live URL: `https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`
-- Verification: `HTTP 200`, Thai dashboard title detected
+- Live Apps Script deployment: `AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @6`
+- Live verification: `HTTP 200`, Thai dashboard title detected
+- Customer Module deployment: `AKfycbzm53mqUjgPjF2Yn_U6DvEFvcdxdgztsNDbq_BmMN5TZYIqPT11Ik8FLG01XsUOp_OZfA @7`
+- Customer Module verification: URL currently returns `403 Forbidden` after adding SpreadsheetApp usage.
+
+## Customer Module
+
+- Customer list: implemented
+- Customer detail: implemented
+- Create customer: implemented
+- Edit customer: implemented
+- Search customer: implemented
+- Customer status filter: implemented
+- Dashboard customer statistics: connected to Customer sheet
+- Architecture: UI -> service layer -> repository layer -> Google Sheets
+- Customer ID: stable `CUS-yyyyMMddHHmmss-UUID8`, not row number
 
 ## GitHub
 
 - Remote: `https://github.com/pennat-max/VIGO4U-OS.git`
 - Push target: `origin/master`
-- Status files are being reconciled with remote `control-center/` mission files.
+- Status files are updated for Mission 002.
 
 ## Approval
 
-No approval is required to open the deployed mock dashboard.
+Google authorization is required before the deployed Customer Module dashboard can open.
 
+The owner account must approve the new Apps Script scopes for Google Sheets access.

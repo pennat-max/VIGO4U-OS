@@ -45,12 +45,15 @@
         linear-gradient(180deg, #070910 0%, #0b1020 52%, #070910 100%);
     }
 
-    button {
+    button,
+    input,
+    select,
+    textarea {
       font: inherit;
     }
 
     .app {
-      width: min(100%, 1160px);
+      width: min(100%, 1180px);
       margin: 0 auto;
       padding: max(18px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom));
     }
@@ -119,11 +122,27 @@
       box-shadow: 0 0 0 5px rgba(50, 213, 131, 0.14);
     }
 
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .dashboard-grid {
+      align-items: stretch;
+    }
+
+    .card,
+    .hero {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: rgba(17, 24, 39, 0.86);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
+    }
+
     .hero {
       position: relative;
       overflow: hidden;
       padding: 24px;
-      border: 1px solid var(--line);
       border-radius: var(--radius-xl);
       background:
         linear-gradient(135deg, rgba(74, 163, 255, 0.18), transparent 45%),
@@ -197,19 +216,9 @@
       white-space: nowrap;
     }
 
-    .grid {
-      display: grid;
-      gap: 14px;
-    }
-
-    .card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: rgba(17, 24, 39, 0.86);
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
-    }
-
-    .status-card {
+    .status-card,
+    .ai-card,
+    .module-card {
       padding: 18px;
     }
 
@@ -273,7 +282,6 @@
     .ai-card {
       display: grid;
       gap: 10px;
-      padding: 18px;
       background:
         linear-gradient(145deg, rgba(164, 140, 255, 0.18), transparent 54%),
         rgba(17, 24, 39, 0.88);
@@ -343,14 +351,16 @@
     }
 
     .finance h3,
-    .list-card h3 {
+    .list-card h3,
+    .customer-card h3 {
       margin: 0;
       font-size: 15px;
       line-height: 1.35;
     }
 
     .finance p,
-    .list-card p {
+    .list-card p,
+    .customer-card p {
       margin: 5px 0 0;
       color: var(--muted);
       font-size: 12px;
@@ -363,19 +373,22 @@
       text-align: right;
     }
 
-    .list {
+    .list,
+    .customer-list {
       display: grid;
       gap: 10px;
     }
 
-    .list-card {
+    .list-card,
+    .customer-card {
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 8px 12px;
       padding: 15px;
     }
 
-    .list-card p {
+    .list-card p,
+    .customer-card p {
       grid-column: 1 / -1;
     }
 
@@ -390,33 +403,72 @@
       white-space: nowrap;
     }
 
+    .tag.active {
+      background: rgba(50, 213, 131, 0.14);
+      color: #9ff0c7;
+    }
+
+    .tag.prospect {
+      background: rgba(74, 163, 255, 0.14);
+      color: #aad6ff;
+    }
+
+    .tag.inactive {
+      background: rgba(255, 111, 145, 0.14);
+      color: #ffb4c6;
+    }
+
     .actions {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .action {
+    .action,
+    .primary,
+    .secondary {
       display: flex;
       align-items: center;
-      gap: 12px;
-      min-height: 66px;
-      padding: 13px;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 12px 14px;
       border: 1px solid var(--line);
       border-radius: var(--radius-md);
-      background: rgba(22, 32, 51, 0.9);
       color: var(--text);
       cursor: pointer;
       transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
       -webkit-tap-highlight-color: transparent;
     }
 
-    .action:active {
+    .action {
+      justify-content: flex-start;
+      min-height: 66px;
+      background: rgba(22, 32, 51, 0.9);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--blue), #2fbc75);
+      color: #06101a;
+      font-weight: 950;
+    }
+
+    .secondary {
+      background: rgba(22, 32, 51, 0.9);
+      font-weight: 850;
+    }
+
+    .action:active,
+    .primary:active,
+    .secondary:active {
       transform: scale(0.98);
     }
 
     .action:hover,
-    .action:focus-visible {
+    .action:focus-visible,
+    .primary:hover,
+    .primary:focus-visible,
+    .secondary:hover,
+    .secondary:focus-visible {
       border-color: rgba(74, 163, 255, 0.48);
-      background: rgba(27, 39, 62, 0.98);
       outline: none;
     }
 
@@ -436,6 +488,85 @@
       font-weight: 900;
     }
 
+    .customer-shell {
+      display: grid;
+      gap: 14px;
+    }
+
+    .customer-tools {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: #dce7f7;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 46px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(7, 9, 16, 0.62);
+      color: var(--text);
+      outline: none;
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(74, 163, 255, 0.58);
+    }
+
+    .form-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .customer-card {
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .customer-detail {
+      display: grid;
+      gap: 8px;
+      min-height: 108px;
+      padding: 15px;
+    }
+
+    .customer-detail strong {
+      font-size: 18px;
+    }
+
+    .empty {
+      padding: 18px;
+      color: var(--muted);
+      text-align: center;
+    }
+
     @media (min-width: 760px) {
       .app {
         padding: 28px 24px 44px;
@@ -443,7 +574,6 @@
 
       .dashboard-grid {
         grid-template-columns: 1.1fr 0.9fr;
-        align-items: stretch;
       }
 
       .summary-grid {
@@ -466,32 +596,17 @@
       .actions {
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
-    }
 
-    @media (max-width: 380px) {
-      .app {
-        padding-left: 12px;
-        padding-right: 12px;
+      .customer-shell {
+        grid-template-columns: 0.95fr 1.05fr;
       }
 
-      .hero,
-      .status-card,
-      .ai-card {
-        padding: 16px;
+      .customer-tools {
+        grid-template-columns: 1fr 180px;
       }
 
-      .summary-grid,
-      .actions {
-        grid-template-columns: 1fr;
-      }
-
-      .finance {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .finance strong {
-        text-align: left;
+      .field-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
   </style>
@@ -513,7 +628,7 @@
       <article class="hero">
         <p class="eyebrow">1. แดชบอร์ดผู้บริหาร</p>
         <h2 id="welcomeText">สวัสดีตอนเช้า Tony</h2>
-        <p>หน้าหลักของ ERP ใช้ข้อมูล mock ก่อน เพื่อให้ผู้บริหารเปิดดูภาพรวมได้ทันทีระหว่างรอเชื่อมโมดูลจริง</p>
+        <p>หน้าหลักของ ERP ใช้ข้อมูลจริงของลูกค้าจาก Google Sheets แล้ว และยังใช้ mock data สำหรับโมดูลอื่นจนกว่าจะถึง mission ถัดไป</p>
       </article>
 
       <article class="card ai-card">
@@ -522,7 +637,7 @@
           <span id="aiLastUpdate">ล่าสุด</span>
         </div>
         <strong id="aiActivity">AI กำลังเตรียมข้อมูล</strong>
-        <p>AI จะช่วยดู mission, blockers, สถานะงาน และช่วยต่อโมดูล ERP ในลำดับถัดไป</p>
+        <p>AI ดูแล mission queue, customer data และ dashboard statistics ตามลำดับงานปัจจุบัน</p>
       </article>
     </section>
 
@@ -540,8 +655,8 @@
           <div class="progress-fill" id="progressFill" style="--progress: 0%;"></div>
         </div>
         <div class="status-list">
-          <div class="status-item"><span>Mission ปัจจุบัน</span><strong id="currentMission">MISSION-CEO-DASHBOARD-001</strong></div>
-          <div class="status-item"><span>Task ปัจจุบัน</span><strong id="currentTask">แดชบอร์ดผู้บริหาร</strong></div>
+          <div class="status-item"><span>Mission ปัจจุบัน</span><strong id="currentMission">Mission 002</strong></div>
+          <div class="status-item"><span>Task ปัจจุบัน</span><strong id="currentTask">Customer Module</strong></div>
           <div class="status-item"><span>ETA</span><strong id="eta">วันนี้</strong></div>
         </div>
       </article>
@@ -550,9 +665,82 @@
     <section class="section">
       <div class="section-title">
         <h2>4. สรุปธุรกิจ</h2>
-        <span>ข้อมูลตัวอย่าง</span>
+        <span>ลูกค้า live</span>
       </div>
       <div class="grid summary-grid" id="businessSummary"></div>
+    </section>
+
+    <section class="section" id="customers">
+      <div class="section-title">
+        <h2>Customer Module MVP</h2>
+        <span>Google Sheets</span>
+      </div>
+      <div class="grid customer-shell">
+        <article class="card module-card">
+          <div class="section-title">
+            <h2>รายชื่อลูกค้า</h2>
+            <span id="customerCount">0 ราย</span>
+          </div>
+          <div class="customer-tools">
+            <input id="customerSearch" type="search" placeholder="ค้นหาชื่อ บริษัท โทร อีเมล ประเทศ">
+            <select id="statusFilter">
+              <option value="">ทุกสถานะ</option>
+              <option value="active">Active</option>
+              <option value="prospect">Prospect</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+          <div class="customer-list" id="customerList"></div>
+        </article>
+
+        <article class="card module-card">
+          <div class="section-title">
+            <h2 id="formTitle">เพิ่มลูกค้า</h2>
+            <span id="saveState">พร้อม</span>
+          </div>
+          <form id="customerForm">
+            <input id="customerId" type="hidden">
+            <div class="field-grid">
+              <label>ชื่อลูกค้า
+                <input id="customerName" required placeholder="เช่น Somchai Auto Export">
+              </label>
+              <label>บริษัท
+                <input id="companyName" placeholder="ชื่อบริษัท">
+              </label>
+              <label>โทรศัพท์
+                <input id="phone" placeholder="+66 ...">
+              </label>
+              <label>อีเมล
+                <input id="email" type="email" placeholder="customer@example.com">
+              </label>
+              <label>ประเทศ
+                <input id="country" placeholder="Thailand">
+              </label>
+              <label>สถานะ
+                <select id="customerStatus">
+                  <option value="active">Active</option>
+                  <option value="prospect">Prospect</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </label>
+              <label>ช่องทาง
+                <input id="source" placeholder="Line, Website, Referral">
+              </label>
+            </div>
+            <label style="margin-top:10px;">โน้ต
+              <textarea id="notes" placeholder="รายละเอียดลูกค้า"></textarea>
+            </label>
+            <div class="form-actions">
+              <button class="secondary" type="button" id="newCustomer">ล้างฟอร์ม</button>
+              <button class="primary" type="submit">บันทึกลูกค้า</button>
+            </div>
+          </form>
+          <div class="card customer-detail" id="customerDetail">
+            <strong>เลือกลูกค้าเพื่อดูรายละเอียด</strong>
+            <p>ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section class="section">
@@ -597,7 +785,8 @@
   </main>
 
   <script>
-    const DASHBOARD_DATA = <?!= dashboardData ?>;
+    let dashboardData = <?!= dashboardData ?>;
+    let customers = dashboardData.customerModule.customers || [];
 
     const toneMap = {
       blue: '#4aa3ff',
@@ -605,6 +794,12 @@
       amber: '#f9bd55',
       violet: '#a48cff',
       rose: '#ff6f91'
+    };
+
+    const statusLabel = {
+      active: 'Active',
+      prospect: 'Prospect',
+      inactive: 'Inactive'
     };
 
     const icons = {
@@ -670,14 +865,129 @@
       renderList('notifications', data.notifications, 'priority');
 
       document.getElementById('quickActions').innerHTML = data.quickActions.map((item) => `
-        <button class="action" type="button" aria-label="${item.label}">
+        <button class="action" type="button" data-target="${item.target || ''}" aria-label="${item.label}">
           <span class="action-icon">${icons[item.icon] || icons.settings}</span>
           <span>${item.label}</span>
         </button>
       `).join('');
+
+      document.querySelectorAll('.action[data-target="customers"]').forEach((button) => {
+        button.addEventListener('click', () => document.getElementById('customers').scrollIntoView({ behavior: 'smooth' }));
+      });
     }
 
-    renderDashboard(DASHBOARD_DATA);
+    function renderCustomers(rows) {
+      customers = rows || [];
+      setText('customerCount', `${customers.length} ราย`);
+      const list = document.getElementById('customerList');
+      if (!customers.length) {
+        list.innerHTML = '<div class="card empty">ไม่พบลูกค้า</div>';
+        return;
+      }
+
+      list.innerHTML = customers.map((customer) => `
+        <button class="card customer-card" type="button" data-id="${customer.customer_id}">
+          <h3>${customer.customer_name || '-'}</h3>
+          <span class="tag ${customer.status}">${statusLabel[customer.status] || customer.status || '-'}</span>
+          <p>${customer.company_name || '-'} · ${customer.country || '-'} · ${customer.phone || '-'}</p>
+        </button>
+      `).join('');
+
+      document.querySelectorAll('.customer-card').forEach((card) => {
+        card.addEventListener('click', () => selectCustomer(card.dataset.id));
+      });
+    }
+
+    function selectCustomer(customerId) {
+      const customer = customers.find((item) => item.customer_id === customerId);
+      if (!customer) return;
+      fillForm(customer);
+      document.getElementById('customerDetail').innerHTML = `
+        <strong>${customer.customer_name || '-'}</strong>
+        <p>รหัส: ${customer.customer_id}</p>
+        <p>บริษัท: ${customer.company_name || '-'}</p>
+        <p>ติดต่อ: ${customer.phone || '-'} · ${customer.email || '-'}</p>
+        <p>ประเทศ: ${customer.country || '-'} · สถานะ: ${statusLabel[customer.status] || customer.status || '-'}</p>
+        <p>${customer.notes || ''}</p>
+      `;
+    }
+
+    function fillForm(customer) {
+      document.getElementById('formTitle').textContent = customer.customer_id ? 'แก้ไขลูกค้า' : 'เพิ่มลูกค้า';
+      document.getElementById('customerId').value = customer.customer_id || '';
+      document.getElementById('customerName').value = customer.customer_name || '';
+      document.getElementById('companyName').value = customer.company_name || '';
+      document.getElementById('phone').value = customer.phone || '';
+      document.getElementById('email').value = customer.email || '';
+      document.getElementById('country').value = customer.country || '';
+      document.getElementById('customerStatus').value = customer.status || 'prospect';
+      document.getElementById('source').value = customer.source || '';
+      document.getElementById('notes').value = customer.notes || '';
+    }
+
+    function clearForm() {
+      fillForm({ status: 'prospect' });
+      document.getElementById('customerDetail').innerHTML = '<strong>เลือกลูกค้าเพื่อดูรายละเอียด</strong><p>ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>';
+      setText('saveState', 'พร้อม');
+    }
+
+    function collectForm() {
+      return {
+        customer_id: document.getElementById('customerId').value,
+        customer_name: document.getElementById('customerName').value,
+        company_name: document.getElementById('companyName').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        country: document.getElementById('country').value,
+        status: document.getElementById('customerStatus').value,
+        source: document.getElementById('source').value,
+        notes: document.getElementById('notes').value
+      };
+    }
+
+    function loadCustomers() {
+      setText('customerCount', 'กำลังโหลด');
+      google.script.run
+        .withSuccessHandler((response) => {
+          renderCustomers(response.customers || []);
+          updateCustomerStats(response.stats);
+        })
+        .withFailureHandler((error) => {
+          document.getElementById('customerList').innerHTML = `<div class="card empty">${error.message || error}</div>`;
+        })
+        .apiListCustomers({
+          query: document.getElementById('customerSearch').value,
+          status: document.getElementById('statusFilter').value
+        });
+    }
+
+    function updateCustomerStats(stats) {
+      if (!stats) return;
+      dashboardData.businessSummary[0].value = stats.total;
+      dashboardData.businessSummary[0].trend = `${stats.active} active / ${stats.prospect} prospect`;
+      renderDashboard(dashboardData);
+    }
+
+    document.getElementById('customerSearch').addEventListener('input', () => loadCustomers());
+    document.getElementById('statusFilter').addEventListener('change', () => loadCustomers());
+    document.getElementById('newCustomer').addEventListener('click', clearForm);
+    document.getElementById('customerForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      setText('saveState', 'กำลังบันทึก');
+      google.script.run
+        .withSuccessHandler((response) => {
+          setText('saveState', 'บันทึกแล้ว');
+          renderCustomers(response.customers || []);
+          updateCustomerStats(response.stats);
+          fillForm(response.customer || {});
+          selectCustomer((response.customer || {}).customer_id);
+        })
+        .withFailureHandler((error) => setText('saveState', error.message || String(error)))
+        .apiSaveCustomer(collectForm());
+    });
+
+    renderDashboard(dashboardData);
+    renderCustomers(customers);
   </script>
 </body>
 </html>
