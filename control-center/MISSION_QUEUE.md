@@ -16,12 +16,12 @@ Status: Done
 Goal: Thai mobile-first dashboard with mock data and deployed URL.
 
 ## Mission 002: Customer Module MVP
-Status: Blocked on Google authorization
+Status: Done
 Goal: Customer list, detail, create, edit, search, status, and live dashboard customer statistics.
 Data source: Google Sheets through repository layer.
 
 ## Mission 003: Vehicle Module MVP
-Status: Next
+Status: Current
 Goal: Vehicle list, detail, create, edit, search, status, photos/documents metadata, and dashboard vehicle statistics.
 
 ## Mission 004: Invoice Module MVP

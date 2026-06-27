@@ -1,24 +1,25 @@
 # MISSION
 
-Current mission: Customer Module MVP
+Current mission: Vehicle Module MVP
 
-Goal: replace dashboard mock customer data with real customer data from Google Sheets.
+Goal: add the Vehicle Module after Customer Module MVP is complete.
 
 Priority:
 1. Keep the deployed Thai CEO Dashboard working.
-2. Build Customer module first.
-3. Connect customer statistics to the dashboard.
+2. Build Vehicle module after Customer module.
+3. Connect vehicle statistics to the dashboard.
 4. Commit and push before stopping.
 5. Update control-center status files before stopping.
 
-Required customer features:
-- Customer list
-- Customer detail
-- Create customer
-- Edit customer
-- Search customer
-- Customer status
-- Dashboard customer statistics
+Required vehicle features:
+- Vehicle list
+- Vehicle detail
+- Create vehicle
+- Edit vehicle
+- Search vehicle
+- Vehicle status
+- Photos/documents metadata
+- Dashboard vehicle statistics
 
 Data source:
 Google Sheets through repository layer.
@@ -27,9 +28,9 @@ Architecture rules:
 - UI uses service layer.
 - Service layer uses repository layer.
 - Repository handles Google Sheets.
-- Use stable customer_id.
+- Use stable vehicle_id.
 - Use header mapping.
-- Do not use row number as customer ID.
+- Do not use row number as vehicle ID.
 
 Do not start invoice/payment modules yet.
-Do not redesign the dashboard unless needed to show real customer data.
+Do not redesign the dashboard unless needed to show real vehicle data.

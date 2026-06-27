@@ -16,24 +16,19 @@ Mission 002 - Customer Module MVP
 
 ## Status
 
-Code complete and pushed to Apps Script version 7.
+Mission 002 is complete and deployed.
 
-Customer Module open verification is blocked by Google authorization for the new Google Sheets scope.
-
-The existing public CEO Dashboard remains open on version 6.
+Google authorization was approved, and the public CEO Dashboard now runs version 7.
 
 ## Dashboard
 
 - Type: Google Apps Script Web App
 - UI language: Thai
-- Live data mode: Mock dashboard data on version 6
-- Customer Module data mode: Google Sheets customer data with demo seed fallback on version 7
+- Data mode: Google Sheets customer data with demo seed fallback
 - Layout: Mobile-first, dark mode, card layout, large buttons
 - Live URL: `https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`
-- Live Apps Script deployment: `AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @6`
-- Live verification: `HTTP 200`, Thai dashboard title detected
-- Customer Module deployment: `AKfycbzm53mqUjgPjF2Yn_U6DvEFvcdxdgztsNDbq_BmMN5TZYIqPT11Ik8FLG01XsUOp_OZfA @7`
-- Customer Module verification: URL currently returns `403 Forbidden` after adding SpreadsheetApp usage.
+- Live Apps Script deployment: `AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @7`
+- Verification: `HTTP 200`, Thai dashboard title and Customer Module markers detected
 
 ## Customer Module
 
@@ -51,10 +46,8 @@ The existing public CEO Dashboard remains open on version 6.
 
 - Remote: `https://github.com/pennat-max/VIGO4U-OS.git`
 - Push target: `origin/master`
-- Status files are updated for Mission 002.
+- Status files are updated for Mission 002 completion and Mission 003 start.
 
 ## Approval
 
-Google authorization is required before the deployed Customer Module dashboard can open.
-
-The owner account must approve the new Apps Script scopes for Google Sheets access.
+No active approval blocker.

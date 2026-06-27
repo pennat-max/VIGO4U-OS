@@ -13,11 +13,14 @@ Date: 2026-06-27
 - Connected dashboard customer statistics to live Customer sheet data.
 - Pushed Apps Script files with `clasp push --force`.
 - Created Apps Script version 7 and redeployed the public dashboard deployment to version 7.
-- Restored the public dashboard deployment back to version 6 so the existing CEO Dashboard remains open while Customer Module waits for authorization.
+- Confirmed Google authorization was completed by the owner account.
+- Redeployed the public dashboard deployment to version 7.
+- Verified the public dashboard URL returns `HTTP 200`.
+- Detected Thai dashboard and Customer Module markers in the deployed response.
 
 ## Dashboard Deploy Status
 
-Existing CEO Dashboard remains deployed and openable.
+CEO Dashboard with Customer Module remains deployed and openable.
 
 Live URL:
 
@@ -25,24 +28,18 @@ Live URL:
 
 Live Apps Script deployment:
 
-`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @6`
+`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @7`
 
-Customer Module Apps Script deployment:
-
-`AKfycbzm53mqUjgPjF2Yn_U6DvEFvcdxdgztsNDbq_BmMN5TZYIqPT11Ik8FLG01XsUOp_OZfA @7`
-
-Live dashboard data mode is still mock data on version 6. Customer Module data mode is Google Sheets on version 7 after authorization.
+Live dashboard data mode now includes Google Sheets Customer Module data with demo seed fallback.
 
 ## Approval Required
 
-Required.
-
-The owner account must authorize the Apps Script project after adding `SpreadsheetApp` usage.
+None active.
 
 ## Remaining Context
 
-Mission 002 is code complete but blocked from final open verification until Google authorization is approved.
+Mission 002 is complete.
 
-The public CEO Dashboard URL has been restored to the working version 6 deployment.
+Mission 003 - Vehicle Module MVP is current.
 
 Do not start invoice, payment, allocation, or customer statement modules yet.

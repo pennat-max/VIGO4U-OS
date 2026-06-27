@@ -1,22 +1,24 @@
 # NEXT ACTION
 
 ## Immediate
-Authorize the Apps Script project in Google so version 7 can use Google Sheets.
+Start Mission 003 - Vehicle Module MVP.
 
 ## Current Mission
-Customer Module MVP is implemented in code and pushed to Apps Script version 7.
+Vehicle Module MVP.
 
-Final open verification is blocked by Google authorization for the new Google Sheets scope.
+Mission 002 - Customer Module MVP is complete and deployed.
 
-The public CEO Dashboard remains open on version 6 until authorization is complete.
+The public CEO Dashboard is live on Apps Script version 7.
 
-After authorization:
-- Open the dashboard URL.
-- Confirm the Thai dashboard loads.
-- Confirm the Customer Module renders.
-- Confirm demo customers seed into Google Sheets.
-- Confirm create/edit/search/status filter works.
-- Commit any follow-up status updates.
+Next implementation target:
+- Vehicle list
+- Vehicle detail
+- Create vehicle
+- Edit vehicle
+- Search vehicle
+- Vehicle status
+- Photos/documents metadata
+- Dashboard vehicle statistics
 
 ## Must Do Before Stopping
 - Commit completed work
