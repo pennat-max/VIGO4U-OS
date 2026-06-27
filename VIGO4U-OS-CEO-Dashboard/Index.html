@@ -147,6 +147,22 @@
       color: var(--text);
     }
 
+    .role-select {
+      min-height: 38px;
+      max-width: 150px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.74);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .hidden-by-role {
+      display: none !important;
+    }
+
     .dot {
       width: 8px;
       height: 8px;
@@ -739,6 +755,12 @@
         </div>
       </div>
       <div class="top-actions">
+        <select class="role-select" id="roleSelect" data-i18n-aria="roleView" aria-label="Role view">
+          <option value="admin">Admin</option>
+          <option value="finance">Finance</option>
+          <option value="staff">Staff</option>
+          <option value="customer">Customer</option>
+        </select>
         <div class="lang-toggle" aria-label="Language">
           <button class="lang-btn active" type="button" data-lang="th">TH</button>
           <button class="lang-btn" type="button" data-lang="en">EN</button>
@@ -764,7 +786,7 @@
       </article>
     </section>
 
-    <section class="section">
+    <section class="section" id="finance-section">
       <div class="section-title">
         <h2 data-i18n="erpStatusNumbered">2. สถานะ VIGO4U ERP</h2>
         <span data-i18n="mission">ภารกิจ</span>
@@ -1170,6 +1192,9 @@
     let vehicles = dashboardData.vehicleModule.vehicles || [];
     let erp = dashboardData.erpModule || {};
     let currentLang = localStorage.getItem('vigo4u_lang') || 'th';
+    let currentRole = localStorage.getItem('vigo4u_role') || (dashboardData.security && dashboardData.security.role) || 'admin';
+    const demoCustomerId = (customers[0] || {}).customer_id || (dashboardData.security && dashboardData.security.customerId) || '';
+    const demoStaffName = (dashboardData.security && dashboardData.security.staffName) || 'Staff A';
 
     const i18n = {
       th: {
@@ -1268,6 +1293,7 @@
         priority: 'ความสำคัญ',
         quickActionsNumbered: '8. ปุ่มคำสั่งด่วน',
         commands: 'คำสั่ง',
+        roleView: 'มุมมองสิทธิ์',
         ready: 'พร้อม',
         loading: 'กำลังโหลด',
         saving: 'กำลังบันทึก',
@@ -1393,6 +1419,7 @@
         priority: 'Priority',
         quickActionsNumbered: '8. Quick Actions',
         commands: 'Commands',
+        roleView: 'Role view',
         ready: 'Ready',
         loading: 'Loading',
         saving: 'Saving',
@@ -1441,6 +1468,7 @@
       renderCustomers(customers);
       renderVehicles(vehicles);
       renderErp(erp);
+      applyRoleVisibility();
     }
 
     function applyStaticI18n() {
@@ -1493,6 +1521,50 @@
 
     function setText(id, value) {
       document.getElementById(id).textContent = value;
+    }
+
+    function rolePayload(payload = {}) {
+      return Object.assign({}, payload, {
+        role: currentRole,
+        customerId: demoCustomerId,
+        staffName: demoStaffName
+      });
+    }
+
+    function setHidden(selector, hidden) {
+      document.querySelectorAll(selector).forEach((element) => {
+        element.classList.toggle('hidden-by-role', Boolean(hidden));
+      });
+    }
+
+    function applyRoleVisibility() {
+      const role = (currentRole || (dashboardData.security || {}).role || 'admin').toLowerCase();
+      currentRole = role;
+      const roleSelect = document.getElementById('roleSelect');
+      if (roleSelect) roleSelect.value = role;
+
+      setHidden('#finance-section', role === 'staff');
+      setHidden('#invoices, #payments, #statements, #reports', role === 'staff');
+      setHidden('#customers, #vehicles, #workshop, #documents', role === 'finance');
+      setHidden('#workshop, #reports', role === 'customer');
+      setHidden('#customerForm, #vehicleForm, #invoiceForm, #paymentForm, #allocationForm, #workshopForm, #documentForm', role === 'customer');
+    }
+
+    function loadDashboardForRole() {
+      google.script.run
+        .withSuccessHandler((response) => {
+          dashboardData = response || dashboardData;
+          customers = (dashboardData.customerModule || {}).customers || [];
+          vehicles = (dashboardData.vehicleModule || {}).vehicles || [];
+          erp = dashboardData.erpModule || {};
+          renderDashboard(dashboardData);
+          renderCustomers(customers);
+          renderVehicles(vehicles);
+          renderErp(erp);
+          applyRoleVisibility();
+        })
+        .withFailureHandler((error) => alert(error.message || String(error)))
+        .apiGetDashboardData(rolePayload());
     }
 
     function renderList(targetId, rows, tagKey) {
@@ -1588,6 +1660,7 @@
           button.addEventListener('click', () => document.getElementById(target).scrollIntoView({ behavior: 'smooth' }));
         });
       });
+      applyRoleVisibility();
     }
 
     function renderCustomers(rows) {
@@ -1746,10 +1819,10 @@
         .withFailureHandler((error) => {
           document.getElementById('customerList').innerHTML = `<div class="card empty">${error.message || error}</div>`;
         })
-        .apiListCustomers({
+        .apiListCustomers(rolePayload({
           query: document.getElementById('customerSearch').value,
           status: document.getElementById('statusFilter').value
-        });
+        }));
     }
 
     function loadVehicles() {
@@ -1762,10 +1835,10 @@
         .withFailureHandler((error) => {
           document.getElementById('vehicleList').innerHTML = `<div class="card empty">${error.message || error}</div>`;
         })
-        .apiListVehicles({
+        .apiListVehicles(rolePayload({
           query: document.getElementById('vehicleSearch').value,
           status: document.getElementById('vehicleStatusFilter').value
-        });
+        }));
     }
 
     function updateCustomerStats(stats) {
@@ -1868,6 +1941,12 @@
       button.addEventListener('click', () => setLang(button.dataset.lang));
     });
 
+    document.getElementById('roleSelect').addEventListener('change', (event) => {
+      currentRole = event.target.value;
+      localStorage.setItem('vigo4u_role', currentRole);
+      loadDashboardForRole();
+    });
+
     document.getElementById('customerSearch').addEventListener('input', () => loadCustomers());
     document.getElementById('statusFilter').addEventListener('change', () => loadCustomers());
     document.getElementById('newCustomer').addEventListener('click', clearForm);
@@ -1886,7 +1965,7 @@
           selectCustomer((response.customer || {}).customer_id);
         })
         .withFailureHandler((error) => setText('saveState', error.message || String(error)))
-        .apiSaveCustomer(collectForm());
+        .apiSaveCustomer(rolePayload(collectForm()));
     });
 
     document.getElementById('vehicleForm').addEventListener('submit', (event) => {
@@ -1901,7 +1980,7 @@
           selectVehicle((response.vehicle || {}).vehicle_id);
         })
         .withFailureHandler((error) => setText('vehicleSaveState', error.message || String(error)))
-        .apiSaveVehicle(collectVehicleForm());
+        .apiSaveVehicle(rolePayload(collectVehicleForm()));
     });
 
     document.getElementById('fillInvoiceDemo').addEventListener('click', () => {
@@ -1916,12 +1995,12 @@
       google.script.run
         .withSuccessHandler(updateErpFromResponse)
         .withFailureHandler((error) => alert(error.message || String(error)))
-        .apiSaveInvoice({
+        .apiSaveInvoice(rolePayload({
           customer_id: document.getElementById('invoiceCustomerId').value,
           vehicle_ids: document.getElementById('invoiceVehicleIds').value,
           amount: document.getElementById('invoiceAmount').value,
           status: document.getElementById('invoiceStatus').value
-        });
+        }));
     });
 
     document.getElementById('fillPaymentDemo').addEventListener('click', () => {
@@ -1935,11 +2014,11 @@
       google.script.run
         .withSuccessHandler(updateErpFromResponse)
         .withFailureHandler((error) => alert(error.message || String(error)))
-        .apiSavePayment({
+        .apiSavePayment(rolePayload({
           customer_id: document.getElementById('paymentCustomerId').value,
           amount: document.getElementById('paymentAmount').value,
           method: document.getElementById('paymentMethod').value
-        });
+        }));
     });
 
     document.getElementById('fillAllocationDemo').addEventListener('click', () => {
@@ -1953,11 +2032,11 @@
       google.script.run
         .withSuccessHandler(updateErpFromResponse)
         .withFailureHandler((error) => alert(error.message || String(error)))
-        .apiSaveAllocation({
+        .apiSaveAllocation(rolePayload({
           payment_id: document.getElementById('allocationPaymentId').value,
           invoice_id: document.getElementById('allocationInvoiceId').value,
           amount: document.getElementById('allocationAmount').value
-        });
+        }));
     });
 
     document.getElementById('fillWorkshopDemo').addEventListener('click', () => {
@@ -1975,22 +2054,23 @@
           google.script.run
             .withSuccessHandler(updateErpFromResponse)
             .withFailureHandler((error) => alert(error.message || String(error)))
-            .apiSaveWorkshopCost({
+            .apiSaveWorkshopCost(rolePayload({
               work_order_id: (workOrderResponse.workOrder || {}).work_order_id,
               vehicle_id: vehicleId,
               cost_type: 'General',
               amount: document.getElementById('workshopCostAmount').value,
               status: document.getElementById('workshopCostStatus').value,
-              requested_by: 'Staff'
-            });
+              requested_by: demoStaffName,
+              approved_by: document.getElementById('workshopCostStatus').value === 'approved' ? 'Tony' : ''
+            }));
         })
         .withFailureHandler((error) => alert(error.message || String(error)))
-        .apiSaveWorkOrder({
+        .apiSaveWorkOrder(rolePayload({
           vehicle_id: vehicleId,
-          assigned_to: 'Staff',
+          assigned_to: demoStaffName,
           status: 'open',
           task: document.getElementById('workshopTask').value
-        });
+        }));
     });
 
     document.getElementById('fillDocumentDemo').addEventListener('click', () => {
@@ -2006,16 +2086,19 @@
       google.script.run
         .withSuccessHandler(updateErpFromResponse)
         .withFailureHandler((error) => alert(error.message || String(error)))
-        .apiSaveDocument({
+        .apiSaveDocument(rolePayload({
           entity_type: document.getElementById('documentEntityType').value,
           entity_id: document.getElementById('documentEntityId').value,
           file_name: document.getElementById('documentFileName').value,
           drive_url: document.getElementById('documentDriveUrl').value,
           visibility: document.getElementById('documentVisibility').value
-        });
+        }));
     });
 
     setLang(currentLang);
+    if (currentRole !== ((dashboardData.security || {}).role || 'admin')) {
+      loadDashboardForRole();
+    }
   </script>
 </body>
 </html>

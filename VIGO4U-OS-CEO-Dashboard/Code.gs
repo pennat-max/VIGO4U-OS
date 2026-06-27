@@ -12,7 +12,8 @@ const SHEETS = {
   allocations: 'PaymentAllocations',
   workOrders: 'WorkOrders',
   workshopCosts: 'WorkshopCosts',
-  documents: 'Documents'
+  documents: 'Documents',
+  auditLog: 'AuditLog'
 };
 
 const CUSTOMER_HEADERS = [
@@ -141,9 +142,26 @@ const DOCUMENT_HEADERS = [
   'updated_at'
 ];
 
-function doGet() {
+const AUDIT_LOG_HEADERS = [
+  'audit_id',
+  'timestamp',
+  'user',
+  'role',
+  'action',
+  'entity_type',
+  'entity_id',
+  'before_summary',
+  'after_summary',
+  'metadata'
+];
+
+const APP_MODE = 'PRODUCTION_HARDENING_DEMO';
+const ROLE_KEYS = ['admin', 'finance', 'staff', 'customer'];
+const FINANCIAL_ACTIONS = ['save_invoice', 'save_payment', 'save_allocation', 'get_statement', 'get_reports'];
+
+function doGet(e) {
   const template = HtmlService.createTemplateFromFile('Index');
-  template.dashboardData = JSON.stringify(getDashboardData());
+  template.dashboardData = JSON.stringify(getDashboardData(requestContext_(e && e.parameter ? e.parameter : {})));
 
   return template
     .evaluate()
@@ -152,10 +170,11 @@ function doGet() {
     .addMetaTag('viewport', 'width=device-width, initial-scale=1, viewport-fit=cover');
 }
 
-function getDashboardData() {
+function getDashboardData(request) {
   setup();
   seedDemoData();
 
+  const context = requestContext_(request || {});
   const now = new Date();
   const customers = customerServiceList_({});
   const customerStats = customerServiceStats_(customers);
@@ -174,8 +193,18 @@ function getDashboardData() {
   const workshopStats = workshopServiceStats_(workOrders, workshopCosts);
   const documentStats = documentServiceStats_(documents);
   const reportSummary = reportServiceSummary_();
+  const productionGate = productionGateSummary_();
 
-  return {
+  const dashboard = {
+    mode: APP_MODE,
+    security: {
+      role: context.role,
+      user: context.user,
+      customerId: context.customerId,
+      staffName: context.staffName,
+      permissions: permissionsForRole_(context.role),
+      productionGate
+    },
     user: {
       name: 'Tony',
       greeting: 'สวัสดีตอนเช้า',
@@ -218,6 +247,7 @@ function getDashboardData() {
       documents,
       statements: statementServiceList_(),
       reports: reportSummary,
+      productionGate,
       stats: {
         invoices: invoiceStats,
         payments: paymentStats,
@@ -255,30 +285,50 @@ function getDashboardData() {
       { label: 'ตั้งค่า', icon: 'settings', target: 'settings' }
     ]
   };
+
+  dashboard.companyStatus.currentMission = 'Production Hardening Gate 001';
+  dashboard.companyStatus.currentTask = 'Role enforcement, audit log, validation, demo governance';
+  dashboard.aiStatus.activity = 'Production Hardening Gate: role filtering, audit logging, data validation, document governance, QA checklist';
+  dashboard.blockers = [
+    { title: 'Real Google identity mapping', detail: 'Role gates are implemented, but production must map signed-in Google users to approved roles before public use.', status: 'Open' },
+    { title: 'Real Drive upload path', detail: 'Document metadata and Drive URL are validated in Sheets; binary upload still requires a Drive picker/upload authorization pass.', status: 'Open' }
+  ];
+  dashboard.todayTasks = [
+    { title: 'Verify role views: Admin, Finance, Staff, Customer', status: 'Gate' },
+    { title: 'Verify audit rows after create/update actions', status: 'Gate' },
+    { title: 'Verify negative amount and invalid allocation rejection', status: 'Gate' }
+  ];
+
+  return sanitizeDashboardForRole_(dashboard, context);
 }
 
-function apiGetDashboardData() {
-  return getDashboardData();
+function apiGetDashboardData(request) {
+  return getDashboardData(request || {});
 }
 
 function apiListCustomers(request) {
+  const context = requestContext_(request || {});
+  const customers = sanitizeCustomersForRole_(customerServiceList_(request || {}), context);
   return {
     ok: true,
-    customers: customerServiceList_(request || {}),
-    stats: customerServiceStats_(customerServiceList_({}))
+    customers,
+    stats: customerServiceStats_(customers)
   };
 }
 
-function apiGetCustomer(customerId) {
+function apiGetCustomer(customerId, request) {
+  const context = requestContext_(request || {});
   const customer = customerServiceGet_(customerId);
+  const safeCustomer = sanitizeCustomersForRole_(customer ? [customer] : [], context)[0] || null;
   return {
-    ok: Boolean(customer),
-    customer,
-    message: customer ? '' : 'ไม่พบลูกค้า'
+    ok: Boolean(safeCustomer),
+    customer: safeCustomer,
+    message: safeCustomer ? '' : 'ไม่พบลูกค้า'
   };
 }
 
 function apiSaveCustomer(payload) {
+  assertRoleCan_(requestContext_(payload || {}), 'save_customer');
   return {
     ok: true,
     customer: customerServiceSave_(payload || {}),
@@ -288,23 +338,28 @@ function apiSaveCustomer(payload) {
 }
 
 function apiListVehicles(request) {
+  const context = requestContext_(request || {});
+  const vehicles = sanitizeVehiclesForRole_(vehicleServiceList_(request || {}), context);
   return {
     ok: true,
-    vehicles: vehicleServiceList_(request || {}),
-    stats: vehicleServiceStats_(vehicleServiceList_({}))
+    vehicles,
+    stats: vehicleServiceStats_(vehicles)
   };
 }
 
-function apiGetVehicle(vehicleId) {
+function apiGetVehicle(vehicleId, request) {
+  const context = requestContext_(request || {});
   const vehicle = vehicleServiceGet_(vehicleId);
+  const safeVehicle = sanitizeVehiclesForRole_(vehicle ? [vehicle] : [], context)[0] || null;
   return {
-    ok: Boolean(vehicle),
-    vehicle,
-    message: vehicle ? '' : 'ไม่พบรถ'
+    ok: Boolean(safeVehicle),
+    vehicle: safeVehicle,
+    message: safeVehicle ? '' : 'ไม่พบรถ'
   };
 }
 
 function apiSaveVehicle(payload) {
+  assertRoleCan_(requestContext_(payload || {}), 'save_vehicle');
   return {
     ok: true,
     vehicle: vehicleServiceSave_(payload || {}),
@@ -313,8 +368,9 @@ function apiSaveVehicle(payload) {
   };
 }
 
-function apiGetERPData() {
-  return {
+function apiGetERPData(request) {
+  const context = requestContext_(request || {});
+  const data = {
     ok: true,
     invoices: invoiceServiceList_({}),
     invoiceItems: invoiceItemRepository_().list(),
@@ -326,33 +382,38 @@ function apiGetERPData() {
     documents: documentServiceList_({}),
     reports: reportServiceSummary_()
   };
+  return sanitizeErpDataForRole_(data, context);
 }
 
 function apiSaveInvoice(payload) {
+  assertRoleCan_(requestContext_(payload || {}), 'save_invoice');
   return {
     ok: true,
     invoice: invoiceServiceSave_(payload || {}),
-    data: apiGetERPData()
+    data: apiGetERPData(payload || {})
   };
 }
 
 function apiSavePayment(payload) {
+  assertRoleCan_(requestContext_(payload || {}), 'save_payment');
   return {
     ok: true,
     payment: paymentServiceSave_(payload || {}),
-    data: apiGetERPData()
+    data: apiGetERPData(payload || {})
   };
 }
 
 function apiSaveAllocation(payload) {
+  assertRoleCan_(requestContext_(payload || {}), 'save_allocation');
   return {
     ok: true,
     allocation: allocationServiceSave_(payload || {}),
-    data: apiGetERPData()
+    data: apiGetERPData(payload || {})
   };
 }
 
 function apiSaveWorkOrder(payload) {
+  assertRoleCan_(requestContext_(payload || {}), 'save_work_order');
   return {
     ok: true,
     workOrder: workOrderServiceSave_(payload || {}),
@@ -361,18 +422,35 @@ function apiSaveWorkOrder(payload) {
 }
 
 function apiSaveWorkshopCost(payload) {
+  const context = requestContext_(payload || {});
+  assertRoleCan_(context, 'save_workshop_cost');
+  if (context.role === 'staff' && String((payload || {}).status || 'pending') === 'approved') {
+    throw new Error('Staff role cannot approve workshop costs.');
+  }
   return {
     ok: true,
     workshopCost: workshopCostServiceSave_(payload || {}),
-    data: apiGetERPData()
+    data: apiGetERPData(payload || {})
   };
 }
 
 function apiSaveDocument(payload) {
+  assertRoleCan_(requestContext_(payload || {}), 'save_document');
   return {
     ok: true,
     document: documentServiceSave_(payload || {}),
-    data: apiGetERPData()
+    data: apiGetERPData(payload || {})
+  };
+}
+
+function apiRunProductionHardeningGate(request) {
+  const context = requestContext_(request || {});
+  return {
+    ok: true,
+    context,
+    gate: productionGateSummary_(),
+    staffView: sanitizeErpDataForRole_(apiGetERPData({ role: 'admin' }), { role: 'staff', user: 'Staff A', staffName: 'Staff A', customerId: '' }),
+    customerView: sanitizeErpDataForRole_(apiGetERPData({ role: 'admin' }), { role: 'customer', user: 'customer@example.com', staffName: '', customerId: firstCustomerId_() })
   };
 }
 
@@ -387,11 +465,12 @@ function setup() {
   ensureSheet_(spreadsheet, SHEETS.workOrders, WORK_ORDER_HEADERS);
   ensureSheet_(spreadsheet, SHEETS.workshopCosts, WORKSHOP_COST_HEADERS);
   ensureSheet_(spreadsheet, SHEETS.documents, DOCUMENT_HEADERS);
+  ensureSheet_(spreadsheet, SHEETS.auditLog, AUDIT_LOG_HEADERS);
 
   PropertiesService.getScriptProperties().setProperties({
     APP_TITLE,
-    DASHBOARD_MODE: 'SHEETS_FULL_ERP_MVP',
-    CURRENT_MISSION: 'Mission 011 - QA and Deployment',
+    DASHBOARD_MODE: APP_MODE,
+    CURRENT_MISSION: 'Production Hardening Gate 001',
     LAST_SETUP_AT: new Date().toISOString()
   });
 
@@ -743,6 +822,7 @@ function customerServiceGet_(customerId) {
 
 function customerServiceSave_(payload) {
   setup();
+  const before = payload.customer_id ? customerRepository_().get(payload.customer_id) : null;
   const customer = {
     customer_id: String(payload.customer_id || '').trim(),
     customer_name: String(payload.customer_name || '').trim(),
@@ -763,7 +843,9 @@ function customerServiceSave_(payload) {
     customer.status = 'prospect';
   }
 
-  return customerRepository_().save(customer);
+  const saved = customerRepository_().save(customer);
+  auditLogServiceLog_('save_customer', 'customer', saved.customer_id, before, saved, requestContext_(payload));
+  return saved;
 }
 
 function customerServiceStats_(customers) {
@@ -821,6 +903,7 @@ function vehicleServiceGet_(vehicleId) {
 
 function vehicleServiceSave_(payload) {
   setup();
+  const before = payload.vehicle_id ? vehicleRepository_().get(payload.vehicle_id) : null;
   const vehicle = {
     vehicle_id: String(payload.vehicle_id || '').trim(),
     customer_id: String(payload.customer_id || '').trim(),
@@ -845,7 +928,9 @@ function vehicleServiceSave_(payload) {
     vehicle.status = 'available';
   }
 
-  return vehicleRepository_().save(vehicle);
+  const saved = vehicleRepository_().save(vehicle);
+  auditLogServiceLog_('save_vehicle', 'vehicle', saved.vehicle_id, before, saved, requestContext_(payload));
+  return saved;
 }
 
 function vehicleServiceStats_(vehicles) {
@@ -893,7 +978,8 @@ function invoiceServiceList_(request) {
 function invoiceServiceSave_(payload) {
   setup();
   const repo = invoiceRepository_();
-  const invoice = repo.save({
+  const items = Array.isArray(payload.items) ? payload.items : parseInvoiceItems_(payload);
+  const invoiceInput = {
     invoice_id: String(payload.invoice_id || '').trim(),
     customer_id: String(payload.customer_id || '').trim(),
     invoice_no: String(payload.invoice_no || createInvoiceNo_()).trim(),
@@ -905,13 +991,16 @@ function invoiceServiceSave_(payload) {
     paid_amount: 0,
     balance_amount: 0,
     notes: String(payload.notes || '').trim()
-  });
+  };
 
-  if (['draft', 'issued', 'partial', 'paid', 'overdue', 'void'].indexOf(invoice.status) === -1) {
-    invoice.status = 'draft';
+  if (['draft', 'issued', 'partial', 'paid', 'overdue', 'void'].indexOf(invoiceInput.status) === -1) {
+    invoiceInput.status = 'draft';
   }
 
-  const items = Array.isArray(payload.items) ? payload.items : parseInvoiceItems_(payload);
+  validateInvoicePayload_(invoiceInput, items);
+  const before = invoiceInput.invoice_id ? repo.get(invoiceInput.invoice_id) : null;
+  const invoice = repo.save(invoiceInput);
+
   if (items.length > 0) {
     const itemRepo = invoiceItemRepository_();
     itemRepo.list()
@@ -934,7 +1023,9 @@ function invoiceServiceSave_(payload) {
     });
   }
 
-  return recalculateFinancials_().invoices.find((item) => item.invoice_id === invoice.invoice_id) || invoice;
+  const saved = recalculateFinancials_().invoices.find((item) => item.invoice_id === invoice.invoice_id) || invoice;
+  auditLogServiceLog_('save_invoice', 'invoice', saved.invoice_id, before, saved, requestContext_(payload));
+  return saved;
 }
 
 function parseInvoiceItems_(payload) {
@@ -980,7 +1071,7 @@ function paymentServiceList_(request) {
 
 function paymentServiceSave_(payload) {
   setup();
-  const payment = paymentRepository_().save({
+  const paymentInput = {
     payment_id: String(payload.payment_id || '').trim(),
     customer_id: String(payload.customer_id || '').trim(),
     payment_date: String(payload.payment_date || Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd')).trim(),
@@ -991,8 +1082,24 @@ function paymentServiceSave_(payload) {
     credit_amount: toNumber_(payload.credit_amount),
     status: String(payload.status || 'received').trim(),
     notes: String(payload.notes || '').trim()
+  };
+  validatePaymentPayload_(paymentInput);
+  const before = paymentInput.payment_id ? paymentRepository_().get(paymentInput.payment_id) : null;
+  const payment = paymentRepository_().save({
+    payment_id: paymentInput.payment_id,
+    customer_id: paymentInput.customer_id,
+    payment_date: paymentInput.payment_date,
+    method: paymentInput.method,
+    currency: paymentInput.currency,
+    amount: paymentInput.amount,
+    allocated_amount: paymentInput.allocated_amount,
+    credit_amount: paymentInput.credit_amount,
+    status: paymentInput.status,
+    notes: paymentInput.notes
   });
-  return recalculateFinancials_().payments.find((item) => item.payment_id === payment.payment_id) || payment;
+  const saved = recalculateFinancials_().payments.find((item) => item.payment_id === payment.payment_id) || payment;
+  auditLogServiceLog_('save_payment', 'payment', saved.payment_id, before, saved, requestContext_(payload));
+  return saved;
 }
 
 function paymentServiceStats_(payments) {
@@ -1012,7 +1119,7 @@ function allocationServiceList_() {
 
 function allocationServiceSave_(payload) {
   setup();
-  const allocation = allocationRepository_().save({
+  const allocationInput = {
     allocation_id: String(payload.allocation_id || '').trim(),
     payment_id: String(payload.payment_id || '').trim(),
     invoice_id: String(payload.invoice_id || '').trim(),
@@ -1020,8 +1127,20 @@ function allocationServiceSave_(payload) {
     vehicle_id: String(payload.vehicle_id || '').trim(),
     amount: toNumber_(payload.amount),
     notes: String(payload.notes || '').trim()
+  };
+  validateAllocationPayload_(allocationInput);
+  const before = allocationInput.allocation_id ? allocationRepository_().get(allocationInput.allocation_id) : null;
+  const allocation = allocationRepository_().save({
+    allocation_id: allocationInput.allocation_id,
+    payment_id: allocationInput.payment_id,
+    invoice_id: allocationInput.invoice_id,
+    invoice_item_id: allocationInput.invoice_item_id,
+    vehicle_id: allocationInput.vehicle_id,
+    amount: allocationInput.amount,
+    notes: allocationInput.notes
   });
   recalculateFinancials_();
+  auditLogServiceLog_('save_allocation', 'allocation', allocation.allocation_id, before, allocation, requestContext_(payload));
   return allocation;
 }
 
@@ -1054,14 +1173,19 @@ function workOrderServiceList_() {
 
 function workOrderServiceSave_(payload) {
   setup();
-  return workOrderRepository_().save({
+  const workOrder = {
     work_order_id: String(payload.work_order_id || '').trim(),
     vehicle_id: String(payload.vehicle_id || '').trim(),
     assigned_to: String(payload.assigned_to || '').trim(),
     status: String(payload.status || 'open').trim(),
     task: String(payload.task || '').trim(),
     notes: String(payload.notes || '').trim()
-  });
+  };
+  validateWorkOrderPayload_(workOrder);
+  const before = workOrder.work_order_id ? workOrderRepository_().get(workOrder.work_order_id) : null;
+  const saved = workOrderRepository_().save(workOrder);
+  auditLogServiceLog_('save_work_order', 'work_order', saved.work_order_id, before, saved, requestContext_(payload));
+  return saved;
 }
 
 function workshopCostServiceList_() {
@@ -1071,7 +1195,7 @@ function workshopCostServiceList_() {
 
 function workshopCostServiceSave_(payload) {
   setup();
-  return workshopCostRepository_().save({
+  const cost = {
     cost_id: String(payload.cost_id || '').trim(),
     work_order_id: String(payload.work_order_id || '').trim(),
     vehicle_id: String(payload.vehicle_id || '').trim(),
@@ -1081,7 +1205,12 @@ function workshopCostServiceSave_(payload) {
     requested_by: String(payload.requested_by || '').trim(),
     approved_by: String(payload.approved_by || '').trim(),
     notes: String(payload.notes || '').trim()
-  });
+  };
+  validateWorkshopCostPayload_(cost);
+  const before = cost.cost_id ? workshopCostRepository_().get(cost.cost_id) : null;
+  const saved = workshopCostRepository_().save(cost);
+  auditLogServiceLog_('save_workshop_cost', 'workshop_cost', saved.cost_id, before, saved, requestContext_(payload));
+  return saved;
 }
 
 function workshopServiceStats_(workOrders, costs) {
@@ -1101,7 +1230,7 @@ function documentServiceList_() {
 
 function documentServiceSave_(payload) {
   setup();
-  return documentRepository_().save({
+  const document = {
     document_id: String(payload.document_id || '').trim(),
     entity_type: String(payload.entity_type || '').trim(),
     entity_id: String(payload.entity_id || '').trim(),
@@ -1110,7 +1239,12 @@ function documentServiceSave_(payload) {
     drive_url: String(payload.drive_url || '').trim(),
     visibility: String(payload.visibility || 'internal').trim(),
     notes: String(payload.notes || '').trim()
-  });
+  };
+  validateDocumentPayload_(document);
+  const before = document.document_id ? documentRepository_().get(document.document_id) : null;
+  const saved = documentRepository_().save(document);
+  auditLogServiceLog_('save_document', 'document', saved.document_id, before, saved, requestContext_(payload));
+  return saved;
 }
 
 function documentServiceStats_(documents) {
@@ -1296,6 +1430,10 @@ function documentRepository_() {
   return sheetRepository_(SHEETS.documents, DOCUMENT_HEADERS, 'document_id', 'DOC');
 }
 
+function auditLogRepository_() {
+  return sheetRepository_(SHEETS.auditLog, AUDIT_LOG_HEADERS, 'audit_id', 'AUDIT');
+}
+
 function sheetRepository_(sheetName, headers, idField, prefix) {
   const sheet = ensureSheet_(ensureSpreadsheet_(), sheetName, headers);
 
@@ -1435,4 +1573,317 @@ function normalizeSearch_(value) {
 
 function formatDashboardTime_(date) {
   return Utilities.formatDate(date, Session.getScriptTimeZone(), 'MMM d, yyyy HH:mm');
+}
+
+function requestContext_(input) {
+  const payload = input || {};
+  const email = safeActiveUserEmail_();
+  const role = normalizeRole_(payload.role || payload.userRole || (payload.security || {}).role || 'admin');
+  return {
+    role,
+    user: String(payload.user || payload.email || email || role).trim(),
+    customerId: String(payload.customer_id || payload.customerId || '').trim(),
+    staffName: String(payload.staff_name || payload.staffName || payload.assigned_to || '').trim()
+  };
+}
+
+function safeActiveUserEmail_() {
+  try {
+    return Session.getActiveUser().getEmail() || '';
+  } catch (error) {
+    return '';
+  }
+}
+
+function normalizeRole_(role) {
+  const normalized = String(role || 'admin').trim().toLowerCase();
+  return ROLE_KEYS.indexOf(normalized) === -1 ? 'admin' : normalized;
+}
+
+function permissionsForRole_(role) {
+  const normalized = normalizeRole_(role);
+  return {
+    canViewAll: normalized === 'admin',
+    canViewFinance: normalized === 'admin' || normalized === 'finance',
+    canEditFinance: normalized === 'admin' || normalized === 'finance',
+    canViewProfit: normalized === 'admin',
+    canViewStatements: normalized === 'admin' || normalized === 'finance' || normalized === 'customer',
+    canViewWorkshop: normalized === 'admin' || normalized === 'staff',
+    canSubmitWorkshopCost: normalized === 'admin' || normalized === 'staff',
+    canApproveWorkshopCost: normalized === 'admin',
+    canViewOwnCustomerData: normalized === 'customer',
+    canViewDocumentMetadata: normalized !== 'finance'
+  };
+}
+
+function assertRoleCan_(context, action) {
+  const role = normalizeRole_(context.role);
+  const permissions = permissionsForRole_(role);
+  if (role === 'staff' && FINANCIAL_ACTIONS.indexOf(action) !== -1) {
+    throw new Error('Staff role cannot access financial workflows.');
+  }
+  if (role === 'customer' && action !== 'get_statement') {
+    throw new Error('Customer role can only access own customer-facing records.');
+  }
+  if (['save_invoice', 'save_payment', 'save_allocation'].indexOf(action) !== -1 && !permissions.canEditFinance) {
+    throw new Error('This role cannot edit financial records.');
+  }
+  if (['save_customer', 'save_vehicle'].indexOf(action) !== -1 && role !== 'admin') {
+    throw new Error('Only admin can edit customer and vehicle master records.');
+  }
+  if (action === 'save_workshop_cost' && !permissions.canSubmitWorkshopCost) {
+    throw new Error('This role cannot submit workshop costs.');
+  }
+  if (action === 'save_work_order' && role !== 'admin' && role !== 'staff') {
+    throw new Error('This role cannot edit workshop work orders.');
+  }
+  if (action === 'save_document' && role !== 'admin' && role !== 'staff') {
+    throw new Error('This role cannot edit document metadata.');
+  }
+}
+
+function sanitizeCustomersForRole_(customers, context) {
+  const role = normalizeRole_(context.role);
+  if (role === 'admin') return customers;
+  if (role === 'customer') {
+    return customers.filter((customer) => customer.customer_id === context.customerId);
+  }
+  return [];
+}
+
+function sanitizeVehiclesForRole_(vehicles, context) {
+  const role = normalizeRole_(context.role);
+  if (role === 'finance') return [];
+  if (role === 'customer') {
+    return vehicles.filter((vehicle) => vehicle.customer_id === context.customerId);
+  }
+  return vehicles;
+}
+
+function sanitizeDashboardForRole_(dashboard, context) {
+  const role = normalizeRole_(context.role);
+  const safe = JSON.parse(JSON.stringify(dashboard));
+  safe.erpModule = sanitizeErpDataForRole_(safe.erpModule || {}, context);
+
+  if (role === 'finance') {
+    safe.customerModule.customers = [];
+    safe.vehicleModule.vehicles = [];
+    safe.quickActions = safe.quickActions.filter((action) => ['invoices', 'payments', 'reports'].indexOf(action.target) !== -1);
+  }
+
+  if (role === 'staff') {
+    safe.financeSummary = [];
+    safe.businessSummary = safe.businessSummary.filter((item) => ['Payments', 'รับเงิน', 'การชำระเงิน', 'ใบแจ้งหนี้'].indexOf(item.label) === -1);
+    safe.customerModule.customers = [];
+    safe.quickActions = safe.quickActions.filter((action) => ['vehicles', 'workshop', 'settings'].indexOf(action.target) !== -1);
+  }
+
+  if (role === 'customer') {
+    const customerId = context.customerId;
+    safe.customerModule.customers = safe.customerModule.customers.filter((customer) => customer.customer_id === customerId);
+    safe.vehicleModule.vehicles = safe.vehicleModule.vehicles.filter((vehicle) => vehicle.customer_id === customerId);
+    safe.financeSummary = [{
+      label: 'Balance',
+      value: formatMoney_(((safe.erpModule.statements || [])[0] || {}).balance || 0),
+      note: 'Own customer balance only'
+    }];
+    safe.quickActions = safe.quickActions.filter((action) => ['vehicles', 'invoices', 'payments'].indexOf(action.target) !== -1);
+  }
+
+  return safe;
+}
+
+function sanitizeErpDataForRole_(data, context) {
+  const role = normalizeRole_(context.role);
+  const safe = JSON.parse(JSON.stringify(data || {}));
+  const customerId = String(context.customerId || '').trim();
+  const staffName = String(context.staffName || '').trim();
+
+  if (role === 'admin') return safe;
+
+  if (role === 'finance') {
+    safe.workOrders = [];
+    safe.workshopCosts = [];
+    safe.documents = [];
+    return safe;
+  }
+
+  if (role === 'staff') {
+    const workOrders = (safe.workOrders || []).filter((order) => !staffName || order.assigned_to === staffName);
+    const workOrderIds = workOrders.map((order) => order.work_order_id);
+    safe.invoices = [];
+    safe.invoiceItems = [];
+    safe.payments = [];
+    safe.allocations = [];
+    safe.statements = [];
+    safe.reports = {};
+    safe.workOrders = workOrders;
+    safe.workshopCosts = (safe.workshopCosts || []).filter((cost) => workOrderIds.indexOf(cost.work_order_id) !== -1);
+    safe.documents = (safe.documents || []).filter((doc) => ['internal', 'staff'].indexOf(doc.visibility) !== -1);
+    return safe;
+  }
+
+  if (role === 'customer') {
+    const invoices = (safe.invoices || []).filter((invoice) => invoice.customer_id === customerId);
+    const invoiceIds = invoices.map((invoice) => invoice.invoice_id);
+    const payments = (safe.payments || []).filter((payment) => payment.customer_id === customerId);
+    const paymentIds = payments.map((payment) => payment.payment_id);
+    const vehicleIds = (safe.invoiceItems || [])
+      .filter((item) => invoiceIds.indexOf(item.invoice_id) !== -1)
+      .map((item) => item.vehicle_id);
+    safe.invoices = invoices;
+    safe.invoiceItems = (safe.invoiceItems || []).filter((item) => invoiceIds.indexOf(item.invoice_id) !== -1);
+    safe.payments = payments;
+    safe.allocations = (safe.allocations || []).filter((allocation) => invoiceIds.indexOf(allocation.invoice_id) !== -1 || paymentIds.indexOf(allocation.payment_id) !== -1);
+    safe.statements = (safe.statements || []).filter((statement) => statement.customer_id === customerId);
+    safe.workOrders = [];
+    safe.workshopCosts = [];
+    safe.documents = (safe.documents || []).filter((doc) => {
+      if (doc.visibility !== 'customer') return false;
+      if (doc.entity_type === 'customer') return doc.entity_id === customerId;
+      if (doc.entity_type === 'invoice') return invoiceIds.indexOf(doc.entity_id) !== -1;
+      if (doc.entity_type === 'vehicle') return vehicleIds.indexOf(doc.entity_id) !== -1;
+      return false;
+    });
+    safe.reports = {};
+  }
+
+  return safe;
+}
+
+function validateInvoicePayload_(invoice, items) {
+  if (!invoice.customer_id) throw new Error('Invoice requires customer_id.');
+  if (!customerRepository_().get(invoice.customer_id)) throw new Error('Invoice customer_id does not exist.');
+  if (!Array.isArray(items) || items.length === 0) throw new Error('Invoice requires at least one item or vehicle.');
+  items.forEach((item) => {
+    const qty = toNumber_(item.qty || 1);
+    const unitPrice = toNumber_(item.unit_price || item.unitPrice || item.line_total || item.amount || 0);
+    if (qty <= 0) throw new Error('Invoice item quantity must be greater than zero.');
+    if (unitPrice < 0) throw new Error('Invoice item amount cannot be negative.');
+  });
+}
+
+function validatePaymentPayload_(payment) {
+  if (!payment.customer_id) throw new Error('Payment requires customer_id.');
+  if (!customerRepository_().get(payment.customer_id)) throw new Error('Payment customer_id does not exist.');
+  if (payment.amount <= 0) throw new Error('Payment amount must be greater than zero.');
+}
+
+function validateAllocationPayload_(allocation) {
+  if (!allocation.payment_id) throw new Error('Allocation requires payment_id.');
+  if (!allocation.invoice_id) throw new Error('Allocation requires invoice_id.');
+  if (allocation.amount <= 0) throw new Error('Allocation amount must be greater than zero.');
+
+  const payment = paymentRepository_().get(allocation.payment_id);
+  const invoice = invoiceRepository_().get(allocation.invoice_id);
+  if (!payment) throw new Error('Allocation payment_id does not exist.');
+  if (!invoice) throw new Error('Allocation invoice_id does not exist.');
+  if (payment.customer_id !== invoice.customer_id) throw new Error('Payment and invoice must belong to the same customer.');
+
+  const existing = allocationRepository_().get(allocation.allocation_id) || {};
+  const otherAllocations = allocationRepository_().list().filter((item) => item.allocation_id !== allocation.allocation_id);
+  const paymentAllocated = sum_(otherAllocations.filter((item) => item.payment_id === allocation.payment_id), 'amount');
+  const invoiceAllocated = sum_(otherAllocations.filter((item) => item.invoice_id === allocation.invoice_id), 'amount');
+  const invoiceSubtotal = sum_(invoiceItemRepository_().list().filter((item) => item.invoice_id === allocation.invoice_id), 'line_total');
+  const paymentRemaining = toNumber_(payment.amount) - paymentAllocated;
+  const invoiceRemaining = invoiceSubtotal - invoiceAllocated;
+
+  if (allocation.amount > paymentRemaining) throw new Error('Allocation exceeds remaining payment amount.');
+  if (allocation.amount > invoiceRemaining) throw new Error('Allocation exceeds remaining invoice balance.');
+  if (existing.payment_id && existing.payment_id !== allocation.payment_id) throw new Error('Existing allocation payment_id cannot be changed.');
+}
+
+function validateWorkOrderPayload_(workOrder) {
+  if (!workOrder.vehicle_id) throw new Error('Work order requires vehicle_id.');
+  if (!vehicleRepository_().get(workOrder.vehicle_id)) throw new Error('Work order vehicle_id does not exist.');
+  if (!workOrder.task) throw new Error('Work order requires task.');
+  if (['open', 'in_progress', 'done', 'cancelled'].indexOf(workOrder.status) === -1) {
+    throw new Error('Invalid work order status.');
+  }
+}
+
+function validateWorkshopCostPayload_(cost) {
+  if (!cost.work_order_id) throw new Error('Workshop cost requires work_order_id.');
+  if (!cost.vehicle_id) throw new Error('Workshop cost requires vehicle_id.');
+  if (!workOrderRepository_().get(cost.work_order_id)) throw new Error('Workshop cost work_order_id does not exist.');
+  if (cost.amount < 0) throw new Error('Workshop cost amount cannot be negative.');
+  if (['pending', 'approved', 'rejected'].indexOf(cost.status) === -1) throw new Error('Invalid workshop cost status.');
+  if (cost.status === 'approved' && !cost.approved_by) throw new Error('Approved workshop cost requires approved_by.');
+  if (cost.status === 'approved') {
+    const duplicate = workshopCostRepository_().list().find((item) => (
+      item.cost_id !== cost.cost_id &&
+      item.status === 'approved' &&
+      item.work_order_id === cost.work_order_id &&
+      item.cost_type === cost.cost_type &&
+      toNumber_(item.amount) === toNumber_(cost.amount) &&
+      item.requested_by === cost.requested_by
+    ));
+    if (duplicate) throw new Error('Duplicate approved workshop cost detected.');
+  }
+}
+
+function validateDocumentPayload_(document) {
+  if (!document.entity_type) throw new Error('Document requires entity_type.');
+  if (!document.entity_id) throw new Error('Document requires entity_id.');
+  if (!document.file_name) throw new Error('Document requires file_name.');
+  if (!document.drive_url && !document.drive_file_id) throw new Error('Document requires Drive URL or Drive file ID.');
+  if (document.drive_url && !/^https:\/\/drive\.google\.com\//.test(document.drive_url)) {
+    throw new Error('Document Drive URL must be a Google Drive URL.');
+  }
+  if (['internal', 'customer', 'staff'].indexOf(document.visibility) === -1) throw new Error('Invalid document visibility.');
+}
+
+function auditLogServiceLog_(action, entityType, entityId, before, after, context) {
+  try {
+    const requestContext = requestContext_(context || {});
+    auditLogRepository_().save({
+      timestamp: new Date().toISOString(),
+      user: requestContext.user,
+      role: requestContext.role,
+      action,
+      entity_type: entityType,
+      entity_id: entityId,
+      before_summary: summarizeRecord_(before),
+      after_summary: summarizeRecord_(after),
+      metadata: APP_MODE
+    });
+  } catch (error) {
+    console.error(`Audit log failed: ${error.message || error}`);
+  }
+}
+
+function summarizeRecord_(record) {
+  if (!record) return '';
+  const scrubbed = Object.assign({}, record);
+  ['notes'].forEach((key) => {
+    if (String(scrubbed[key] || '').length > 160) scrubbed[key] = String(scrubbed[key]).slice(0, 160);
+  });
+  return JSON.stringify(scrubbed).slice(0, 900);
+}
+
+function productionGateSummary_() {
+  const spreadsheet = ensureSpreadsheet_();
+  const auditSheet = Boolean(spreadsheet.getSheetByName(SHEETS.auditLog));
+  return {
+    mode: APP_MODE,
+    roleGate: 'implemented_api_and_ui_sanitizers',
+    auditLog: auditSheet ? 'ready' : 'missing',
+    validation: 'invoice_payment_allocation_workshop_document',
+    documentHandling: 'metadata_and_drive_url_validated_binary_upload_blocked_until_google_drive_authorization',
+    demoFallback: 'seedDemoData_runs_only_when_sheets_are_empty',
+    qaChecklist: [
+      'Admin sees all modules and profit sharing.',
+      'Finance sees invoice/payment/allocation/statement/report data only.',
+      'Staff sees assigned workshop data and no payments, statements, or profit sharing.',
+      'Customer sees own invoices, payments, documents, and balance only.',
+      'Negative payment/cost values are rejected.',
+      'Allocation cannot exceed remaining payment or invoice balance.',
+      'Approved workshop costs affect totals; pending/rejected costs do not.'
+    ]
+  };
+}
+
+function firstCustomerId_() {
+  const customers = customerRepository_().list();
+  return (customers[0] || {}).customer_id || '';
 }

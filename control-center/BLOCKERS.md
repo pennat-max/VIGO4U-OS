@@ -1,15 +1,17 @@
 # Blockers
 
 ## Active Blockers
-None.
+None for the deployed CEO Dashboard URL.
+
+## Production Launch Blockers
+- Real Google identity to role mapping is not implemented yet. Current role selector is a demo/test governance control, not a production authentication system.
+- Real Google Drive binary upload is not implemented yet. Current document workflow validates metadata and Drive URLs in Google Sheets.
+- `clasp run setup` still requires Apps Script executable API permission, but the deployed Web App opens and runs.
 
 ## Known Risks
-- MVP uses Google Sheets and demo seed fallback; production data governance is not complete.
-- Staff/Finance/Admin role permissions must be enforced in UI and API before production use.
-- Staff must never see buy price, sale price, profit, customer statement, customer payments, or profit sharing.
-- Document module stores metadata and Drive URLs; real Drive upload flow is still a production-hardening item.
+- MVP uses Google Sheets and demo seed fallback; production data ownership, backup, and governance still need a runbook.
+- Customer role filtering requires a trusted customer id mapping from the authenticated user before production use.
 - Future screens must follow `design/DESIGN_SYSTEM.md` and add visible labels through the i18n dictionary before UI expansion.
-- `clasp run setup` still requires executable API permission, but the deployed Web App opens and runs.
 
 ## Required User Action
-None for the current deployed MVP.
+None for opening the current deployed dashboard.

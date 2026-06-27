@@ -4,32 +4,23 @@ Date: 2026-06-27
 
 ## Work Completed
 - Pulled latest `origin/master`; repository was already up to date.
-- Read `control-center/MISSION_QUEUE.md`, `MISSION.md`, and `NEXT_ACTION.md`.
-- Built remaining ERP MVP modules into the Thai CEO Dashboard.
-- Added Google Sheets-backed sheets/repositories for invoices, invoice items, payments, allocations, work orders, workshop costs, and documents.
-- Added service/API layer for invoice, payment, allocation, statement, workshop, documents, and reports.
-- Added demo seed data for full ERP flow.
-- Added compact mobile-first UI for ERP Operations MVP.
-- Connected dashboard summaries to invoice, payment, workshop, and report data.
-- Preserved customer and vehicle modules.
-- Ran syntax checks for `Code.gs` and the embedded browser JavaScript.
-- Pushed Apps Script files with `clasp push --force`.
-- Created Apps Script version 9 and redeployed the public dashboard deployment to version 9.
-- Verified the public dashboard URL returns `HTTP 200`.
-- Detected deployed markers for ERP Operations MVP, Invoice, Payment + Allocation, Customer Statement, Workshop, Documents, Reports + QA, and Mission 011.
-- Pulled latest `master` and read `design/DESIGN_SYSTEM.md`.
-- Implemented bilingual TH/EN support before adding more screens.
-- Added `i18n.th` and `i18n.en` dictionaries in the Web App UI.
-- Added TH/EN language toggle with `localStorage` persistence.
-- Applied i18n to key static labels, placeholders, aria labels, dynamic counts, quick actions, form states, and compact ERP lists.
+- Read `control-center/MISSION.md` and executed Production Hardening Gate 001.
+- Added `AuditLog` sheet schema and audit repository.
+- Added audit logging for customer, vehicle, invoice, payment, allocation, work order, workshop cost, and document metadata saves.
+- Added role context, permission matrix, role-aware dashboard/ERP/customer/vehicle API sanitizers, and write guards.
+- Added UI role selector for Admin, Finance, Staff, and Customer demo views.
+- Added UI visibility gates for restricted sections and forms.
+- Added validation for required IDs, invoice items, positive payments, allocation relationships, over-allocation, non-negative workshop costs, approved-cost approval, duplicate approved costs, and Drive URL metadata.
+- Added `apiRunProductionHardeningGate` and production gate summary markers.
+- Kept document handling as metadata + Drive URL validation; real Drive binary upload remains blocked until Google Drive upload authorization flow is built.
 - Ran syntax checks for `Code.gs` and embedded browser JavaScript.
-- Pushed Apps Script files with `clasp push --force`.
-- Created Apps Script version 10 and redeployed the public dashboard deployment to version 10.
+- Pushed Apps Script files with `clasp.cmd push --force`.
+- Created Apps Script version 11 and redeployed the public dashboard deployment to version 11.
 - Verified the public dashboard URL returns `HTTP 200`.
-- Detected deployed markers for `lang-toggle`, `data-lang`, `const i18n`, `setLang`, English strings, and ERP Operations MVP.
+- Detected deployed markers for `Production Hardening Gate`, `roleSelect`, `rolePayload`, `hidden-by-role`, and `apiRunProductionHardeningGate`.
 
 ## Dashboard Deploy Status
-Full ERP MVP with bilingual TH/EN support deployed and openable.
+Production Hardening Gate 001 is deployed and openable.
 
 Live URL:
 
@@ -37,10 +28,10 @@ Live URL:
 
 Live Apps Script deployment:
 
-`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @10`
+`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @11`
 
 ## Approval Required
-None active.
+None active for the deployed dashboard.
 
 ## Remaining Context
-MVP is complete. Bilingual TH/EN support is now implemented before additional screen expansion. Next work should be production hardening, role enforcement, audit logging, validation, real Drive upload flow, bottom navigation/sidebar refinement, and migration planning.
+The hardening gate is implemented, but real production launch still needs signed-in Google user to role mapping and real Google Drive binary upload.
