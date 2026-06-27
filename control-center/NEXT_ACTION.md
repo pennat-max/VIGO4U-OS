@@ -1,8 +1,16 @@
-# NEXT ACTION
+# Next Action
 
-Codex should:
-1. Pull latest master from GitHub.
-2. Read control-center/MISSION.md.
-3. Build the Thai CEO Dashboard MVP.
-4. Commit and push.
-5. Update control-center/CURRENT_STATUS.md, DAILY_REPORT.md, NEXT_ACTION.md, and BLOCKERS.md.
+## Immediate
+
+Open the live Thai CEO Dashboard on mobile and approve the visual direction.
+
+## Recommended Next Mission
+
+Define the dashboard data contract while keeping mock data as fallback.
+
+## Do Not Start Yet
+
+- Do not connect live ERP modules.
+- Do not expose real finance data to additional roles.
+- Do not build module screens until the dashboard direction is approved.
+
