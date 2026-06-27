@@ -46,6 +46,12 @@ The CEO Dashboard is the home screen foundation for the ERP. ERP modules are not
 
 The CEO Dashboard runs from Apps Script mock data and is ready to deploy as a Web App.
 
+GitHub remote:
+
+- Repository: `https://github.com/pennat-max/VIGO4U-OS`
+- Branch: `master`
+- Latest pushed commit: `2acc0c3 Add dashboard setup hooks`
+
 Required dashboard sections included:
 
 - Welcome Header: Good Morning Tony
