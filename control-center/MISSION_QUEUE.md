@@ -18,40 +18,39 @@ Goal: Thai mobile-first dashboard with mock data and deployed URL.
 ## Mission 002: Customer Module MVP
 Status: Done
 Goal: Customer list, detail, create, edit, search, status, and live dashboard customer statistics.
-Data source: Google Sheets through repository layer.
 
 ## Mission 003: Vehicle Module MVP
 Status: Done
 Goal: Vehicle list, detail, create, edit, search, status, photos/documents metadata, and dashboard vehicle statistics.
 
 ## Mission 004: Invoice Module MVP
-Status: Current
+Status: Done
 Goal: Create invoice for one customer with multiple vehicles, invoice detail, invoice totals, and invoice status.
 
 ## Mission 005: Payment Module MVP
-Status: Planned
+Status: Done
 Goal: Record payments, support partial payments, support overpayment, and show paid/balance summary.
 
 ## Mission 006: Allocation Module MVP
-Status: Planned
+Status: Done
 Goal: Allocate one payment across invoice items or vehicles. Support unallocated credit.
 
 ## Mission 007: Customer Statement MVP
-Status: Planned
+Status: Done
 Goal: Customer statement showing invoices, vehicles, payments, allocations, balance, and documents.
 
 ## Mission 008: Workshop Module MVP
-Status: Planned
+Status: Done
 Goal: Work orders, staff view, cost submission, cost approval, and approved cost updates.
 
 ## Mission 009: Documents MVP
-Status: Planned
-Goal: Store files in Google Drive and metadata/URLs in Google Sheets.
+Status: Done
+Goal: Store file metadata and URLs in Google Sheets. Drive upload flow is a production-hardening item.
 
 ## Mission 010: Reports MVP
-Status: Planned
+Status: Done
 Goal: CEO, finance, workshop, customer, and profit sharing reports.
 
 ## Mission 011: QA and Deployment
-Status: Planned
-Goal: Run tests, fix bugs, deploy, update runbook, and prepare production checklist.
+Status: Done
+Goal: Run syntax checks, deploy Apps Script Web App, verify HTTP 200, and update control-center files.

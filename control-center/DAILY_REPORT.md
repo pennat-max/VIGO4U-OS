@@ -3,33 +3,23 @@
 Date: 2026-06-27
 
 ## Work Completed
-
 - Pulled latest `origin/master`; repository was already up to date.
-- Read `control-center/MISSION_QUEUE.md`, `control-center/MISSION.md`, and `control-center/NEXT_ACTION.md`.
-- Built Customer Module MVP into the Thai CEO Dashboard.
-- Added Google Sheets-backed customer repository with header mapping and stable `customer_id`.
-- Added customer service layer for list, detail, save, search, status filtering, and stats.
-- Added Thai customer UI for list, detail, create, edit, search, and status filter.
-- Connected dashboard customer statistics to live Customer sheet data.
+- Read `control-center/MISSION_QUEUE.md`, `MISSION.md`, and `NEXT_ACTION.md`.
+- Built remaining ERP MVP modules into the Thai CEO Dashboard.
+- Added Google Sheets-backed sheets/repositories for invoices, invoice items, payments, allocations, work orders, workshop costs, and documents.
+- Added service/API layer for invoice, payment, allocation, statement, workshop, documents, and reports.
+- Added demo seed data for full ERP flow.
+- Added compact mobile-first UI for ERP Operations MVP.
+- Connected dashboard summaries to invoice, payment, workshop, and report data.
+- Preserved customer and vehicle modules.
+- Ran syntax checks for `Code.gs` and the embedded browser JavaScript.
 - Pushed Apps Script files with `clasp push --force`.
-- Created Apps Script version 7 and redeployed the public dashboard deployment to version 7.
-- Confirmed Google authorization was completed by the owner account.
-- Redeployed the public dashboard deployment to version 7.
+- Created Apps Script version 9 and redeployed the public dashboard deployment to version 9.
 - Verified the public dashboard URL returns `HTTP 200`.
-- Detected Thai dashboard and Customer Module markers in the deployed response.
-- Built Vehicle Module MVP into the Thai CEO Dashboard.
-- Added Google Sheets-backed vehicle repository with header mapping and stable `vehicle_id`.
-- Added vehicle service layer for list, detail, save, search, status filtering, metadata, and stats.
-- Added Thai vehicle UI for list, detail, create, edit, search, status, photo URL, and document URL.
-- Connected dashboard vehicle statistics to live Vehicle sheet data.
-- Pushed Apps Script files with `clasp push --force`.
-- Created Apps Script version 8 and redeployed the public dashboard deployment to version 8.
-- Verified the public dashboard URL returns `HTTP 200`.
-- Detected Vehicle Module markers in the deployed response.
+- Detected deployed markers for ERP Operations MVP, Invoice, Payment + Allocation, Customer Statement, Workshop, Documents, Reports + QA, and Mission 011.
 
 ## Dashboard Deploy Status
-
-CEO Dashboard with Customer and Vehicle modules remains deployed and openable.
+Full ERP MVP deployed and openable.
 
 Live URL:
 
@@ -37,20 +27,10 @@ Live URL:
 
 Live Apps Script deployment:
 
-`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @8`
-
-Live dashboard data mode now includes Google Sheets Customer and Vehicle Module data with demo seed fallback.
+`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @9`
 
 ## Approval Required
-
 None active.
 
 ## Remaining Context
-
-Mission 002 is complete.
-
-Mission 003 is complete.
-
-Mission 004 - Invoice Module MVP is current.
-
-Do not start payment, allocation, or customer statement modules yet.
+MVP is complete. Next work should be production hardening, role enforcement, audit logging, validation, real Drive upload flow, and migration planning.

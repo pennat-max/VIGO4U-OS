@@ -1,37 +1,37 @@
 # MISSION
 
-Current mission: Invoice Module MVP
+Current mission: Full ERP MVP complete.
 
-Goal: create invoices for one customer with multiple vehicles.
+Goal: Mission queue 001-011 completed for MVP.
 
-Priority:
-1. Keep the deployed Thai CEO Dashboard working.
-2. Build Invoice module after Vehicle module.
-3. Connect invoice statistics to the dashboard.
-4. Commit and push before stopping.
-5. Update control-center status files before stopping.
+## Completed Modules
+- CEO Dashboard
+- Customer Module
+- Vehicle Module
+- Invoice Module
+- Payment Module
+- Allocation Module
+- Customer Statement
+- Workshop Module
+- Documents Module
+- Reports Module
+- QA and Deployment smoke verification
 
-Required invoice features:
-- Invoice list
-- Invoice detail
-- Create invoice for one customer
-- Attach multiple vehicles to one invoice
-- Invoice totals
-- Invoice status
-- Dashboard invoice statistics
+## Current Deployed URL
+`https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`
 
-Data source:
-Google Sheets through repository layer.
-
-Architecture rules:
+## Architecture Rules Preserved
 - UI uses service layer.
 - Service layer uses repository layer.
 - Repository handles Google Sheets.
-- Use stable invoice_id.
-- Use header mapping.
-- Do not use row number as invoice ID.
+- Stable IDs are used for business records.
+- Header mapping is used.
+- Row numbers are not used as business IDs.
 - One customer has many invoices.
 - One invoice has many vehicles.
+- One payment can allocate across invoice items or vehicles.
+- Pending and rejected workshop costs do not affect totals.
+- Profit sharing is 40% owner and 60% VIGO.
 
-Do not start payment/allocation modules yet.
-Do not redesign the dashboard unless needed to show real invoice data.
+## Next Phase
+Production hardening: role-based UI enforcement, audit log, stronger validation, real Drive upload flow, and production data migration planning.

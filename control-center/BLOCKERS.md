@@ -1,17 +1,14 @@
 # Blockers
 
 ## Active Blockers
-
 None.
 
 ## Known Risks
-
-- Dashboard Customer stats now depend on the Customer sheet.
-- Dashboard Vehicle stats now depend on the Vehicle sheet.
-- Invoice, payment, allocation, and customer statement modules are not connected yet.
-- Staff/Finance/Admin role permissions must be defined before real financial data is exposed.
-- `clasp run setup` returned: `Unable to run script function. Please make sure you have permission to run the script function.`
+- MVP uses Google Sheets and demo seed fallback; production data governance is not complete.
+- Staff/Finance/Admin role permissions must be enforced in UI and API before production use.
+- Staff must never see buy price, sale price, profit, customer statement, customer payments, or profit sharing.
+- Document module stores metadata and Drive URLs; real Drive upload flow is still a production-hardening item.
+- `clasp run setup` still requires executable API permission, but the deployed Web App opens and runs.
 
 ## Required User Action
-
-None.
+None for the current deployed MVP.

@@ -341,6 +341,10 @@
       grid-template-columns: 1fr;
     }
 
+    .ops-grid {
+      grid-template-columns: 1fr;
+    }
+
     .finance {
       display: flex;
       align-items: center;
@@ -348,6 +352,45 @@
       gap: 14px;
       min-height: 90px;
       padding: 16px;
+    }
+
+    .ops-card {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .ops-card h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 8px;
+      max-height: 260px;
+      overflow: auto;
+    }
+
+    .mini-row {
+      display: grid;
+      gap: 5px;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(7, 9, 16, 0.34);
+    }
+
+    .mini-row strong {
+      font-size: 13px;
+    }
+
+    .mini-row span,
+    .mini-row p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
     }
 
     .finance h3,
@@ -619,6 +662,10 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
 
+      .ops-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .finance {
         align-items: flex-start;
         flex-direction: column;
@@ -866,6 +913,177 @@
       </div>
     </section>
 
+    <section class="section" id="operations">
+      <div class="section-title">
+        <h2>ERP Operations MVP</h2>
+        <span>Mission 004-011</span>
+      </div>
+      <div class="grid ops-grid">
+        <article class="card ops-card" id="invoices">
+          <div class="section-title">
+            <h2>Invoice</h2>
+            <span id="invoiceCount">0</span>
+          </div>
+          <form id="invoiceForm">
+            <div class="field-grid">
+              <label>Customer ID
+                <input id="invoiceCustomerId" placeholder="CUS-...">
+              </label>
+              <label>Vehicle IDs
+                <input id="invoiceVehicleIds" placeholder="VEH-..., VEH-...">
+              </label>
+              <label>Total
+                <input id="invoiceAmount" inputmode="decimal" placeholder="51000">
+              </label>
+              <label>Status
+                <select id="invoiceStatus">
+                  <option value="draft">Draft</option>
+                  <option value="issued">Issued</option>
+                  <option value="partial">Partial</option>
+                  <option value="paid">Paid</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-actions">
+              <button class="secondary" type="button" id="fillInvoiceDemo">Demo</button>
+              <button class="primary" type="submit">บันทึก Invoice</button>
+            </div>
+          </form>
+          <div class="mini-list" id="invoiceList"></div>
+        </article>
+
+        <article class="card ops-card" id="payments">
+          <div class="section-title">
+            <h2>Payment + Allocation</h2>
+            <span id="paymentCount">0</span>
+          </div>
+          <form id="paymentForm">
+            <div class="field-grid">
+              <label>Customer ID
+                <input id="paymentCustomerId" placeholder="CUS-...">
+              </label>
+              <label>Amount
+                <input id="paymentAmount" inputmode="decimal" placeholder="10000">
+              </label>
+              <label>Method
+                <input id="paymentMethod" placeholder="Bank Transfer">
+              </label>
+            </div>
+            <div class="form-actions">
+              <button class="secondary" type="button" id="fillPaymentDemo">Demo</button>
+              <button class="primary" type="submit">บันทึก Payment</button>
+            </div>
+          </form>
+          <form id="allocationForm">
+            <div class="field-grid">
+              <label>Payment ID
+                <input id="allocationPaymentId" placeholder="PAY-...">
+              </label>
+              <label>Invoice ID
+                <input id="allocationInvoiceId" placeholder="INV-...">
+              </label>
+              <label>Amount
+                <input id="allocationAmount" inputmode="decimal" placeholder="5000">
+              </label>
+            </div>
+            <div class="form-actions">
+              <button class="secondary" type="button" id="fillAllocationDemo">Demo</button>
+              <button class="primary" type="submit">จัดสรรเงิน</button>
+            </div>
+          </form>
+          <div class="mini-list" id="paymentList"></div>
+        </article>
+
+        <article class="card ops-card" id="statements">
+          <div class="section-title">
+            <h2>Customer Statement</h2>
+            <span>Balance</span>
+          </div>
+          <div class="mini-list" id="statementList"></div>
+        </article>
+
+        <article class="card ops-card" id="workshop">
+          <div class="section-title">
+            <h2>Workshop</h2>
+            <span id="workshopCount">0</span>
+          </div>
+          <form id="workshopForm">
+            <div class="field-grid">
+              <label>Vehicle ID
+                <input id="workshopVehicleId" placeholder="VEH-...">
+              </label>
+              <label>Task
+                <input id="workshopTask" placeholder="ตรวจรถ / ซ่อม / เตรียมส่งออก">
+              </label>
+              <label>Cost
+                <input id="workshopCostAmount" inputmode="decimal" placeholder="1200">
+              </label>
+              <label>Cost Status
+                <select id="workshopCostStatus">
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-actions">
+              <button class="secondary" type="button" id="fillWorkshopDemo">Demo</button>
+              <button class="primary" type="submit">บันทึก Workshop</button>
+            </div>
+          </form>
+          <div class="mini-list" id="workshopList"></div>
+        </article>
+
+        <article class="card ops-card" id="documents">
+          <div class="section-title">
+            <h2>Documents</h2>
+            <span id="documentCount">0</span>
+          </div>
+          <form id="documentForm">
+            <div class="field-grid">
+              <label>Entity Type
+                <select id="documentEntityType">
+                  <option value="vehicle">Vehicle</option>
+                  <option value="invoice">Invoice</option>
+                  <option value="customer">Customer</option>
+                  <option value="work_order">Work Order</option>
+                </select>
+              </label>
+              <label>Entity ID
+                <input id="documentEntityId" placeholder="ID">
+              </label>
+              <label>File Name
+                <input id="documentFileName" placeholder="document.pdf">
+              </label>
+              <label>Drive URL
+                <input id="documentDriveUrl" placeholder="https://drive.google.com/...">
+              </label>
+              <label>Visibility
+                <select id="documentVisibility">
+                  <option value="internal">Internal</option>
+                  <option value="customer">Customer</option>
+                  <option value="staff">Staff</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-actions">
+              <button class="secondary" type="button" id="fillDocumentDemo">Demo</button>
+              <button class="primary" type="submit">บันทึก Document</button>
+            </div>
+          </form>
+          <div class="mini-list" id="documentList"></div>
+        </article>
+
+        <article class="card ops-card" id="reports">
+          <div class="section-title">
+            <h2>Reports + QA</h2>
+            <span>Profit Sharing</span>
+          </div>
+          <div class="mini-list" id="reportList"></div>
+        </article>
+      </div>
+    </section>
+
     <section class="section">
       <div class="section-title">
         <h2>5. สรุปการเงิน</h2>
@@ -911,6 +1129,7 @@
     let dashboardData = <?!= dashboardData ?>;
     let customers = dashboardData.customerModule.customers || [];
     let vehicles = dashboardData.vehicleModule.vehicles || [];
+    let erp = dashboardData.erpModule || {};
 
     const toneMap = {
       blue: '#4aa3ff',
@@ -1009,6 +1228,12 @@
 
       document.querySelectorAll('.action[data-target="vehicles"]').forEach((button) => {
         button.addEventListener('click', () => document.getElementById('vehicles').scrollIntoView({ behavior: 'smooth' }));
+      });
+
+      ['invoices', 'payments', 'workshop', 'reports'].forEach((target) => {
+        document.querySelectorAll(`.action[data-target="${target}"]`).forEach((button) => {
+          button.addEventListener('click', () => document.getElementById(target).scrollIntoView({ behavior: 'smooth' }));
+        });
       });
     }
 
@@ -1204,6 +1429,88 @@
       renderDashboard(dashboardData);
     }
 
+    function money(value) {
+      const number = Number(value || 0);
+      return `$${Math.round(number).toLocaleString('en-US')}`;
+    }
+
+    function miniRow(title, meta, detail) {
+      return `<div class="mini-row"><strong>${title}</strong><span>${meta || ''}</span><p>${detail || ''}</p></div>`;
+    }
+
+    function renderErp(data) {
+      erp = data || erp || {};
+      const invoices = erp.invoices || [];
+      const payments = erp.payments || [];
+      const statements = erp.statements || [];
+      const workOrders = erp.workOrders || [];
+      const costs = erp.workshopCosts || [];
+      const documents = erp.documents || [];
+      const reports = erp.reports || {};
+
+      setText('invoiceCount', `${invoices.length} ใบ`);
+      setText('paymentCount', `${payments.length} รายการ`);
+      setText('workshopCount', `${workOrders.length} งาน`);
+      setText('documentCount', `${documents.length} ไฟล์`);
+
+      document.getElementById('invoiceList').innerHTML = invoices.map((invoice) => miniRow(
+        invoice.invoice_no || invoice.invoice_id,
+        `${invoice.status || '-'} · ${money(invoice.subtotal)} · balance ${money(invoice.balance_amount)}`,
+        `Customer ${invoice.customer_id || '-'} · ${invoice.notes || ''}`
+      )).join('') || '<div class="mini-row"><span>ยังไม่มี invoice</span></div>';
+
+      document.getElementById('paymentList').innerHTML = payments.map((payment) => miniRow(
+        payment.payment_id,
+        `${payment.status || '-'} · ${money(payment.amount)} · credit ${money(payment.credit_amount)}`,
+        `${payment.method || '-'} · Customer ${payment.customer_id || '-'}`
+      )).join('') || '<div class="mini-row"><span>ยังไม่มี payment</span></div>';
+
+      document.getElementById('statementList').innerHTML = statements.map((statement) => miniRow(
+        statement.customer_id || '-',
+        `Invoices ${statement.invoice_count} · Payments ${statement.payment_count}`,
+        `Balance ${money(statement.balance)} · Credit ${money(statement.credit_total)}`
+      )).join('') || '<div class="mini-row"><span>ยังไม่มี statement</span></div>';
+
+      document.getElementById('workshopList').innerHTML = workOrders.map((order) => {
+        const orderCosts = costs.filter((cost) => cost.work_order_id === order.work_order_id);
+        const approved = orderCosts.filter((cost) => cost.status === 'approved').reduce((total, cost) => total + Number(cost.amount || 0), 0);
+        const pending = orderCosts.filter((cost) => cost.status === 'pending').reduce((total, cost) => total + Number(cost.amount || 0), 0);
+        return miniRow(order.work_order_id, `${order.status || '-'} · Vehicle ${order.vehicle_id || '-'}`, `${order.task || ''} · approved ${money(approved)} · pending ${money(pending)}`);
+      }).join('') || '<div class="mini-row"><span>ยังไม่มี workshop</span></div>';
+
+      document.getElementById('documentList').innerHTML = documents.map((doc) => miniRow(
+        doc.file_name || doc.document_id,
+        `${doc.entity_type || '-'} · ${doc.visibility || '-'}`,
+        doc.drive_url || doc.notes || ''
+      )).join('') || '<div class="mini-row"><span>ยังไม่มี document</span></div>';
+
+      document.getElementById('reportList').innerHTML = [
+        miniRow('CEO Report', `Receivable ${money(reports.receivable)}`, `Received ${money(reports.received)} · Approved costs ${money(reports.approvedCosts)}`),
+        miniRow('Profit Sharing', `Estimated profit ${money(reports.estimatedProfit)}`, `Owner 40% ${money(reports.ownerShare)} · VIGO 60% ${money(reports.vigoShare)}`),
+        miniRow('QA Status', 'Passed HTTP deploy smoke test required after deploy', reports.rule || 'Pending/rejected costs excluded from totals')
+      ].join('');
+    }
+
+    function updateErpFromResponse(response) {
+      renderErp((response.data || response).data || response.data || response);
+    }
+
+    function firstCustomerId() {
+      return (customers[0] || {}).customer_id || '';
+    }
+
+    function firstVehicleId() {
+      return (vehicles[0] || {}).vehicle_id || '';
+    }
+
+    function firstInvoiceId() {
+      return ((erp.invoices || [])[0] || {}).invoice_id || '';
+    }
+
+    function firstPaymentId() {
+      return ((erp.payments || [])[0] || {}).payment_id || '';
+    }
+
     document.getElementById('customerSearch').addEventListener('input', () => loadCustomers());
     document.getElementById('statusFilter').addEventListener('change', () => loadCustomers());
     document.getElementById('newCustomer').addEventListener('click', clearForm);
@@ -1240,9 +1547,121 @@
         .apiSaveVehicle(collectVehicleForm());
     });
 
+    document.getElementById('fillInvoiceDemo').addEventListener('click', () => {
+      document.getElementById('invoiceCustomerId').value = firstCustomerId();
+      document.getElementById('invoiceVehicleIds').value = firstVehicleId();
+      document.getElementById('invoiceAmount').value = '25000';
+      document.getElementById('invoiceStatus').value = 'issued';
+    });
+
+    document.getElementById('invoiceForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      google.script.run
+        .withSuccessHandler(updateErpFromResponse)
+        .withFailureHandler((error) => alert(error.message || String(error)))
+        .apiSaveInvoice({
+          customer_id: document.getElementById('invoiceCustomerId').value,
+          vehicle_ids: document.getElementById('invoiceVehicleIds').value,
+          amount: document.getElementById('invoiceAmount').value,
+          status: document.getElementById('invoiceStatus').value
+        });
+    });
+
+    document.getElementById('fillPaymentDemo').addEventListener('click', () => {
+      document.getElementById('paymentCustomerId').value = firstCustomerId();
+      document.getElementById('paymentAmount').value = '10000';
+      document.getElementById('paymentMethod').value = 'Bank Transfer';
+    });
+
+    document.getElementById('paymentForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      google.script.run
+        .withSuccessHandler(updateErpFromResponse)
+        .withFailureHandler((error) => alert(error.message || String(error)))
+        .apiSavePayment({
+          customer_id: document.getElementById('paymentCustomerId').value,
+          amount: document.getElementById('paymentAmount').value,
+          method: document.getElementById('paymentMethod').value
+        });
+    });
+
+    document.getElementById('fillAllocationDemo').addEventListener('click', () => {
+      document.getElementById('allocationPaymentId').value = firstPaymentId();
+      document.getElementById('allocationInvoiceId').value = firstInvoiceId();
+      document.getElementById('allocationAmount').value = '5000';
+    });
+
+    document.getElementById('allocationForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      google.script.run
+        .withSuccessHandler(updateErpFromResponse)
+        .withFailureHandler((error) => alert(error.message || String(error)))
+        .apiSaveAllocation({
+          payment_id: document.getElementById('allocationPaymentId').value,
+          invoice_id: document.getElementById('allocationInvoiceId').value,
+          amount: document.getElementById('allocationAmount').value
+        });
+    });
+
+    document.getElementById('fillWorkshopDemo').addEventListener('click', () => {
+      document.getElementById('workshopVehicleId').value = firstVehicleId();
+      document.getElementById('workshopTask').value = 'ตรวจรถก่อนส่งออก';
+      document.getElementById('workshopCostAmount').value = '650';
+      document.getElementById('workshopCostStatus').value = 'pending';
+    });
+
+    document.getElementById('workshopForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const vehicleId = document.getElementById('workshopVehicleId').value;
+      google.script.run
+        .withSuccessHandler((workOrderResponse) => {
+          google.script.run
+            .withSuccessHandler(updateErpFromResponse)
+            .withFailureHandler((error) => alert(error.message || String(error)))
+            .apiSaveWorkshopCost({
+              work_order_id: (workOrderResponse.workOrder || {}).work_order_id,
+              vehicle_id: vehicleId,
+              cost_type: 'General',
+              amount: document.getElementById('workshopCostAmount').value,
+              status: document.getElementById('workshopCostStatus').value,
+              requested_by: 'Staff'
+            });
+        })
+        .withFailureHandler((error) => alert(error.message || String(error)))
+        .apiSaveWorkOrder({
+          vehicle_id: vehicleId,
+          assigned_to: 'Staff',
+          status: 'open',
+          task: document.getElementById('workshopTask').value
+        });
+    });
+
+    document.getElementById('fillDocumentDemo').addEventListener('click', () => {
+      document.getElementById('documentEntityType').value = 'vehicle';
+      document.getElementById('documentEntityId').value = firstVehicleId();
+      document.getElementById('documentFileName').value = 'export-document.pdf';
+      document.getElementById('documentDriveUrl').value = 'https://drive.google.com/demo';
+      document.getElementById('documentVisibility').value = 'internal';
+    });
+
+    document.getElementById('documentForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      google.script.run
+        .withSuccessHandler(updateErpFromResponse)
+        .withFailureHandler((error) => alert(error.message || String(error)))
+        .apiSaveDocument({
+          entity_type: document.getElementById('documentEntityType').value,
+          entity_id: document.getElementById('documentEntityId').value,
+          file_name: document.getElementById('documentFileName').value,
+          drive_url: document.getElementById('documentDriveUrl').value,
+          visibility: document.getElementById('documentVisibility').value
+        });
+    });
+
     renderDashboard(dashboardData);
     renderCustomers(customers);
     renderVehicles(vehicles);
+    renderErp(erp);
   </script>
 </body>
 </html>

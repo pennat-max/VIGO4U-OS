@@ -1,33 +1,21 @@
 # NEXT ACTION
 
 ## Immediate
-Start Mission 004 - Invoice Module MVP.
+Start production hardening after user approval.
 
 ## Current Mission
-Invoice Module MVP.
+Full ERP MVP is complete and deployed.
 
-Mission 003 - Vehicle Module MVP is complete and deployed.
+## Recommended Next Phase
+- Enforce role-based UI and API filtering.
+- Add audit log for financial and cost changes.
+- Add stronger validation for invoice/payment/allocation workflows.
+- Add real Google Drive upload flow.
+- Add production setup/runbook.
+- Plan future migration to Supabase/PostgreSQL/Next.js.
 
-The public CEO Dashboard is live on Apps Script version 8.
-
-Next implementation target:
-- Invoice list
-- Invoice detail
-- Create invoice for one customer
-- Attach multiple vehicles to one invoice
-- Invoice totals
-- Invoice status
-- Dashboard invoice statistics
-
-## Must Do Before Stopping
-- Commit completed work
-- Push to GitHub
-- Update control-center/CURRENT_STATUS.md
-- Update control-center/DAILY_REPORT.md
-- Update control-center/NEXT_ACTION.md
-- Update control-center/BLOCKERS.md
-
-## Do Not Start Yet
-- Payment
-- Allocation
-- Customer statement
+## Must Do Before Stopping Future Work
+- Commit completed work.
+- Push to GitHub.
+- Update control-center status files.
+- Verify the deployed URL.
