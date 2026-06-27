@@ -12,6 +12,8 @@ MISSION-CEO-DASHBOARD-001
 
 Completed and deployed
 
+Last confirmed: 2026-06-27
+
 ## Current Implementation
 
 - Apps Script Web App project exists
@@ -38,6 +40,7 @@ Live Web App:
 - Deployment ID: `AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ`
 - Version: `6`
 - Verification: `HTTP 200`, Thai dashboard title detected
+- Current approval required: none for opening the deployed mock dashboard
 
 ## GitHub
 
