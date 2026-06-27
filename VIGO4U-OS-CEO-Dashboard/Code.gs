@@ -1,6 +1,8 @@
 const APP_TITLE = 'VIGO4U OS - แดชบอร์ดผู้บริหาร';
 const SCRIPT_KEYS = {
-  spreadsheetId: 'VIGO4U_OS_SPREADSHEET_ID'
+  spreadsheetId: 'VIGO4U_OS_SPREADSHEET_ID',
+  driveFolderId: 'VIGO4U_OS_DRIVE_FOLDER_ID',
+  authMode: 'VIGO4U_OS_AUTH_MODE'
 };
 
 const SHEETS = {
@@ -13,7 +15,8 @@ const SHEETS = {
   workOrders: 'WorkOrders',
   workshopCosts: 'WorkshopCosts',
   documents: 'Documents',
-  auditLog: 'AuditLog'
+  auditLog: 'AuditLog',
+  users: 'Users'
 };
 
 const CUSTOMER_HEADERS = [
@@ -155,9 +158,27 @@ const AUDIT_LOG_HEADERS = [
   'metadata'
 ];
 
+const USER_HEADERS = [
+  'user_id',
+  'email',
+  'display_name',
+  'role',
+  'customer_id',
+  'staff_name',
+  'status',
+  'notes',
+  'created_at',
+  'updated_at'
+];
+
 const APP_MODE = 'PRODUCTION_HARDENING_DEMO';
+const AUTH_MODES = {
+  demo: 'DEMO_ROLE_SELECTOR',
+  google: 'GOOGLE_USER_MAPPING'
+};
 const ROLE_KEYS = ['admin', 'finance', 'staff', 'customer'];
 const FINANCIAL_ACTIONS = ['save_invoice', 'save_payment', 'save_allocation', 'get_statement', 'get_reports'];
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 
 function doGet(e) {
   const template = HtmlService.createTemplateFromFile('Index');
@@ -202,6 +223,7 @@ function getDashboardData(request) {
       user: context.user,
       customerId: context.customerId,
       staffName: context.staffName,
+      authMode: context.authMode,
       permissions: permissionsForRole_(context.role),
       productionGate
     },
@@ -443,6 +465,26 @@ function apiSaveDocument(payload) {
   };
 }
 
+function apiUploadDocument(payload) {
+  const context = requestContext_(payload || {});
+  assertRoleCan_(context, 'save_document');
+  const file = (payload || {}).file || {};
+  const driveFile = googleDriveRepositoryCreateFile_(file, payload || {});
+  const documentPayload = Object.assign({}, payload || {}, {
+    file_name: driveFile.file_name,
+    drive_file_id: driveFile.drive_file_id,
+    drive_url: driveFile.drive_url,
+    notes: String((payload || {}).notes || driveFile.permission_note || '').trim()
+  });
+  delete documentPayload.file;
+  return {
+    ok: true,
+    document: documentServiceSave_(documentPayload),
+    data: apiGetERPData(payload || {}),
+    driveFile
+  };
+}
+
 function apiRunProductionHardeningGate(request) {
   const context = requestContext_(request || {});
   return {
@@ -466,8 +508,14 @@ function setup() {
   ensureSheet_(spreadsheet, SHEETS.workshopCosts, WORKSHOP_COST_HEADERS);
   ensureSheet_(spreadsheet, SHEETS.documents, DOCUMENT_HEADERS);
   ensureSheet_(spreadsheet, SHEETS.auditLog, AUDIT_LOG_HEADERS);
+  ensureSheet_(spreadsheet, SHEETS.users, USER_HEADERS);
 
-  PropertiesService.getScriptProperties().setProperties({
+  const props = PropertiesService.getScriptProperties();
+  if (!props.getProperty(SCRIPT_KEYS.authMode)) {
+    props.setProperty(SCRIPT_KEYS.authMode, AUTH_MODES.demo);
+  }
+
+  props.setProperties({
     APP_TITLE,
     DASHBOARD_MODE: APP_MODE,
     CURRENT_MISSION: 'Production Hardening Gate 001',
@@ -1230,6 +1278,7 @@ function documentServiceList_() {
 
 function documentServiceSave_(payload) {
   setup();
+  const context = requestContext_(payload || {});
   const document = {
     document_id: String(payload.document_id || '').trim(),
     entity_type: String(payload.entity_type || '').trim(),
@@ -1241,6 +1290,7 @@ function documentServiceSave_(payload) {
     notes: String(payload.notes || '').trim()
   };
   validateDocumentPayload_(document);
+  validateDocumentRoleScope_(context, document);
   const before = document.document_id ? documentRepository_().get(document.document_id) : null;
   const saved = documentRepository_().save(document);
   auditLogServiceLog_('save_document', 'document', saved.document_id, before, saved, requestContext_(payload));
@@ -1255,6 +1305,13 @@ function documentServiceStats_(documents) {
     if (document.visibility === 'staff') stats.staff += 1;
     return stats;
   }, { total: 0, customer: 0, internal: 0, staff: 0 });
+}
+
+function userServiceGetByEmail_(email) {
+  setup();
+  const normalizedEmail = normalizeSearch_(email);
+  if (!normalizedEmail) return null;
+  return userRepository_().list().find((user) => normalizeSearch_(user.email) === normalizedEmail) || null;
 }
 
 function reportServiceSummary_() {
@@ -1434,6 +1491,54 @@ function auditLogRepository_() {
   return sheetRepository_(SHEETS.auditLog, AUDIT_LOG_HEADERS, 'audit_id', 'AUDIT');
 }
 
+function userRepository_() {
+  return sheetRepository_(SHEETS.users, USER_HEADERS, 'user_id', 'USR');
+}
+
+function googleDriveRepositoryGetFolder_() {
+  const props = PropertiesService.getScriptProperties();
+  const existingId = props.getProperty(SCRIPT_KEYS.driveFolderId);
+  if (existingId) {
+    try {
+      return DriveApp.getFolderById(existingId);
+    } catch (error) {
+      props.deleteProperty(SCRIPT_KEYS.driveFolderId);
+    }
+  }
+
+  const folder = DriveApp.createFolder('VIGO4U OS Documents');
+  props.setProperty(SCRIPT_KEYS.driveFolderId, folder.getId());
+  return folder;
+}
+
+function googleDriveRepositoryCreateFile_(file, documentPayload) {
+  validateUploadFile_(file);
+  const base64 = String(file.base64 || '').replace(/^data:[^,]+,/, '');
+  const bytes = Utilities.base64Decode(base64);
+  if (bytes.length > MAX_UPLOAD_BYTES) {
+    throw new Error('File is larger than the 10 MB upload limit.');
+  }
+
+  const safeName = sanitizeFileName_(file.name);
+  const mimeType = String(file.mime_type || file.type || 'application/octet-stream').trim();
+  const blob = Utilities.newBlob(bytes, mimeType, safeName);
+  const driveFile = googleDriveRepositoryGetFolder_().createFile(blob);
+  const visibility = String((documentPayload || {}).visibility || 'internal').trim();
+  let permissionNote = 'Drive file is private to the script owner.';
+
+  if (visibility === 'customer') {
+    driveFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    permissionNote = 'Customer-visible Drive file shared with anyone who has the link.';
+  }
+
+  return {
+    file_name: driveFile.getName(),
+    drive_file_id: driveFile.getId(),
+    drive_url: driveFile.getUrl(),
+    permission_note: permissionNote
+  };
+}
+
 function sheetRepository_(sheetName, headers, idField, prefix) {
   const sheet = ensureSheet_(ensureSpreadsheet_(), sheetName, headers);
 
@@ -1578,13 +1683,36 @@ function formatDashboardTime_(date) {
 function requestContext_(input) {
   const payload = input || {};
   const email = safeActiveUserEmail_();
+  const mode = authMode_();
+  if (mode === AUTH_MODES.google) {
+    if (!email) {
+      throw new Error('Google sign-in is required for production role mapping.');
+    }
+    const mappedUser = userServiceGetByEmail_(email);
+    if (!mappedUser || mappedUser.status !== 'active') {
+      throw new Error('This Google account is not mapped to an active VIGO4U OS role.');
+    }
+    return {
+      role: normalizeRole_(mappedUser.role),
+      user: mappedUser.email,
+      customerId: String(mappedUser.customer_id || '').trim(),
+      staffName: String(mappedUser.staff_name || mappedUser.display_name || '').trim(),
+      authMode: mode
+    };
+  }
+
   const role = normalizeRole_(payload.role || payload.userRole || (payload.security || {}).role || 'admin');
   return {
     role,
     user: String(payload.user || payload.email || email || role).trim(),
     customerId: String(payload.customer_id || payload.customerId || '').trim(),
-    staffName: String(payload.staff_name || payload.staffName || payload.assigned_to || '').trim()
+    staffName: String(payload.staff_name || payload.staffName || payload.assigned_to || '').trim(),
+    authMode: mode
   };
+}
+
+function authMode_() {
+  return PropertiesService.getScriptProperties().getProperty(SCRIPT_KEYS.authMode) || AUTH_MODES.demo;
 }
 
 function safeActiveUserEmail_() {
@@ -1833,6 +1961,36 @@ function validateDocumentPayload_(document) {
   if (['internal', 'customer', 'staff'].indexOf(document.visibility) === -1) throw new Error('Invalid document visibility.');
 }
 
+function validateUploadFile_(file) {
+  if (!file || !file.name) throw new Error('Upload requires file name.');
+  if (!file.base64) throw new Error('Upload requires base64 file content.');
+}
+
+function validateDocumentRoleScope_(context, document) {
+  const role = normalizeRole_(context.role);
+  if (role === 'staff') {
+    if (['internal', 'staff'].indexOf(document.visibility) === -1) {
+      throw new Error('Staff can only create internal or staff documents.');
+    }
+    if (document.entity_type !== 'work_order') {
+      throw new Error('Staff can only attach documents to work orders.');
+    }
+    const workOrder = workOrderRepository_().get(document.entity_id);
+    if (!workOrder) throw new Error('Work order not found for staff document.');
+    if (context.staffName && workOrder.assigned_to !== context.staffName) {
+      throw new Error('Staff can only attach documents to assigned work orders.');
+    }
+  }
+}
+
+function sanitizeFileName_(name) {
+  return String(name || 'upload.bin')
+    .replace(/[\\/:*?"<>|]+/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 140) || 'upload.bin';
+}
+
 function auditLogServiceLog_(action, entityType, entityId, before, after, context) {
   try {
     const requestContext = requestContext_(context || {});
@@ -1866,10 +2024,12 @@ function productionGateSummary_() {
   const auditSheet = Boolean(spreadsheet.getSheetByName(SHEETS.auditLog));
   return {
     mode: APP_MODE,
+    authMode: authMode_(),
     roleGate: 'implemented_api_and_ui_sanitizers',
+    userMapping: 'users_sheet_ready_google_user_mapping_requires_ceo_account_list_and_signed_in_deployment',
     auditLog: auditSheet ? 'ready' : 'missing',
     validation: 'invoice_payment_allocation_workshop_document',
-    documentHandling: 'metadata_and_drive_url_validated_binary_upload_blocked_until_google_drive_authorization',
+    documentHandling: 'metadata_drive_url_and_drive_binary_upload_path_implemented_google_authorization_required_for_first_upload',
     demoFallback: 'seedDemoData_runs_only_when_sheets_are_empty',
     qaChecklist: [
       'Admin sees all modules and profit sharing.',
@@ -1878,7 +2038,8 @@ function productionGateSummary_() {
       'Customer sees own invoices, payments, documents, and balance only.',
       'Negative payment/cost values are rejected.',
       'Allocation cannot exceed remaining payment or invoice balance.',
-      'Approved workshop costs affect totals; pending/rejected costs do not.'
+      'Approved workshop costs affect totals; pending/rejected costs do not.',
+      'Document upload creates a Drive file, stores metadata in Sheets, and keeps internal/staff files private.'
     ]
   };
 }

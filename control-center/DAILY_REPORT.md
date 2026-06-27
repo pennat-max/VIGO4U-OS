@@ -4,23 +4,25 @@ Date: 2026-06-27
 
 ## Work Completed
 - Pulled latest `origin/master`; repository was already up to date.
-- Read `control-center/MISSION.md` and executed Production Hardening Gate 001.
-- Added `AuditLog` sheet schema and audit repository.
-- Added audit logging for customer, vehicle, invoice, payment, allocation, work order, workshop cost, and document metadata saves.
-- Added role context, permission matrix, role-aware dashboard/ERP/customer/vehicle API sanitizers, and write guards.
-- Added UI role selector for Admin, Finance, Staff, and Customer demo views.
-- Added UI visibility gates for restricted sections and forms.
-- Added validation for required IDs, invoice items, positive payments, allocation relationships, over-allocation, non-negative workshop costs, approved-cost approval, duplicate approved costs, and Drive URL metadata.
-- Added `apiRunProductionHardeningGate` and production gate summary markers.
-- Kept document handling as metadata + Drive URL validation; real Drive binary upload remains blocked until Google Drive upload authorization flow is built.
+- Read control-center status files and `design/DESIGN_SYSTEM.md`.
+- Continued the production-readiness loop from Production Hardening Gate 001.
+- Implemented real Google Drive upload path code with `apiUploadDocument`.
+- Added `googleDriveRepositoryCreateFile_` and `googleDriveRepositoryGetFolder_` repository functions.
+- Added local file input to the Documents UI.
+- Added browser file-to-base64 conversion and upload submission path.
+- Added upload validation and 10 MB upload limit.
+- Added Drive visibility handling: internal/staff files private, customer-visible files shared by link.
+- Added `Users` sheet schema for production account-to-role mapping.
+- Added `GOOGLE_USER_MAPPING` auth mode infrastructure while preserving demo role selector mode.
+- Added production QA checklist at `docs/qa/PRODUCTION_QA_CHECKLIST.md`.
 - Ran syntax checks for `Code.gs` and embedded browser JavaScript.
 - Pushed Apps Script files with `clasp.cmd push --force`.
-- Created Apps Script version 11 and redeployed the public dashboard deployment to version 11.
+- Created Apps Script versions 12 and 13; deployed the public dashboard deployment to version 13.
 - Verified the public dashboard URL returns `HTTP 200`.
-- Detected deployed markers for `Production Hardening Gate`, `roleSelect`, `rolePayload`, `hidden-by-role`, and `apiRunProductionHardeningGate`.
+- Detected deployed markers for `Production Hardening Gate`, `roleSelect`, `apiUploadDocument`, `documentFile`, and `fileToUpload`.
 
 ## Dashboard Deploy Status
-Production Hardening Gate 001 is deployed and openable.
+Version 13 is deployed and openable.
 
 Live URL:
 
@@ -28,10 +30,13 @@ Live URL:
 
 Live Apps Script deployment:
 
-`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @11`
+`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @13`
 
 ## Approval Required
-None active for the deployed dashboard.
+Production launch is blocked until:
+- CEO provides/approves the Google account-to-role mapping.
+- Google authorization is completed for the first real Drive upload if prompted.
+- Production deployment access/execute-as settings are approved for signed-in Google users.
 
 ## Remaining Context
-The hardening gate is implemented, but real production launch still needs signed-in Google user to role mapping and real Google Drive binary upload.
+Code is ready for Drive upload and Google-user role mapping, but those production paths cannot be fully verified without Google authorization and CEO-approved user-role data.

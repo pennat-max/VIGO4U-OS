@@ -1116,6 +1116,9 @@
               <label data-label-key="fileName">File Name
                 <input id="documentFileName" placeholder="document.pdf">
               </label>
+              <label data-label-key="localFile">Local File
+                <input id="documentFile" type="file">
+              </label>
               <label data-label-key="driveUrl">Drive URL
                 <input id="documentDriveUrl" placeholder="https://drive.google.com/...">
               </label>
@@ -1269,6 +1272,7 @@
         entityType: 'Entity Type',
         entityId: 'Entity ID',
         fileName: 'File Name',
+        localFile: 'ไฟล์ในเครื่อง',
         driveUrl: 'Drive URL',
         visibility: 'Visibility',
         saveInvoice: 'บันทึก Invoice',
@@ -1298,6 +1302,7 @@
         loading: 'กำลังโหลด',
         saving: 'กำลังบันทึก',
         saved: 'บันทึกแล้ว',
+        uploading: 'กำลังอัปโหลด',
         noCustomers: 'ไม่พบลูกค้า',
         noVehicles: 'ไม่พบรถ',
         customerUnit: 'ราย',
@@ -1395,6 +1400,7 @@
         entityType: 'Entity Type',
         entityId: 'Entity ID',
         fileName: 'File Name',
+        localFile: 'Local File',
         driveUrl: 'Drive URL',
         visibility: 'Visibility',
         saveInvoice: 'Save Invoice',
@@ -1424,6 +1430,7 @@
         loading: 'Loading',
         saving: 'Saving',
         saved: 'Saved',
+        uploading: 'Uploading',
         noCustomers: 'No customers found',
         noVehicles: 'No vehicles found',
         customerUnit: 'customers',
@@ -1937,6 +1944,19 @@
       return ((erp.payments || [])[0] || {}).payment_id || '';
     }
 
+    function fileToUpload(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve({
+          name: file.name,
+          mime_type: file.type || 'application/octet-stream',
+          base64: String(reader.result || '').split(',')[1] || ''
+        });
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
+    }
+
     document.querySelectorAll('[data-lang]').forEach((button) => {
       button.addEventListener('click', () => setLang(button.dataset.lang));
     });
@@ -2078,21 +2098,34 @@
       document.getElementById('documentEntityId').value = firstVehicleId();
       document.getElementById('documentFileName').value = 'export-document.pdf';
       document.getElementById('documentDriveUrl').value = 'https://drive.google.com/demo';
+      document.getElementById('documentFile').value = '';
       document.getElementById('documentVisibility').value = 'internal';
     });
 
-    document.getElementById('documentForm').addEventListener('submit', (event) => {
+    document.getElementById('documentForm').addEventListener('submit', async (event) => {
       event.preventDefault();
-      google.script.run
+      const file = document.getElementById('documentFile').files[0];
+      const payload = rolePayload({
+        entity_type: document.getElementById('documentEntityType').value,
+        entity_id: document.getElementById('documentEntityId').value,
+        file_name: document.getElementById('documentFileName').value,
+        drive_url: document.getElementById('documentDriveUrl').value,
+        visibility: document.getElementById('documentVisibility').value
+      });
+
+      if (file) {
+        payload.file = await fileToUpload(file);
+        document.getElementById('documentFileName').value = file.name;
+      }
+
+      const runner = google.script.run
         .withSuccessHandler(updateErpFromResponse)
-        .withFailureHandler((error) => alert(error.message || String(error)))
-        .apiSaveDocument(rolePayload({
-          entity_type: document.getElementById('documentEntityType').value,
-          entity_id: document.getElementById('documentEntityId').value,
-          file_name: document.getElementById('documentFileName').value,
-          drive_url: document.getElementById('documentDriveUrl').value,
-          visibility: document.getElementById('documentVisibility').value
-        }));
+        .withFailureHandler((error) => alert(error.message || String(error)));
+      if (file) {
+        runner.apiUploadDocument(payload);
+      } else {
+        runner.apiSaveDocument(payload);
+      }
     });
 
     setLang(currentLang);

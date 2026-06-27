@@ -1,22 +1,26 @@
 # NEXT ACTION
 
 ## Immediate
-Run manual QA on the deployed version 11 dashboard using each role view:
-- Admin: verify all modules and profit sharing are visible.
-- Finance: verify finance workflows are visible and non-finance module screens are hidden.
-- Staff: verify payments, statements, profit sharing, and finance summary are hidden.
-- Customer: verify own invoices, vehicles, documents, payments, and balance only.
+Stop before production launch until the CEO/Google authorization blockers are cleared.
+
+Required decisions/actions:
+- Provide the Google accounts and roles for the `Users` sheet.
+- Approve production deployment settings for signed-in Google users and `GOOGLE_USER_MAPPING` auth mode.
+- Complete Google Drive authorization if the first real file upload prompts for permission.
 
 ## Current Mission
-Production Hardening Gate 001 is implemented and deployed.
+Production readiness loop is blocked before final production deployment.
 
-## Recommended Next Phase
-- Add real signed-in Google account to role mapping before public production use.
-- Build real Google Drive binary upload flow with Drive file permissions.
-- Add a production setup/runbook for Apps Script deployments and spreadsheet ownership.
-- Add a manual QA checklist document with pass/fail evidence for all major flows.
-- Refine mobile bottom navigation and desktop/sidebar navigation according to `design/DESIGN_SYSTEM.md`.
-- Plan future migration to Supabase/PostgreSQL/Next.js after Apps Script MVP is stable.
+## Ready For QA
+Use `docs/qa/PRODUCTION_QA_CHECKLIST.md` after the blockers are cleared.
+
+## Recommended Next Phase After Approval
+- Populate the `Users` sheet with approved accounts.
+- Enable `GOOGLE_USER_MAPPING` in Script Properties.
+- Redeploy with approved production access/execute-as settings.
+- Run the production QA checklist on mobile and desktop.
+- Fix any QA failures.
+- Commit, push, deploy, and update all control-center status files.
 
 ## Must Do Before Stopping Future Work
 - Commit completed work.
