@@ -21,11 +21,11 @@ Goal: Customer list, detail, create, edit, search, status, and live dashboard cu
 Data source: Google Sheets through repository layer.
 
 ## Mission 003: Vehicle Module MVP
-Status: Current
+Status: Done
 Goal: Vehicle list, detail, create, edit, search, status, photos/documents metadata, and dashboard vehicle statistics.
 
 ## Mission 004: Invoice Module MVP
-Status: Planned
+Status: Current
 Goal: Create invoice for one customer with multiple vehicles, invoice detail, invoice totals, and invoice status.
 
 ## Mission 005: Payment Module MVP

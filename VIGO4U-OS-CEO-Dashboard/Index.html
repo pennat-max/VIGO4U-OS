@@ -352,7 +352,8 @@
 
     .finance h3,
     .list-card h3,
-    .customer-card h3 {
+    .customer-card h3,
+    .vehicle-card h3 {
       margin: 0;
       font-size: 15px;
       line-height: 1.35;
@@ -360,7 +361,8 @@
 
     .finance p,
     .list-card p,
-    .customer-card p {
+    .customer-card p,
+    .vehicle-card p {
       margin: 5px 0 0;
       color: var(--muted);
       font-size: 12px;
@@ -374,13 +376,15 @@
     }
 
     .list,
-    .customer-list {
+    .customer-list,
+    .vehicle-list {
       display: grid;
       gap: 10px;
     }
 
     .list-card,
-    .customer-card {
+    .customer-card,
+    .vehicle-card {
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 8px 12px;
@@ -388,7 +392,8 @@
     }
 
     .list-card p,
-    .customer-card p {
+    .customer-card p,
+    .vehicle-card p {
       grid-column: 1 / -1;
     }
 
@@ -414,6 +419,31 @@
     }
 
     .tag.inactive {
+      background: rgba(255, 111, 145, 0.14);
+      color: #ffb4c6;
+    }
+
+    .tag.available {
+      background: rgba(50, 213, 131, 0.14);
+      color: #9ff0c7;
+    }
+
+    .tag.purchased {
+      background: rgba(74, 163, 255, 0.14);
+      color: #aad6ff;
+    }
+
+    .tag.workshop {
+      background: rgba(249, 189, 85, 0.14);
+      color: #ffd58e;
+    }
+
+    .tag.reserved {
+      background: rgba(164, 140, 255, 0.14);
+      color: #cfc3ff;
+    }
+
+    .tag.exported {
       background: rgba(255, 111, 145, 0.14);
       color: #ffb4c6;
     }
@@ -488,12 +518,14 @@
       font-weight: 900;
     }
 
-    .customer-shell {
+    .customer-shell,
+    .vehicle-shell {
       display: grid;
       gap: 14px;
     }
 
-    .customer-tools {
+    .customer-tools,
+    .vehicle-tools {
       display: grid;
       grid-template-columns: 1fr;
       gap: 10px;
@@ -545,19 +577,22 @@
       margin-top: 12px;
     }
 
-    .customer-card {
+    .customer-card,
+    .vehicle-card {
       cursor: pointer;
       text-align: left;
     }
 
-    .customer-detail {
+    .customer-detail,
+    .vehicle-detail {
       display: grid;
       gap: 8px;
       min-height: 108px;
       padding: 15px;
     }
 
-    .customer-detail strong {
+    .customer-detail strong,
+    .vehicle-detail strong {
       font-size: 18px;
     }
 
@@ -597,11 +632,13 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
 
-      .customer-shell {
+      .customer-shell,
+      .vehicle-shell {
         grid-template-columns: 0.95fr 1.05fr;
       }
 
-      .customer-tools {
+      .customer-tools,
+      .vehicle-tools {
         grid-template-columns: 1fr 180px;
       }
 
@@ -628,7 +665,7 @@
       <article class="hero">
         <p class="eyebrow">1. แดชบอร์ดผู้บริหาร</p>
         <h2 id="welcomeText">สวัสดีตอนเช้า Tony</h2>
-        <p>หน้าหลักของ ERP ใช้ข้อมูลจริงของลูกค้าจาก Google Sheets แล้ว และยังใช้ mock data สำหรับโมดูลอื่นจนกว่าจะถึง mission ถัดไป</p>
+        <p>หน้าหลักของ ERP ใช้ข้อมูลจริงของลูกค้าและรถจาก Google Sheets แล้ว และยังใช้ mock data สำหรับโมดูลอื่นจนกว่าจะถึง mission ถัดไป</p>
       </article>
 
       <article class="card ai-card">
@@ -637,7 +674,7 @@
           <span id="aiLastUpdate">ล่าสุด</span>
         </div>
         <strong id="aiActivity">AI กำลังเตรียมข้อมูล</strong>
-        <p>AI ดูแล mission queue, customer data และ dashboard statistics ตามลำดับงานปัจจุบัน</p>
+        <p>AI ดูแล mission queue, customer/vehicle data และ dashboard statistics ตามลำดับงานปัจจุบัน</p>
       </article>
     </section>
 
@@ -655,8 +692,8 @@
           <div class="progress-fill" id="progressFill" style="--progress: 0%;"></div>
         </div>
         <div class="status-list">
-          <div class="status-item"><span>Mission ปัจจุบัน</span><strong id="currentMission">Mission 002</strong></div>
-          <div class="status-item"><span>Task ปัจจุบัน</span><strong id="currentTask">Customer Module</strong></div>
+          <div class="status-item"><span>Mission ปัจจุบัน</span><strong id="currentMission">Mission 003</strong></div>
+          <div class="status-item"><span>Task ปัจจุบัน</span><strong id="currentTask">Vehicle Module</strong></div>
           <div class="status-item"><span>ETA</span><strong id="eta">วันนี้</strong></div>
         </div>
       </article>
@@ -743,6 +780,92 @@
       </div>
     </section>
 
+    <section class="section" id="vehicles">
+      <div class="section-title">
+        <h2>Vehicle Module MVP</h2>
+        <span>Google Sheets</span>
+      </div>
+      <div class="grid vehicle-shell">
+        <article class="card module-card">
+          <div class="section-title">
+            <h2>รายการรถ</h2>
+            <span id="vehicleCount">0 คัน</span>
+          </div>
+          <div class="vehicle-tools">
+            <input id="vehicleSearch" type="search" placeholder="ค้นหา stock, VIN, ยี่ห้อ, รุ่น, สี, สถานที่">
+            <select id="vehicleStatusFilter">
+              <option value="">ทุกสถานะ</option>
+              <option value="available">Available</option>
+              <option value="purchased">Purchased</option>
+              <option value="workshop">Workshop</option>
+              <option value="reserved">Reserved</option>
+              <option value="exported">Exported</option>
+            </select>
+          </div>
+          <div class="vehicle-list" id="vehicleList"></div>
+        </article>
+
+        <article class="card module-card">
+          <div class="section-title">
+            <h2 id="vehicleFormTitle">เพิ่มรถ</h2>
+            <span id="vehicleSaveState">พร้อม</span>
+          </div>
+          <form id="vehicleForm">
+            <input id="vehicleId" type="hidden">
+            <div class="field-grid">
+              <label>Stock No
+                <input id="stockNo" required placeholder="เช่น VGO-005">
+              </label>
+              <label>VIN
+                <input id="vin" placeholder="เลขตัวถัง">
+              </label>
+              <label>ยี่ห้อ
+                <input id="make" placeholder="Toyota">
+              </label>
+              <label>รุ่น
+                <input id="model" placeholder="Fortuner">
+              </label>
+              <label>ปี
+                <input id="year" inputmode="numeric" placeholder="2020">
+              </label>
+              <label>สี
+                <input id="color" placeholder="White">
+              </label>
+              <label>สถานะ
+                <select id="vehicleStatus">
+                  <option value="available">Available</option>
+                  <option value="purchased">Purchased</option>
+                  <option value="workshop">Workshop</option>
+                  <option value="reserved">Reserved</option>
+                  <option value="exported">Exported</option>
+                </select>
+              </label>
+              <label>สถานที่
+                <input id="location" placeholder="Bangkok Yard">
+              </label>
+              <label>Photo URL
+                <input id="photoUrl" placeholder="Google Drive photo URL">
+              </label>
+              <label>Document URL
+                <input id="documentUrl" placeholder="Google Drive document URL">
+              </label>
+            </div>
+            <label style="margin-top:10px;">โน้ตรถ
+              <textarea id="vehicleNotes" placeholder="รายละเอียดรถและ metadata"></textarea>
+            </label>
+            <div class="form-actions">
+              <button class="secondary" type="button" id="newVehicle">ล้างฟอร์ม</button>
+              <button class="primary" type="submit">บันทึกรถ</button>
+            </div>
+          </form>
+          <div class="card vehicle-detail" id="vehicleDetail">
+            <strong>เลือกรถเพื่อดูรายละเอียด</strong>
+            <p>ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="section">
       <div class="section-title">
         <h2>5. สรุปการเงิน</h2>
@@ -787,6 +910,7 @@
   <script>
     let dashboardData = <?!= dashboardData ?>;
     let customers = dashboardData.customerModule.customers || [];
+    let vehicles = dashboardData.vehicleModule.vehicles || [];
 
     const toneMap = {
       blue: '#4aa3ff',
@@ -800,6 +924,14 @@
       active: 'Active',
       prospect: 'Prospect',
       inactive: 'Inactive'
+    };
+
+    const vehicleStatusLabel = {
+      available: 'Available',
+      purchased: 'Purchased',
+      workshop: 'Workshop',
+      reserved: 'Reserved',
+      exported: 'Exported'
     };
 
     const icons = {
@@ -874,6 +1006,10 @@
       document.querySelectorAll('.action[data-target="customers"]').forEach((button) => {
         button.addEventListener('click', () => document.getElementById('customers').scrollIntoView({ behavior: 'smooth' }));
       });
+
+      document.querySelectorAll('.action[data-target="vehicles"]').forEach((button) => {
+        button.addEventListener('click', () => document.getElementById('vehicles').scrollIntoView({ behavior: 'smooth' }));
+      });
     }
 
     function renderCustomers(rows) {
@@ -912,6 +1048,44 @@
       `;
     }
 
+    function renderVehicles(rows) {
+      vehicles = rows || [];
+      setText('vehicleCount', `${vehicles.length} คัน`);
+      const list = document.getElementById('vehicleList');
+      if (!vehicles.length) {
+        list.innerHTML = '<div class="card empty">ไม่พบรถ</div>';
+        return;
+      }
+
+      list.innerHTML = vehicles.map((vehicle) => `
+        <button class="card vehicle-card" type="button" data-id="${vehicle.vehicle_id}">
+          <h3>${vehicle.stock_no || vehicle.vin || '-'}</h3>
+          <span class="tag ${vehicle.status}">${vehicleStatusLabel[vehicle.status] || vehicle.status || '-'}</span>
+          <p>${vehicle.year || '-'} ${vehicle.make || ''} ${vehicle.model || ''} · ${vehicle.color || '-'} · ${vehicle.location || '-'}</p>
+        </button>
+      `).join('');
+
+      document.querySelectorAll('.vehicle-card').forEach((card) => {
+        card.addEventListener('click', () => selectVehicle(card.dataset.id));
+      });
+    }
+
+    function selectVehicle(vehicleId) {
+      const vehicle = vehicles.find((item) => item.vehicle_id === vehicleId);
+      if (!vehicle) return;
+      fillVehicleForm(vehicle);
+      document.getElementById('vehicleDetail').innerHTML = `
+        <strong>${vehicle.stock_no || vehicle.vin || '-'}</strong>
+        <p>รหัส: ${vehicle.vehicle_id}</p>
+        <p>รถ: ${vehicle.year || '-'} ${vehicle.make || ''} ${vehicle.model || ''} · สี ${vehicle.color || '-'}</p>
+        <p>VIN: ${vehicle.vin || '-'}</p>
+        <p>สถานที่: ${vehicle.location || '-'} · สถานะ: ${vehicleStatusLabel[vehicle.status] || vehicle.status || '-'}</p>
+        <p>Photo: ${vehicle.photo_url || '-'}</p>
+        <p>Document: ${vehicle.document_url || '-'}</p>
+        <p>${vehicle.notes || ''}</p>
+      `;
+    }
+
     function fillForm(customer) {
       document.getElementById('formTitle').textContent = customer.customer_id ? 'แก้ไขลูกค้า' : 'เพิ่มลูกค้า';
       document.getElementById('customerId').value = customer.customer_id || '';
@@ -925,10 +1099,32 @@
       document.getElementById('notes').value = customer.notes || '';
     }
 
+    function fillVehicleForm(vehicle) {
+      document.getElementById('vehicleFormTitle').textContent = vehicle.vehicle_id ? 'แก้ไขรถ' : 'เพิ่มรถ';
+      document.getElementById('vehicleId').value = vehicle.vehicle_id || '';
+      document.getElementById('stockNo').value = vehicle.stock_no || '';
+      document.getElementById('vin').value = vehicle.vin || '';
+      document.getElementById('make').value = vehicle.make || '';
+      document.getElementById('model').value = vehicle.model || '';
+      document.getElementById('year').value = vehicle.year || '';
+      document.getElementById('color').value = vehicle.color || '';
+      document.getElementById('vehicleStatus').value = vehicle.status || 'available';
+      document.getElementById('location').value = vehicle.location || '';
+      document.getElementById('photoUrl').value = vehicle.photo_url || '';
+      document.getElementById('documentUrl').value = vehicle.document_url || '';
+      document.getElementById('vehicleNotes').value = vehicle.notes || '';
+    }
+
     function clearForm() {
       fillForm({ status: 'prospect' });
       document.getElementById('customerDetail').innerHTML = '<strong>เลือกลูกค้าเพื่อดูรายละเอียด</strong><p>ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>';
       setText('saveState', 'พร้อม');
+    }
+
+    function clearVehicleForm() {
+      fillVehicleForm({ status: 'available' });
+      document.getElementById('vehicleDetail').innerHTML = '<strong>เลือกรถเพื่อดูรายละเอียด</strong><p>ข้อมูลมาจาก Google Sheets ผ่าน service/repository layer</p>';
+      setText('vehicleSaveState', 'พร้อม');
     }
 
     function collectForm() {
@@ -942,6 +1138,23 @@
         status: document.getElementById('customerStatus').value,
         source: document.getElementById('source').value,
         notes: document.getElementById('notes').value
+      };
+    }
+
+    function collectVehicleForm() {
+      return {
+        vehicle_id: document.getElementById('vehicleId').value,
+        stock_no: document.getElementById('stockNo').value,
+        vin: document.getElementById('vin').value,
+        make: document.getElementById('make').value,
+        model: document.getElementById('model').value,
+        year: document.getElementById('year').value,
+        color: document.getElementById('color').value,
+        status: document.getElementById('vehicleStatus').value,
+        location: document.getElementById('location').value,
+        photo_url: document.getElementById('photoUrl').value,
+        document_url: document.getElementById('documentUrl').value,
+        notes: document.getElementById('vehicleNotes').value
       };
     }
 
@@ -961,6 +1174,22 @@
         });
     }
 
+    function loadVehicles() {
+      setText('vehicleCount', 'กำลังโหลด');
+      google.script.run
+        .withSuccessHandler((response) => {
+          renderVehicles(response.vehicles || []);
+          updateVehicleStats(response.stats);
+        })
+        .withFailureHandler((error) => {
+          document.getElementById('vehicleList').innerHTML = `<div class="card empty">${error.message || error}</div>`;
+        })
+        .apiListVehicles({
+          query: document.getElementById('vehicleSearch').value,
+          status: document.getElementById('vehicleStatusFilter').value
+        });
+    }
+
     function updateCustomerStats(stats) {
       if (!stats) return;
       dashboardData.businessSummary[0].value = stats.total;
@@ -968,9 +1197,19 @@
       renderDashboard(dashboardData);
     }
 
+    function updateVehicleStats(stats) {
+      if (!stats) return;
+      dashboardData.businessSummary[1].value = stats.total;
+      dashboardData.businessSummary[1].trend = `${stats.available} available / ${stats.workshop} workshop`;
+      renderDashboard(dashboardData);
+    }
+
     document.getElementById('customerSearch').addEventListener('input', () => loadCustomers());
     document.getElementById('statusFilter').addEventListener('change', () => loadCustomers());
     document.getElementById('newCustomer').addEventListener('click', clearForm);
+    document.getElementById('vehicleSearch').addEventListener('input', () => loadVehicles());
+    document.getElementById('vehicleStatusFilter').addEventListener('change', () => loadVehicles());
+    document.getElementById('newVehicle').addEventListener('click', clearVehicleForm);
     document.getElementById('customerForm').addEventListener('submit', (event) => {
       event.preventDefault();
       setText('saveState', 'กำลังบันทึก');
@@ -986,8 +1225,24 @@
         .apiSaveCustomer(collectForm());
     });
 
+    document.getElementById('vehicleForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      setText('vehicleSaveState', 'กำลังบันทึก');
+      google.script.run
+        .withSuccessHandler((response) => {
+          setText('vehicleSaveState', 'บันทึกแล้ว');
+          renderVehicles(response.vehicles || []);
+          updateVehicleStats(response.stats);
+          fillVehicleForm(response.vehicle || {});
+          selectVehicle((response.vehicle || {}).vehicle_id);
+        })
+        .withFailureHandler((error) => setText('vehicleSaveState', error.message || String(error)))
+        .apiSaveVehicle(collectVehicleForm());
+    });
+
     renderDashboard(dashboardData);
     renderCustomers(customers);
+    renderVehicles(vehicles);
   </script>
 </body>
 </html>

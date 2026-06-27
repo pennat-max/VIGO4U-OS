@@ -4,7 +4,8 @@ const SCRIPT_KEYS = {
 };
 
 const SHEETS = {
-  customers: 'Customers'
+  customers: 'Customers',
+  vehicles: 'Vehicles'
 };
 
 const CUSTOMER_HEADERS = [
@@ -16,6 +17,24 @@ const CUSTOMER_HEADERS = [
   'country',
   'status',
   'source',
+  'notes',
+  'created_at',
+  'updated_at'
+];
+
+const VEHICLE_HEADERS = [
+  'vehicle_id',
+  'customer_id',
+  'stock_no',
+  'vin',
+  'make',
+  'model',
+  'year',
+  'color',
+  'status',
+  'location',
+  'photo_url',
+  'document_url',
   'notes',
   'created_at',
   'updated_at'
@@ -39,6 +58,8 @@ function getDashboardData() {
   const now = new Date();
   const customers = customerServiceList_({});
   const customerStats = customerServiceStats_(customers);
+  const vehicles = vehicleServiceList_({});
+  const vehicleStats = vehicleServiceStats_(vehicles);
 
   return {
     user: {
@@ -48,19 +69,19 @@ function getDashboardData() {
     },
     companyStatus: {
       progressLabel: 'สถานะ VIGO4U ERP',
-      progress: 31,
-      currentMission: 'Mission 002 - Customer Module MVP',
-      currentTask: 'เชื่อมข้อมูลลูกค้าจาก Google Sheets',
+      progress: 39,
+      currentMission: 'Mission 003 - Vehicle Module MVP',
+      currentTask: 'เชื่อมข้อมูลรถจาก Google Sheets',
       eta: 'พร้อมใช้งานวันนี้'
     },
     aiStatus: {
-      activity: 'AI กำลังต่อ Customer Module และอัปเดตสถิติลูกค้าแบบ live จาก Google Sheets',
+      activity: 'AI กำลังต่อ Vehicle Module และอัปเดตสถิติรถแบบ live จาก Google Sheets',
       lastUpdate: formatDashboardTime_(now),
       state: 'กำลังทำงาน'
     },
     businessSummary: [
       { label: 'ลูกค้า', value: customerStats.total, trend: `${customerStats.active} active / ${customerStats.prospect} prospect`, tone: 'blue' },
-      { label: 'รถทั้งหมด', value: 342, trend: '48 คันอยู่ในงานซ่อม', tone: 'green' },
+      { label: 'รถทั้งหมด', value: vehicleStats.total, trend: `${vehicleStats.available} available / ${vehicleStats.workshop} workshop`, tone: 'green' },
       { label: 'ใบแจ้งหนี้', value: 76, trend: '18 ใบรอชำระ', tone: 'amber' },
       { label: 'การชำระเงิน', value: 61, trend: '9 รายการรอจัดสรร', tone: 'violet' },
       { label: 'เวิร์กช็อป', value: 24, trend: '7 งานเร่งด่วน', tone: 'rose' }
@@ -69,6 +90,10 @@ function getDashboardData() {
       stats: customerStats,
       customers
     },
+    vehicleModule: {
+      stats: vehicleStats,
+      vehicles
+    },
     financeSummary: [
       { label: 'เงินสด', value: '$284,500', note: 'ยอดเงินพร้อมใช้' },
       { label: 'ลูกหนี้', value: '$96,200', note: 'ยอดค้างรับจากลูกค้า' },
@@ -76,18 +101,18 @@ function getDashboardData() {
       { label: 'กำไร', value: '$67,450', note: 'กำไรสุทธิคาดการณ์' }
     ],
     notifications: [
+      { title: 'ข้อมูลรถเชื่อม Google Sheets แล้ว', detail: 'Vehicle list, detail, create, edit, search, status และ metadata พร้อมใช้งาน', priority: 'ใหม่' },
       { title: 'ข้อมูลลูกค้าเชื่อม Google Sheets แล้ว', detail: 'Customer list, detail, create, edit, search และ status พร้อมใช้งาน', priority: 'ใหม่' },
-      { title: 'จัดสรรเงินชำระ', detail: 'มี 9 รายการที่ยังไม่ได้ผูกกับใบแจ้งหนี้หรือรถ', priority: 'ถัดไป' },
-      { title: 'อนุมัติต้นทุนรถ', detail: 'มี 5 รายการที่รออนุมัติก่อนอัปเดตยอดรวม', priority: 'ตรวจสอบ' }
+      { title: 'จัดสรรเงินชำระ', detail: 'มี 9 รายการที่ยังไม่ได้ผูกกับใบแจ้งหนี้หรือรถ', priority: 'ถัดไป' }
     ],
     blockers: [
-      { title: 'ข้อมูลจริงยังจำกัดที่ลูกค้า', detail: 'Mission นี้เชื่อมเฉพาะ Customer Module ตามคิว ยังไม่เริ่ม invoice/payment' },
+      { title: 'ข้อมูลจริงเชื่อมลูกค้าและรถแล้ว', detail: 'Mission นี้ยังไม่เริ่ม invoice/payment ตามกติกาคิวงาน' },
       { title: 'สิทธิ์การมองเห็น Staff', detail: 'ต้องทำ permission matrix ก่อนเปิดข้อมูลการเงินให้ role อื่น' }
     ],
     todayTasks: [
-      { title: 'ตรวจ Customer Module บนมือถือ', status: 'วันนี้' },
-      { title: 'เพิ่ม/แก้ไขลูกค้าทดสอบ', status: 'พร้อม' },
-      { title: 'เตรียม Vehicle Module MVP', status: 'ถัดไป' }
+      { title: 'ตรวจ Vehicle Module บนมือถือ', status: 'วันนี้' },
+      { title: 'เพิ่ม/แก้ไขรถทดสอบ', status: 'พร้อม' },
+      { title: 'เตรียม Invoice Module MVP', status: 'ถัดไป' }
     ],
     quickActions: [
       { label: 'ลูกค้า', icon: 'people', target: 'customers' },
@@ -131,33 +156,67 @@ function apiSaveCustomer(payload) {
   };
 }
 
+function apiListVehicles(request) {
+  return {
+    ok: true,
+    vehicles: vehicleServiceList_(request || {}),
+    stats: vehicleServiceStats_(vehicleServiceList_({}))
+  };
+}
+
+function apiGetVehicle(vehicleId) {
+  const vehicle = vehicleServiceGet_(vehicleId);
+  return {
+    ok: Boolean(vehicle),
+    vehicle,
+    message: vehicle ? '' : 'ไม่พบรถ'
+  };
+}
+
+function apiSaveVehicle(payload) {
+  return {
+    ok: true,
+    vehicle: vehicleServiceSave_(payload || {}),
+    vehicles: vehicleServiceList_({}),
+    stats: vehicleServiceStats_(vehicleServiceList_({}))
+  };
+}
+
 function setup() {
   const spreadsheet = ensureSpreadsheet_();
   ensureSheet_(spreadsheet, SHEETS.customers, CUSTOMER_HEADERS);
+  ensureSheet_(spreadsheet, SHEETS.vehicles, VEHICLE_HEADERS);
 
   PropertiesService.getScriptProperties().setProperties({
     APP_TITLE,
-    DASHBOARD_MODE: 'SHEETS_CUSTOMER_MVP',
-    CURRENT_MISSION: 'Mission 002 - Customer Module MVP',
+    DASHBOARD_MODE: 'SHEETS_VEHICLE_MVP',
+    CURRENT_MISSION: 'Mission 003 - Vehicle Module MVP',
     LAST_SETUP_AT: new Date().toISOString()
   });
 
   return {
     ok: true,
-    message: 'ตั้งค่า VIGO4U OS Customer Module สำเร็จ',
+    message: 'ตั้งค่า VIGO4U OS Vehicle Module สำเร็จ',
     spreadsheetId: spreadsheet.getId()
   };
 }
 
 function seedDemoData() {
+  const customerCount = seedDemoCustomers_();
+  const vehicleCount = seedDemoVehicles_();
+  return {
+    ok: true,
+    message: 'ตรวจข้อมูล demo ลูกค้าและรถสำเร็จ',
+    customers: customerCount,
+    vehicles: vehicleCount
+  };
+}
+
+function seedDemoCustomers_() {
   const repo = customerRepository_();
   const existing = repo.list();
   if (existing.length > 0) {
-    return {
-      ok: true,
-      message: 'มีข้อมูลลูกค้าอยู่แล้ว',
-      count: existing.length
-    };
+    return existing.length;
   }
 
   [
@@ -203,11 +262,72 @@ function seedDemoData() {
     }
   ].forEach((customer) => repo.save(customer));
 
-  return {
-    ok: true,
-    message: 'สร้างข้อมูลลูกค้า demo สำเร็จ',
-    count: repo.list().length
-  };
+  return repo.list().length;
+}
+
+function seedDemoVehicles_() {
+  const repo = vehicleRepository_();
+  const existing = repo.list();
+  if (existing.length > 0) {
+    return existing.length;
+  }
+
+  [
+    {
+      stock_no: 'VGO-001',
+      vin: 'JTEBU11F700100001',
+      make: 'Toyota',
+      model: 'Fortuner',
+      year: '2019',
+      color: 'White',
+      status: 'available',
+      location: 'Bangkok Yard',
+      photo_url: 'https://drive.google.com/example-photo-001',
+      document_url: 'https://drive.google.com/example-doc-001',
+      notes: 'รถพร้อมเสนอขาย'
+    },
+    {
+      stock_no: 'VGO-002',
+      vin: 'MROFR22G100200002',
+      make: 'Toyota',
+      model: 'Hilux Revo',
+      year: '2020',
+      color: 'Silver',
+      status: 'workshop',
+      location: 'VIGO Workshop',
+      photo_url: 'https://drive.google.com/example-photo-002',
+      document_url: '',
+      notes: 'รอเช็กช่วงล่าง'
+    },
+    {
+      stock_no: 'VGO-003',
+      vin: 'MR0EX3CD900300003',
+      make: 'Toyota',
+      model: 'Hiace',
+      year: '2018',
+      color: 'Black',
+      status: 'reserved',
+      location: 'Laem Chabang',
+      photo_url: '',
+      document_url: 'https://drive.google.com/example-doc-003',
+      notes: 'ลูกค้าจองไว้ รอเอกสารส่งออก'
+    },
+    {
+      stock_no: 'VGO-004',
+      vin: 'JTMHV09J60400004',
+      make: 'Toyota',
+      model: 'Land Cruiser Prado',
+      year: '2017',
+      color: 'Pearl',
+      status: 'exported',
+      location: 'Shipped',
+      photo_url: 'https://drive.google.com/example-photo-004',
+      document_url: 'https://drive.google.com/example-doc-004',
+      notes: 'ส่งออกแล้ว ใช้เป็นข้อมูลตัวอย่าง'
+    }
+  ].forEach((vehicle) => repo.save(vehicle));
+
+  return repo.list().length;
 }
 
 function customerServiceList_(request) {
@@ -283,6 +403,90 @@ function customerServiceStats_(customers) {
   return stats;
 }
 
+function vehicleServiceList_(request) {
+  setup();
+  const query = normalizeSearch_(request.query || '');
+  const status = String(request.status || '').trim();
+  const vehicles = vehicleRepository_().list();
+
+  return vehicles.filter((vehicle) => {
+    const matchesQuery = !query || [
+      vehicle.vehicle_id,
+      vehicle.customer_id,
+      vehicle.stock_no,
+      vehicle.vin,
+      vehicle.make,
+      vehicle.model,
+      vehicle.year,
+      vehicle.color,
+      vehicle.status,
+      vehicle.location,
+      vehicle.photo_url,
+      vehicle.document_url,
+      vehicle.notes
+    ].some((value) => normalizeSearch_(value).indexOf(query) !== -1);
+    const matchesStatus = !status || vehicle.status === status;
+    return matchesQuery && matchesStatus;
+  });
+}
+
+function vehicleServiceGet_(vehicleId) {
+  setup();
+  return vehicleRepository_().get(vehicleId);
+}
+
+function vehicleServiceSave_(payload) {
+  setup();
+  const vehicle = {
+    vehicle_id: String(payload.vehicle_id || '').trim(),
+    customer_id: String(payload.customer_id || '').trim(),
+    stock_no: String(payload.stock_no || '').trim(),
+    vin: String(payload.vin || '').trim(),
+    make: String(payload.make || '').trim(),
+    model: String(payload.model || '').trim(),
+    year: String(payload.year || '').trim(),
+    color: String(payload.color || '').trim(),
+    status: String(payload.status || 'available').trim(),
+    location: String(payload.location || '').trim(),
+    photo_url: String(payload.photo_url || '').trim(),
+    document_url: String(payload.document_url || '').trim(),
+    notes: String(payload.notes || '').trim()
+  };
+
+  if (!vehicle.stock_no && !vehicle.vin) {
+    throw new Error('ต้องระบุ Stock No หรือ VIN');
+  }
+
+  if (['available', 'purchased', 'workshop', 'reserved', 'exported'].indexOf(vehicle.status) === -1) {
+    vehicle.status = 'available';
+  }
+
+  return vehicleRepository_().save(vehicle);
+}
+
+function vehicleServiceStats_(vehicles) {
+  const stats = {
+    total: vehicles.length,
+    available: 0,
+    purchased: 0,
+    workshop: 0,
+    reserved: 0,
+    exported: 0,
+    withDocuments: 0
+  };
+
+  vehicles.forEach((vehicle) => {
+    if (vehicle.status === 'available') stats.available += 1;
+    if (vehicle.status === 'purchased') stats.purchased += 1;
+    if (vehicle.status === 'workshop') stats.workshop += 1;
+    if (vehicle.status === 'reserved') stats.reserved += 1;
+    if (vehicle.status === 'exported') stats.exported += 1;
+    if (vehicle.photo_url || vehicle.document_url) stats.withDocuments += 1;
+  });
+
+  return stats;
+}
+
 function customerRepository_() {
   const sheet = ensureSheet_(ensureSpreadsheet_(), SHEETS.customers, CUSTOMER_HEADERS);
 
@@ -317,6 +521,47 @@ function customerRepository_() {
         }
 
         return customer;
+      } finally {
+        lock.releaseLock();
+      }
+    }
+  };
+}
+
+function vehicleRepository_() {
+  const sheet = ensureSheet_(ensureSpreadsheet_(), SHEETS.vehicles, VEHICLE_HEADERS);
+
+  return {
+    list() {
+      return readSheetObjects_(sheet).sort((a, b) => String(b.updated_at || '').localeCompare(String(a.updated_at || '')));
+    },
+    get(vehicleId) {
+      const id = String(vehicleId || '').trim();
+      return this.list().find((vehicle) => vehicle.vehicle_id === id) || null;
+    },
+    save(input) {
+      const lock = LockService.getScriptLock();
+      lock.waitLock(10000);
+      try {
+        const now = new Date().toISOString();
+        const rows = readSheetObjects_(sheet);
+        const id = input.vehicle_id || createVehicleId_();
+        const existingIndex = rows.findIndex((row) => row.vehicle_id === id);
+        const existing = existingIndex >= 0 ? rows[existingIndex] : {};
+        const vehicle = Object.assign({}, existing, input, {
+          vehicle_id: id,
+          created_at: existing.created_at || now,
+          updated_at: now
+        });
+        const rowValues = VEHICLE_HEADERS.map((header) => vehicle[header] || '');
+
+        if (existingIndex >= 0) {
+          sheet.getRange(existingIndex + 2, 1, 1, VEHICLE_HEADERS.length).setValues([rowValues]);
+        } else {
+          sheet.appendRow(rowValues);
+        }
+
+        return vehicle;
       } finally {
         lock.releaseLock();
       }
@@ -378,6 +623,12 @@ function createCustomerId_() {
   const stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyyMMddHHmmss');
   const suffix = Utilities.getUuid().slice(0, 8).toUpperCase();
   return `CUS-${stamp}-${suffix}`;
+}
+
+function createVehicleId_() {
+  const stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyyMMddHHmmss');
+  const suffix = Utilities.getUuid().slice(0, 8).toUpperCase();
+  return `VEH-${stamp}-${suffix}`;
 }
 
 function normalizeSearch_(value) {

@@ -17,10 +17,19 @@ Date: 2026-06-27
 - Redeployed the public dashboard deployment to version 7.
 - Verified the public dashboard URL returns `HTTP 200`.
 - Detected Thai dashboard and Customer Module markers in the deployed response.
+- Built Vehicle Module MVP into the Thai CEO Dashboard.
+- Added Google Sheets-backed vehicle repository with header mapping and stable `vehicle_id`.
+- Added vehicle service layer for list, detail, save, search, status filtering, metadata, and stats.
+- Added Thai vehicle UI for list, detail, create, edit, search, status, photo URL, and document URL.
+- Connected dashboard vehicle statistics to live Vehicle sheet data.
+- Pushed Apps Script files with `clasp push --force`.
+- Created Apps Script version 8 and redeployed the public dashboard deployment to version 8.
+- Verified the public dashboard URL returns `HTTP 200`.
+- Detected Vehicle Module markers in the deployed response.
 
 ## Dashboard Deploy Status
 
-CEO Dashboard with Customer Module remains deployed and openable.
+CEO Dashboard with Customer and Vehicle modules remains deployed and openable.
 
 Live URL:
 
@@ -28,9 +37,9 @@ Live URL:
 
 Live Apps Script deployment:
 
-`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @7`
+`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @8`
 
-Live dashboard data mode now includes Google Sheets Customer Module data with demo seed fallback.
+Live dashboard data mode now includes Google Sheets Customer and Vehicle Module data with demo seed fallback.
 
 ## Approval Required
 
@@ -40,6 +49,8 @@ None active.
 
 Mission 002 is complete.
 
-Mission 003 - Vehicle Module MVP is current.
+Mission 003 is complete.
 
-Do not start invoice, payment, allocation, or customer statement modules yet.
+Mission 004 - Invoice Module MVP is current.
+
+Do not start payment, allocation, or customer statement modules yet.

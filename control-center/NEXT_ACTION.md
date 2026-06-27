@@ -1,24 +1,23 @@
 # NEXT ACTION
 
 ## Immediate
-Start Mission 003 - Vehicle Module MVP.
+Start Mission 004 - Invoice Module MVP.
 
 ## Current Mission
-Vehicle Module MVP.
+Invoice Module MVP.
 
-Mission 002 - Customer Module MVP is complete and deployed.
+Mission 003 - Vehicle Module MVP is complete and deployed.
 
-The public CEO Dashboard is live on Apps Script version 7.
+The public CEO Dashboard is live on Apps Script version 8.
 
 Next implementation target:
-- Vehicle list
-- Vehicle detail
-- Create vehicle
-- Edit vehicle
-- Search vehicle
-- Vehicle status
-- Photos/documents metadata
-- Dashboard vehicle statistics
+- Invoice list
+- Invoice detail
+- Create invoice for one customer
+- Attach multiple vehicles to one invoice
+- Invoice totals
+- Invoice status
+- Dashboard invoice statistics
 
 ## Must Do Before Stopping
 - Commit completed work
@@ -29,7 +28,6 @@ Next implementation target:
 - Update control-center/BLOCKERS.md
 
 ## Do Not Start Yet
-- Invoice
 - Payment
 - Allocation
 - Customer statement
