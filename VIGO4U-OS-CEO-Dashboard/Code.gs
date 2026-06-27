@@ -1,4 +1,4 @@
-const APP_TITLE = 'VIGO4U OS CEO Dashboard';
+const APP_TITLE = 'VIGO4U OS - แดชบอร์ดผู้บริหาร';
 
 function doGet() {
   const template = HtmlService.createTemplateFromFile('Index');
@@ -17,47 +17,57 @@ function getDashboardData() {
   return {
     user: {
       name: 'Tony',
-      greeting: 'Good Morning',
-      role: 'CEO'
+      greeting: 'สวัสดีตอนเช้า',
+      role: 'ผู้บริหาร'
     },
     companyStatus: {
-      progressLabel: 'VIGO4U ERP Progress',
-      progress: 18,
-      currentMission: 'Mission 001 - CEO Dashboard',
-      currentTask: 'Build mobile-first ERP home screen',
-      eta: 'Today'
+      progressLabel: 'สถานะ VIGO4U ERP',
+      progress: 22,
+      currentMission: 'MISSION-CEO-DASHBOARD-001',
+      currentTask: 'สร้างแดชบอร์ดผู้บริหารสำหรับมือถือ',
+      eta: 'พร้อมใช้งานวันนี้'
     },
     aiStatus: {
-      activity: 'Designing the ERP command center with mock data',
+      activity: 'AI กำลังดูแลแดชบอร์ดผู้บริหารและเตรียมโครง ERP ด้วยข้อมูล mock',
       lastUpdate: formatDashboardTime_(now),
-      state: 'Active'
+      state: 'กำลังทำงาน'
     },
     businessSummary: [
-      { label: 'Customers', value: 128, trend: '+12 this month', tone: 'blue' },
-      { label: 'Vehicles', value: 342, trend: '48 in workshop', tone: 'green' },
-      { label: 'Invoices', value: 76, trend: '18 awaiting payment', tone: 'amber' },
-      { label: 'Payments', value: 61, trend: '9 need allocation', tone: 'violet' },
-      { label: 'Workshop', value: 24, trend: '7 urgent jobs', tone: 'rose' }
+      { label: 'ลูกค้า', value: 128, trend: '+12 เดือนนี้', tone: 'blue' },
+      { label: 'รถทั้งหมด', value: 342, trend: '48 คันอยู่ในงานซ่อม', tone: 'green' },
+      { label: 'ใบแจ้งหนี้', value: 76, trend: '18 ใบรอชำระ', tone: 'amber' },
+      { label: 'การชำระเงิน', value: 61, trend: '9 รายการรอจัดสรร', tone: 'violet' },
+      { label: 'เวิร์กช็อป', value: 24, trend: '7 งานเร่งด่วน', tone: 'rose' }
     ],
     financeSummary: [
-      { label: 'Cash', value: '$284,500', note: 'Available balance' },
-      { label: 'Receivable', value: '$96,200', note: 'Open customer balance' },
-      { label: 'Payable', value: '$41,800', note: 'Supplier and workshop costs' },
-      { label: 'Profit', value: '$67,450', note: 'Projected net profit' }
+      { label: 'เงินสด', value: '$284,500', note: 'ยอดเงินพร้อมใช้' },
+      { label: 'ลูกหนี้', value: '$96,200', note: 'ยอดค้างรับจากลูกค้า' },
+      { label: 'เจ้าหนี้', value: '$41,800', note: 'ต้นทุนซัพพลายเออร์และเวิร์กช็อป' },
+      { label: 'กำไร', value: '$67,450', note: 'กำไรสุทธิคาดการณ์' }
     ],
     notifications: [
-      { title: 'Payment allocation needed', detail: '9 payments are waiting for invoice or vehicle allocation.', priority: 'High' },
-      { title: 'Workshop approval queue', detail: '5 vehicle costs are pending approval before totals update.', priority: 'Review' },
-      { title: 'Export documents', detail: '3 shipments need document checks before release.', priority: 'Today' }
+      { title: 'จัดสรรเงินชำระ', detail: 'มี 9 รายการที่ยังไม่ได้ผูกกับใบแจ้งหนี้หรือรถ', priority: 'ด่วน' },
+      { title: 'อนุมัติต้นทุนรถ', detail: 'มี 5 รายการที่รออนุมัติก่อนอัปเดตยอดรวม', priority: 'ตรวจสอบ' },
+      { title: 'เอกสารส่งออก', detail: 'มี 3 shipment ที่ต้องตรวจเอกสารก่อนปล่อยงาน', priority: 'วันนี้' }
+    ],
+    blockers: [
+      { title: 'ยังไม่เชื่อมข้อมูลจริง', detail: 'แดชบอร์ดใช้ mock data จนกว่าจะต่อโมดูล ERP' },
+      { title: 'สิทธิ์การมองเห็น Staff', detail: 'ต้องทำ permission matrix ก่อนเปิดข้อมูลการเงินให้ role อื่น' },
+      { title: 'จัดสรรเงินและ statement', detail: 'ต้องออกแบบ ledger ก่อนเชื่อม statement ลูกค้า' }
+    ],
+    todayTasks: [
+      { title: 'ตรวจ Dashboard บนมือถือ', status: 'วันนี้' },
+      { title: 'ยืนยัน mission ถัดไป', status: 'รอเลือก' },
+      { title: 'เตรียม schema ลูกค้าและรถ', status: 'ถัดไป' }
     ],
     quickActions: [
-      { label: 'Customers', icon: 'people' },
-      { label: 'Vehicles', icon: 'car' },
-      { label: 'Invoice', icon: 'invoice' },
-      { label: 'Payment', icon: 'payment' },
-      { label: 'Workshop', icon: 'tools' },
-      { label: 'Reports', icon: 'chart' },
-      { label: 'Settings', icon: 'settings' }
+      { label: 'ลูกค้า', icon: 'people' },
+      { label: 'รถ', icon: 'car' },
+      { label: 'ใบแจ้งหนี้', icon: 'invoice' },
+      { label: 'รับเงิน', icon: 'payment' },
+      { label: 'เวิร์กช็อป', icon: 'tools' },
+      { label: 'รายงาน', icon: 'chart' },
+      { label: 'ตั้งค่า', icon: 'settings' }
     ]
   };
 }
@@ -76,7 +86,7 @@ function setup() {
 
   return {
     ok: true,
-    message: 'VIGO4U OS CEO Dashboard setup completed.',
+    message: 'ตั้งค่าแดชบอร์ดผู้บริหาร VIGO4U OS สำเร็จ',
     mode: 'MOCK'
   };
 }
@@ -86,7 +96,7 @@ function seedDemoData() {
 
   return {
     ok: true,
-    message: 'Mock dashboard data is ready.',
+    message: 'ข้อมูล mock สำหรับแดชบอร์ดพร้อมใช้งาน',
     sections: [
       'Welcome Header',
       'Company Status',

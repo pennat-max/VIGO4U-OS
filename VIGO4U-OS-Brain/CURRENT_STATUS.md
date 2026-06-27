@@ -55,10 +55,10 @@ GitHub remote:
 Apps Script deployment:
 
 - Script project: `https://script.google.com/d/1ovvuWV2OaKHMeQvaKKeASUklu519qaEWK5yz1DGp1HA6TGmnKnDolzfj/edit`
-- Web App URL: `https://script.google.com/macros/s/AKfycbx-lMnRi0UNsLh26i_u2rJAzqSuUh6PvND0yzN4G93KXkTweTSF0speNivA7DgUN_YBGA/exec`
-- Deployment ID: `AKfycbx-lMnRi0UNsLh26i_u2rJAzqSuUh6PvND0yzN4G93KXkTweTSF0speNivA7DgUN_YBGA`
+- Web App URL: `https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`
+- Deployment ID: `AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ`
 - Google account used for clasp: `pennat@gmail.com`
-- HTTP verification: `200 OK`
+- HTTP verification: `200 OK`; Thai dashboard title detected
 - `setup()` and `seedDemoData()` are prepared in `Code.gs`; direct `clasp run` requires a separate API executable deployment and is not needed for the mock dashboard to load.
 
 Required dashboard sections included:

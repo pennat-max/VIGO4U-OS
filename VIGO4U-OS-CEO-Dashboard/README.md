@@ -22,8 +22,8 @@ This is a Google Apps Script Web App using mock data only. ERP modules can be co
 ## Live Deployment
 
 - Script project: `https://script.google.com/d/1ovvuWV2OaKHMeQvaKKeASUklu519qaEWK5yz1DGp1HA6TGmnKnDolzfj/edit`
-- Web App URL: `https://script.google.com/macros/s/AKfycbx-lMnRi0UNsLh26i_u2rJAzqSuUh6PvND0yzN4G93KXkTweTSF0speNivA7DgUN_YBGA/exec`
-- Deployment ID: `AKfycbx-lMnRi0UNsLh26i_u2rJAzqSuUh6PvND0yzN4G93KXkTweTSF0speNivA7DgUN_YBGA`
+- Web App URL: `https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`
+- Deployment ID: `AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ`
 
 ## Current Dashboard Sections
 
