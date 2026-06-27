@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>VIGO4U OS CEO Dashboard</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07090f;
+      --panel: #101522;
+      --panel-2: #151b2b;
+      --panel-3: #1b2235;
+      --text: #f7f8fb;
+      --muted: #9da8bd;
+      --line: rgba(255, 255, 255, 0.09);
+      --blue: #47a3ff;
+      --green: #2ed47a;
+      --amber: #f7b955;
+      --violet: #9b7cff;
+      --rose: #ff6b8a;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.38);
+      --radius-lg: 26px;
+      --radius-md: 20px;
+      --radius-sm: 16px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(71, 163, 255, 0.22), transparent 34rem),
+        radial-gradient(circle at 96% 10%, rgba(46, 212, 122, 0.14), transparent 30rem),
+        linear-gradient(180deg, #080b13 0%, #0b0f18 44%, #07090f 100%);
+      color: var(--text);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      width: min(100%, 1180px);
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom));
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      padding: 18px 0 8px;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 46px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #47a3ff, #2ed47a);
+      color: #06101b;
+      font-weight: 900;
+      letter-spacing: 0;
+      box-shadow: 0 14px 30px rgba(71, 163, 255, 0.25);
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .brand-subtitle {
+      margin: 2px 0 0;
+      font-size: 13px;
+      color: #d9e0ec;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(16, 21, 34, 0.76);
+      color: #dce5f4;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(46, 212, 122, 0.14);
+    }
+
+    .welcome-card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(135deg, rgba(71, 163, 255, 0.18), transparent 42%),
+        linear-gradient(145deg, rgba(21, 27, 43, 0.95), rgba(11, 15, 24, 0.92));
+      box-shadow: var(--shadow);
+    }
+
+    .welcome-card::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      top: -46px;
+      width: 170px;
+      height: 170px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(46, 212, 122, 0.22), transparent 68%);
+      pointer-events: none;
+    }
+
+    .welcome {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-size: clamp(32px, 9vw, 64px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .welcome-meta {
+      position: relative;
+      z-index: 1;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+      max-width: 56ch;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 10px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .section-title span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: rgba(16, 21, 34, 0.84);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.24);
+    }
+
+    .status-card {
+      padding: 18px;
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .progress-label {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-value {
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: var(--progress);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+    }
+
+    .status-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 13px 0 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .status-item span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-item strong {
+      text-align: right;
+      font-size: 14px;
+    }
+
+    .ai-card {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+      background:
+        linear-gradient(145deg, rgba(155, 124, 255, 0.18), transparent 54%),
+        rgba(16, 21, 34, 0.88);
+    }
+
+    .ai-card strong {
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .ai-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .metric {
+      min-height: 132px;
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .metric-icon {
+      width: 34px;
+      height: 34px;
+      margin-bottom: 18px;
+      border-radius: 13px;
+      background: color-mix(in srgb, var(--tone) 22%, transparent);
+      border: 1px solid color-mix(in srgb, var(--tone) 36%, transparent);
+    }
+
+    .metric-value {
+      margin: 0;
+      font-size: 29px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .metric-label {
+      margin: 8px 0 0;
+      color: #e7ecf5;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .metric-trend {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .finance-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .finance-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 88px;
+      padding: 16px;
+    }
+
+    .finance-card h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .finance-card p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .finance-card strong {
+      font-size: 22px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .notification-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .notification {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 12px;
+      padding: 15px;
+    }
+
+    .notification h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .notification p {
+      grid-column: 1 / -1;
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .tag {
+      align-self: start;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(247, 185, 85, 0.13);
+      color: #ffd28c;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .actions {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .action {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 64px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: rgba(21, 27, 43, 0.88);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .action:active {
+      transform: scale(0.98);
+    }
+
+    .action:hover,
+    .action:focus-visible {
+      border-color: rgba(71, 163, 255, 0.48);
+      background: rgba(27, 34, 53, 0.96);
+      outline: none;
+    }
+
+    .action-icon {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      border-radius: 14px;
+      background: rgba(71, 163, 255, 0.14);
+      color: #9fd0ff;
+    }
+
+    .action span {
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .footer-space {
+      height: 8px;
+    }
+
+    @media (min-width: 720px) {
+      .app {
+        padding: 28px 24px 40px;
+      }
+
+      .hero {
+        grid-template-columns: 1.2fr 0.8fr;
+        align-items: stretch;
+      }
+
+      .topline {
+        grid-column: 1 / -1;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      .finance-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .finance-card {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .finance-card strong {
+        text-align: left;
+      }
+
+      .actions {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 370px) {
+      .app {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .welcome-card,
+      .status-card,
+      .ai-card {
+        padding: 16px;
+      }
+
+      .summary-grid,
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .finance-card {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .finance-card strong {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero" aria-label="VIGO4U CEO dashboard">
+      <div class="topline">
+        <div class="brand">
+          <div class="logo">V4</div>
+          <div class="brand-copy">
+            <p class="brand-title">VIGO4U OS</p>
+            <p class="brand-subtitle">CEO Command Center</p>
+          </div>
+        </div>
+        <div class="status-pill"><span class="pulse"></span><span id="aiState">Active</span></div>
+      </div>
+
+      <div class="welcome-card">
+        <h1 class="welcome" id="welcomeText">Good Morning Tony</h1>
+        <p class="welcome-meta">Your ERP home screen is running on mock data and ready for module connections.</p>
+      </div>
+
+      <article class="card ai-card">
+        <div class="section-title">
+          <h2>AI Status</h2>
+          <span id="aiLastUpdate">Now</span>
+        </div>
+        <strong id="aiActivity">Loading AI activity</strong>
+        <p>The dashboard is designed to stay fast while ERP modules are connected behind the service layer.</p>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Company Status</h2>
+        <span>Mission Control</span>
+      </div>
+      <article class="card status-card">
+        <div class="progress-row">
+          <p class="progress-label" id="progressLabel">VIGO4U ERP Progress</p>
+          <strong class="progress-value" id="progressValue">0%</strong>
+        </div>
+        <div class="progress-track" aria-label="ERP progress">
+          <div class="progress-fill" id="progressFill" style="--progress: 0%;"></div>
+        </div>
+        <div class="status-list">
+          <div class="status-item"><span>Current Mission</span><strong id="currentMission">Mission 001</strong></div>
+          <div class="status-item"><span>Current Task</span><strong id="currentTask">CEO Dashboard</strong></div>
+          <div class="status-item"><span>ETA</span><strong id="eta">Today</strong></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Business Summary</h2>
+        <span>Mock Data</span>
+      </div>
+      <div class="grid summary-grid" id="businessSummary"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Finance Summary</h2>
+        <span>CEO View</span>
+      </div>
+      <div class="grid finance-grid" id="financeSummary"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Notifications</h2>
+        <span>Priority</span>
+      </div>
+      <div class="notification-list" id="notifications"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Quick Actions</h2>
+        <span>ERP Modules</span>
+      </div>
+      <div class="grid actions" id="quickActions"></div>
+    </section>
+    <div class="footer-space"></div>
+  </main>
+
+  <script>
+    const DASHBOARD_DATA = <?!= dashboardData ?>;
+
+    const toneMap = {
+      blue: '#47a3ff',
+      green: '#2ed47a',
+      amber: '#f7b955',
+      violet: '#9b7cff',
+      rose: '#ff6b8a'
+    };
+
+    const icons = {
+      people: '<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+      car: '<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 10l-2-4H8l-2 4-2.5 1.1C2.7 11.3 2 12.1 2 13v3c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>',
+      invoice: '<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2V2z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>',
+      payment: '<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M7 15h3"/></svg>',
+      tools: '<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a4 4 0 0 0-5 5L3 18v3h3l6.7-6.7a4 4 0 0 0 5-5l-2.4 2.4-3-3 2.4-2.4z"/></svg>',
+      chart: '<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="5"/><rect x="12" y="8" width="3" height="9"/><rect x="17" y="5" width="3" height="12"/></svg>',
+      settings: '<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.7 1.7 0 0 0 19.4 9c.2.6.8 1 1.6 1h.1a2 2 0 1 1 0 4H21a1.7 1.7 0 0 0-1.6 1z"/></svg>'
+    };
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
+    function renderDashboard(data) {
+      setText('welcomeText', `${data.user.greeting} ${data.user.name}`);
+      setText('aiState', data.aiStatus.state);
+      setText('aiLastUpdate', data.aiStatus.lastUpdate);
+      setText('aiActivity', data.aiStatus.activity);
+      setText('progressLabel', data.companyStatus.progressLabel);
+      setText('progressValue', `${data.companyStatus.progress}%`);
+      document.getElementById('progressFill').style.setProperty('--progress', `${data.companyStatus.progress}%`);
+      setText('currentMission', data.companyStatus.currentMission);
+      setText('currentTask', data.companyStatus.currentTask);
+      setText('eta', data.companyStatus.eta);
+
+      document.getElementById('businessSummary').innerHTML = data.businessSummary.map(item => {
+        const tone = toneMap[item.tone] || toneMap.blue;
+        return `
+          <article class="card metric" style="--tone: ${tone}">
+            <div class="metric-icon"></div>
+            <h3 class="metric-value">${item.value}</h3>
+            <p class="metric-label">${item.label}</p>
+            <p class="metric-trend">${item.trend}</p>
+          </article>
+        `;
+      }).join('');
+
+      document.getElementById('financeSummary').innerHTML = data.financeSummary.map(item => `
+        <article class="card finance-card">
+          <div>
+            <h3>${item.label}</h3>
+            <p>${item.note}</p>
+          </div>
+          <strong>${item.value}</strong>
+        </article>
+      `).join('');
+
+      document.getElementById('notifications').innerHTML = data.notifications.map(item => `
+        <article class="card notification">
+          <h3>${item.title}</h3>
+          <span class="tag">${item.priority}</span>
+          <p>${item.detail}</p>
+        </article>
+      `).join('');
+
+      document.getElementById('quickActions').innerHTML = data.quickActions.map(item => `
+        <button class="action" type="button" aria-label="${item.label}">
+          <span class="action-icon">${icons[item.icon] || icons.settings}</span>
+          <span>${item.label}</span>
+        </button>
+      `).join('');
+    }
+
+    renderDashboard(DASHBOARD_DATA);
+  </script>
+</body>
+</html>
+
