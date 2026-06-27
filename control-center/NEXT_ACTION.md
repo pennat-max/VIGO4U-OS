@@ -1,16 +1,21 @@
-# Next Action
+# NEXT ACTION
 
 ## Immediate
+Codex should pull latest master and read control-center/MISSION.md.
 
-Open the live Thai CEO Dashboard on mobile and approve the visual direction.
+## Current Mission
+Build Customer Module MVP and connect customer statistics to the Thai CEO Dashboard.
 
-## Recommended Next Mission
-
-Define the dashboard data contract while keeping mock data as fallback.
+## Must Do Before Stopping
+- Commit completed work
+- Push to GitHub
+- Update control-center/CURRENT_STATUS.md
+- Update control-center/DAILY_REPORT.md
+- Update control-center/NEXT_ACTION.md
+- Update control-center/BLOCKERS.md
 
 ## Do Not Start Yet
-
-- Do not connect live ERP modules.
-- Do not expose real finance data to additional roles.
-- Do not build module screens until the dashboard direction is approved.
-
+- Invoice
+- Payment
+- Allocation
+- Customer statement
