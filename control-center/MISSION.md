@@ -1,51 +1,28 @@
 # MISSION
 
-Current mission: Production Hardening Gate 001
+Current mission: Documentation synchronization and production readiness
 
-Goal: make the deployed VIGO4U OS MVP safer and closer to real production use before adding more features.
+## Goal
+Keep GitHub as the single source of truth, synchronize all project documents, and continue production-readiness work until the project is complete or a defined blocker is reached.
 
 ## Current State
-MVP modules 001-011 are complete and deployed with bilingual TH/EN support.
+VIGO4U OS is deployed as an Apps Script Web App version `@13`.
 
 Live URL:
 `https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`
 
-## Hardening Scope
-1. Role enforcement in UI and API
-   - Admin sees everything.
-   - Finance sees finance workflows only.
-   - Staff must not see buy price, sale price, profit, customer statement, customer payments, or profit sharing.
-   - Customer sees own invoices, vehicles, documents, payments, and balance only.
+## Current Priority
+1. Documentation synchronization
+2. Production launch authorization
+3. Security review
+4. QA execution
+5. Production deployment approval
 
-2. Audit log
-   - Record create/update/delete or approval actions.
-   - Include timestamp, user/role, entity type, entity id, action, before/after summary where practical.
-
-3. Data validation
-   - Validate required IDs and amounts.
-   - Prevent negative payments/costs.
-   - Prevent double-counted approved workshop costs.
-   - Validate invoice/payment/allocation relationships.
-
-4. Document handling
-   - Keep metadata and Drive URL in Sheets.
-   - Prepare real Drive upload path or document the exact blocker.
-
-5. Demo fallback governance
-   - Keep demo seed fallback safe.
-   - Make production/test mode clear in UI.
-
-6. QA checklist
-   - Add manual QA cases for all major flows.
-   - Update CURRENT_STATUS, DAILY_REPORT, NEXT_ACTION, and BLOCKERS.
-
-## Do Not Do Yet
-- Do not add new business modules.
-- Do not redesign the whole app.
-- Do not migrate to Supabase yet.
+## Active Stop Condition
+Production launch cannot continue until:
+- CEO provides/approves Google account-to-role mapping.
+- Google authorization is completed if Drive upload prompts for permission.
+- Production deployment settings are approved for signed-in Google users.
 
 ## Done Means
-- Production risks above are implemented or clearly documented as blockers.
-- Status files are updated.
-- App is redeployed if code changed.
-- GitHub has latest commit pushed.
+The project is complete only when all success criteria in `docs/PROJECT_STATUS.md`, `docs/QA_CHECKLIST.md`, and `control-center/BLOCKERS.md` are satisfied and `docs/PROJECT_STATUS.md` says `PROJECT COMPLETED`.

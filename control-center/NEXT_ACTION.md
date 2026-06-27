@@ -12,7 +12,7 @@ Required decisions/actions:
 Production readiness loop is blocked before final production deployment.
 
 ## Ready For QA
-Use `docs/qa/PRODUCTION_QA_CHECKLIST.md` after the blockers are cleared.
+Use `docs/QA_CHECKLIST.md` after the blockers are cleared.
 
 ## Recommended Next Phase After Approval
 - Populate the `Users` sheet with approved accounts.

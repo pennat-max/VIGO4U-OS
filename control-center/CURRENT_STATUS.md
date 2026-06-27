@@ -36,7 +36,7 @@ The public CEO Dashboard now runs version 13 with bilingual TH/EN support, ERP M
 - `Users` sheet schema and `GOOGLE_USER_MAPPING` auth mode infrastructure.
 - Drive upload path: local file upload creates a Drive file and stores document metadata in Sheets.
 - Drive file visibility handling: internal/staff files remain private; customer-visible uploads are shared by link.
-- Production QA checklist: `docs/qa/PRODUCTION_QA_CHECKLIST.md`.
+- Production QA checklist: `docs/QA_CHECKLIST.md`.
 
 ## Remaining Production Risks
 - CEO must provide/approve the Google account to role mapping for the `Users` sheet.

@@ -1,4 +1,4 @@
-# VIGO4U OS Production QA Checklist
+# QA_CHECKLIST
 
 Date: 2026-06-27
 

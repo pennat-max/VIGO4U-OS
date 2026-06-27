@@ -54,3 +54,16 @@ Desktop/tablet may use a left sidebar.
 
 ## Build Rule
 No new module screen should be built without following this design system.
+
+## Production UI Rules
+- Keep the role selector only as a demo/testing control until `GOOGLE_USER_MAPPING` is approved.
+- Production user-facing text must be available through the TH/EN dictionary.
+- Do not add spreadsheet-style tables for primary mobile workflows.
+- Do not redesign the dashboard without CEO approval.
+- Do not expose hidden financial fields through UI text, debug output, list metadata, or customer/staff cards.
+
+## Accessibility And Mobile
+- Controls must remain usable on mobile first.
+- Touch targets should be large enough for thumb operation.
+- Text must not overlap cards or buttons.
+- Critical action buttons must have visible labels in Thai and English.

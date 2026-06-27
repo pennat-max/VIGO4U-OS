@@ -54,3 +54,21 @@ Goal: CEO, finance, workshop, customer, and profit sharing reports.
 ## Mission 011: QA and Deployment
 Status: Done
 Goal: Run syntax checks, deploy Apps Script Web App, verify HTTP 200, and update control-center files.
+
+## Mission 012: Production Hardening Gate
+Status: Done
+Goal: Add role-aware UI/API filtering, audit logging, validation hardening, production gate markers, and status updates.
+
+## Mission 013: Drive Upload and Auth Mapping Infrastructure
+Status: Done
+Goal: Add Drive upload path code, document file input, `Users` sheet, `GOOGLE_USER_MAPPING` infrastructure, and production QA checklist.
+
+## Mission 014: Documentation Synchronization
+Status: Done
+Goal: Create canonical project docs, remove obsolete duplicates, update control-center status files, commit, and push.
+
+## Mission 015: Production Authorization and QA
+Status: Blocked
+Goal: Populate approved user-role mapping, approve signed-in deployment settings, complete Google authorization, run QA, fix failures, and production deploy.
+
+Blocker: CEO decision, Google authorization, and production deployment approval are required before this mission can continue.

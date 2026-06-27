@@ -14,7 +14,9 @@ Date: 2026-06-27
 - Added Drive visibility handling: internal/staff files private, customer-visible files shared by link.
 - Added `Users` sheet schema for production account-to-role mapping.
 - Added `GOOGLE_USER_MAPPING` auth mode infrastructure while preserving demo role selector mode.
-- Added production QA checklist at `docs/qa/PRODUCTION_QA_CHECKLIST.md`.
+- Added production QA checklist at `docs/QA_CHECKLIST.md`.
+- Synchronized canonical product documents in `docs/`.
+- Removed obsolete duplicate `docs/ai-control-center/` files and the old QA checklist path.
 - Ran syntax checks for `Code.gs` and embedded browser JavaScript.
 - Pushed Apps Script files with `clasp.cmd push --force`.
 - Created Apps Script versions 12 and 13; deployed the public dashboard deployment to version 13.
@@ -39,4 +41,4 @@ Production launch is blocked until:
 - Production deployment access/execute-as settings are approved for signed-in Google users.
 
 ## Remaining Context
-Code is ready for Drive upload and Google-user role mapping, but those production paths cannot be fully verified without Google authorization and CEO-approved user-role data.
+Code and documentation are synchronized. Drive upload and Google-user role mapping paths cannot be fully verified without Google authorization and CEO-approved user-role data.
