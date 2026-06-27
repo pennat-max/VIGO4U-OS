@@ -19,6 +19,12 @@ This is a Google Apps Script Web App using mock data only. ERP modules can be co
 5. Deploy as Web App.
 6. Open the Web App URL.
 
+## Live Deployment
+
+- Script project: `https://script.google.com/d/1ovvuWV2OaKHMeQvaKKeASUklu519qaEWK5yz1DGp1HA6TGmnKnDolzfj/edit`
+- Web App URL: `https://script.google.com/macros/s/AKfycbx-lMnRi0UNsLh26i_u2rJAzqSuUh6PvND0yzN4G93KXkTweTSF0speNivA7DgUN_YBGA/exec`
+- Deployment ID: `AKfycbx-lMnRi0UNsLh26i_u2rJAzqSuUh6PvND0yzN4G93KXkTweTSF0speNivA7DgUN_YBGA`
+
 ## Current Dashboard Sections
 
 - Welcome Header
@@ -34,4 +40,3 @@ This is a Google Apps Script Web App using mock data only. ERP modules can be co
 All values come from `getDashboardData()` in `Code.gs`.
 
 Future modules should replace mock data through service functions without changing the dashboard layout contract.
-

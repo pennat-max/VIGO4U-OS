@@ -50,7 +50,16 @@ GitHub remote:
 
 - Repository: `https://github.com/pennat-max/VIGO4U-OS`
 - Branch: `master`
-- Latest pushed commit: `2acc0c3 Add dashboard setup hooks`
+- Push status: current local deployment files are being pushed to `origin/master`.
+
+Apps Script deployment:
+
+- Script project: `https://script.google.com/d/1ovvuWV2OaKHMeQvaKKeASUklu519qaEWK5yz1DGp1HA6TGmnKnDolzfj/edit`
+- Web App URL: `https://script.google.com/macros/s/AKfycbx-lMnRi0UNsLh26i_u2rJAzqSuUh6PvND0yzN4G93KXkTweTSF0speNivA7DgUN_YBGA/exec`
+- Deployment ID: `AKfycbx-lMnRi0UNsLh26i_u2rJAzqSuUh6PvND0yzN4G93KXkTweTSF0speNivA7DgUN_YBGA`
+- Google account used for clasp: `pennat@gmail.com`
+- HTTP verification: `200 OK`
+- `setup()` and `seedDemoData()` are prepared in `Code.gs`; direct `clasp run` requires a separate API executable deployment and is not needed for the mock dashboard to load.
 
 Required dashboard sections included:
 
