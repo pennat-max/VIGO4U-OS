@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+### AI Factory MVP
+- Added `ai-factory/` mission control files.
+- Added GitHub mission issue template.
+- Added pull request template.
+- Updated control-center status files for GitHub-based mission workflow.
+
 ### Version 13
 - Added real Drive upload path code.
 - Added file input and browser base64 upload path.

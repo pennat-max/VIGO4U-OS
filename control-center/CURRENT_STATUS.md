@@ -27,6 +27,7 @@ The public CEO Dashboard now runs version 13 with bilingual TH/EN support, ERP M
 - Verification: `HTTP 200`; markers detected for `Production Hardening Gate`, `roleSelect`, `apiUploadDocument`, `documentFile`, and `fileToUpload`
 
 ## Production Hardening Implemented
+- TONY AI Factory MVP for GitHub-based mission control.
 - Role selector for Admin, Finance, Staff, and Customer demo views.
 - API sanitizers and write guards for role permissions.
 - Staff finance/profit/payment/statement restrictions.
@@ -37,6 +38,7 @@ The public CEO Dashboard now runs version 13 with bilingual TH/EN support, ERP M
 - Drive upload path: local file upload creates a Drive file and stores document metadata in Sheets.
 - Drive file visibility handling: internal/staff files remain private; customer-visible uploads are shared by link.
 - Production QA checklist: `docs/QA_CHECKLIST.md`.
+- AI Factory mission control files: `ai-factory/`.
 
 ## Remaining Production Risks
 - CEO must provide/approve the Google account to role mapping for the `Users` sheet.

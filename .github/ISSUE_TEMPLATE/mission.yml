@@ -1,0 +1,40 @@
+name: VIGO4U OS Mission
+description: Create a GitHub-controlled AI Factory mission
+title: "[MISSION] "
+labels:
+  - mission
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What should the agent complete?
+      placeholder: Build, harden, test, or document one concrete mission.
+    validations:
+      required: true
+  - type: textarea
+    id: source_of_truth
+    attributes:
+      label: Source Of Truth
+      description: Files the agent must read first.
+      value: |
+        ai-factory/PROJECT_STATUS.md
+        ai-factory/MISSION_QUEUE.md
+        ai-factory/MISSION_BOARD.md
+        control-center/CURRENT_STATUS.md
+        control-center/BLOCKERS.md
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: What proves this mission is done?
+      placeholder: Tests, deployment, docs, QA, commit, push.
+    validations:
+      required: true
+  - type: textarea
+    id: blockers
+    attributes:
+      label: Known Blockers
+      description: Human approval, login, credentials, external access, or deployment approval.

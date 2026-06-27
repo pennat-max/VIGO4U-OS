@@ -12,11 +12,11 @@ Live URL:
 `https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`
 
 ## Current Priority
-1. Documentation synchronization
-2. Production launch authorization
-3. Security review
-4. QA execution
-5. Production deployment approval
+1. Use `ai-factory/` as GitHub mission control.
+2. Production launch authorization.
+3. Security review.
+4. QA execution.
+5. Production deployment approval.
 
 ## Active Stop Condition
 Production launch cannot continue until:

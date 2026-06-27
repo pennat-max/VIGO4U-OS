@@ -30,6 +30,7 @@ VIGO4U OS is deployed and operational as a Google Apps Script Web App MVP, but i
 - Validation hardening
 - Users sheet and Google user mapping infrastructure
 - Production QA checklist
+- TONY AI Factory GitHub mission control MVP
 
 ## Not Yet Complete
 - Production signed-in Google deployment approval
@@ -44,3 +45,4 @@ VIGO4U OS is deployed and operational as a Google Apps Script Web App MVP, but i
 - Product docs: `docs/`
 - Design source: `design/DESIGN_SYSTEM.md`
 - App source: `VIGO4U-OS-CEO-Dashboard/`
+- Mission control: `ai-factory/`

@@ -7,6 +7,7 @@ Required decisions/actions:
 - Provide the Google accounts and roles for the `Users` sheet.
 - Approve production deployment settings for signed-in Google users and `GOOGLE_USER_MAPPING` auth mode.
 - Complete Google Drive authorization if the first real file upload prompts for permission.
+- Use `ai-factory/` as the GitHub mission control layer for the next agent run.
 
 ## Current Mission
 Production readiness loop is blocked before final production deployment.

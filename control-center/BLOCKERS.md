@@ -24,6 +24,8 @@ Production launch is blocked.
 - Validation code exists.
 - Drive upload path code exists.
 - User-role mapping infrastructure exists.
+- TONY AI Factory MVP exists in `ai-factory/`.
+- GitHub issue and PR templates exist for mission control.
 
 ## Required User Action
 Provide the approved Google user-role list and approve Google authorization/deployment settings for production.

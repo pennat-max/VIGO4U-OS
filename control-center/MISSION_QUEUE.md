@@ -72,3 +72,7 @@ Status: Blocked
 Goal: Populate approved user-role mapping, approve signed-in deployment settings, complete Google authorization, run QA, fix failures, and production deploy.
 
 Blocker: CEO decision, Google authorization, and production deployment approval are required before this mission can continue.
+
+## Mission 016: TONY AI Factory MVP
+Status: Done
+Goal: Create GitHub-based mission control files and templates so agents can continue VIGO4U OS work from repository state.
