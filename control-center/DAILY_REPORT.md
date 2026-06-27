@@ -28,9 +28,14 @@ Date: 2026-06-27
 - Created Apps Script versions 12 and 13; deployed the public dashboard deployment to version 13.
 - Verified the public dashboard URL returns `HTTP 200`.
 - Detected deployed markers for `Production Hardening Gate`, `roleSelect`, `apiUploadDocument`, `documentFile`, and `fileToUpload`.
+- Applied production hardening patch for `apiSaveWorkOrder` so follow-up ERP data respects the caller role context.
+- Ran syntax checks for `Code.gs` and embedded browser JavaScript after the patch.
+- Pushed Apps Script files with `clasp.cmd push --force`.
+- Created Apps Script version 14 and deployed the public dashboard deployment to version 14.
+- Verified the public dashboard URL returns `HTTP 200` after version 14 deployment.
 
 ## Dashboard Deploy Status
-Version 13 is deployed and openable.
+Version 14 is deployed and openable.
 
 Live URL:
 
@@ -38,7 +43,7 @@ Live URL:
 
 Live Apps Script deployment:
 
-`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @13`
+`AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @14`
 
 ## Approval Required
 Production launch is blocked until:

@@ -6,7 +6,7 @@ Current mission: Documentation synchronization and production readiness
 Keep GitHub as the single source of truth, synchronize all project documents, and continue production-readiness work until the project is complete or a defined blocker is reached.
 
 ## Current State
-VIGO4U OS is deployed as an Apps Script Web App version `@13`.
+VIGO4U OS is deployed as an Apps Script Web App version `@14`.
 
 Live URL:
 `https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`

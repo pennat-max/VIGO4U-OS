@@ -10,7 +10,7 @@ VIGO4U OS is deployed and operational as a Google Apps Script Web App MVP, but i
 ## Live Deployment
 - URL: `https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`
 - Deployment ID: `AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ`
-- Version: `@13`
+- Version: `@14`
 - Verification: HTTP 200
 
 ## Completed
@@ -26,6 +26,7 @@ VIGO4U OS is deployed and operational as a Google Apps Script Web App MVP, but i
 - Reports
 - TH/EN UI support
 - Role-aware UI/API hardening
+- Role-context response hardening for workshop save flows
 - Audit log infrastructure
 - Validation hardening
 - Users sheet and Google user mapping infrastructure

@@ -14,7 +14,7 @@ Production readiness loop
 ## Status
 Production hardening is continuing. The deployed dashboard is operational, but production launch is blocked by Google authorization/approval items listed in `BLOCKERS.md`.
 
-The public CEO Dashboard now runs version 13 with bilingual TH/EN support, ERP MVP modules, role-aware UI/API filtering, audit logging, validation, Drive upload path code, and Google user-to-role mapping infrastructure.
+The public CEO Dashboard now runs version 14 with bilingual TH/EN support, ERP MVP modules, role-aware UI/API filtering, audit logging, validation, Drive upload path code, and Google user-to-role mapping infrastructure.
 
 ## Dashboard
 - Type: Google Apps Script Web App
@@ -23,7 +23,7 @@ The public CEO Dashboard now runs version 13 with bilingual TH/EN support, ERP M
 - Data mode: Google Sheets ERP data with safe demo seed fallback
 - Layout: Mobile-first, dark mode, card layout, large buttons
 - Live URL: `https://script.google.com/macros/s/AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ/exec`
-- Live Apps Script deployment: `AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @13`
+- Live Apps Script deployment: `AKfycbwc-oJSxaTqj_gJOAksDXSldNCzdT9ZrUn9oK69ONaVRgp531tnMOqpKEp3-ESifJ4HBQ @14`
 - Verification: `HTTP 200`; markers detected for `Production Hardening Gate`, `roleSelect`, `apiUploadDocument`, `documentFile`, and `fileToUpload`
 
 ## Production Hardening Implemented
@@ -39,6 +39,7 @@ The public CEO Dashboard now runs version 13 with bilingual TH/EN support, ERP M
 - Drive file visibility handling: internal/staff files remain private; customer-visible uploads are shared by link.
 - Production QA checklist: `docs/QA_CHECKLIST.md`.
 - AI Factory mission control files: `ai-factory/`.
+- Role-context response hardening: workshop work order saves now reload ERP data through the caller role context instead of defaulting to admin context.
 
 ## Remaining Production Risks
 - CEO must provide/approve the Google account to role mapping for the `Users` sheet.

@@ -439,7 +439,7 @@ function apiSaveWorkOrder(payload) {
   return {
     ok: true,
     workOrder: workOrderServiceSave_(payload || {}),
-    data: apiGetERPData()
+    data: apiGetERPData(payload || {})
   };
 }
 

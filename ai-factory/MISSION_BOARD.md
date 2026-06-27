@@ -10,6 +10,11 @@ Date: 2026-06-27
 | AF-004 | Security Review | Blocked | Codex + reviewer | Review production auth, Drive sharing, audit logs | Requires AF-002 |
 | AF-005 | Production Completion | Blocked | Codex | Mark project completed after QA/security/deploy pass | Requires AF-003 and AF-004 |
 
+## Latest Engineering Update
+- Web App deployment is now `@14`.
+- `apiSaveWorkOrder` now reloads ERP data with the caller role context after save.
+- Live dashboard verification returned `HTTP 200`.
+
 ## Active Decision Needed
 Provide approved rows for the `Users` sheet:
 

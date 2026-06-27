@@ -1,7 +1,7 @@
 # NEXT ACTION
 
 ## Immediate
-Stop before production launch until the CEO/Google authorization blockers are cleared.
+All currently implementable code hardening has been deployed to version `@14`. Continue only after the CEO/Google authorization blockers are cleared.
 
 Required decisions/actions:
 - Provide the Google accounts and roles for the `Users` sheet.
@@ -10,7 +10,7 @@ Required decisions/actions:
 - Use `ai-factory/` as the GitHub mission control layer for the next agent run.
 
 ## Current Mission
-Production readiness loop is blocked before final production deployment.
+Production readiness loop is blocked only at the final authorization and production approval stage.
 
 ## Ready For QA
 Use `docs/QA_CHECKLIST.md` after the blockers are cleared.

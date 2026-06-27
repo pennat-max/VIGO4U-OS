@@ -18,8 +18,9 @@ Production launch is blocked.
 
 ## Not Blocked
 - The current dashboard URL opens.
-- Version 13 is deployed.
+- Version 14 is deployed.
 - Role filter code exists.
+- Role-context response hardening is deployed for work order save flows.
 - Audit log code exists.
 - Validation code exists.
 - Drive upload path code exists.

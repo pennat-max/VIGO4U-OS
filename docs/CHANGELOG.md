@@ -8,6 +8,11 @@
 - Added pull request template.
 - Updated control-center status files for GitHub-based mission workflow.
 
+### Version 14
+- Hardened `apiSaveWorkOrder` so the response reloads ERP data through the caller role context.
+- Re-ran syntax checks for `Code.gs` and embedded browser JavaScript.
+- Deployed Web App version `@14`.
+
 ### Version 13
 - Added real Drive upload path code.
 - Added file input and browser base64 upload path.

@@ -10,7 +10,7 @@ TONY AI Factory is now the GitHub-based mission control layer for VIGO4U OS. It 
 ## Current Repository
 - GitHub: `pennat-max/VIGO4U-OS`
 - Branch: `master`
-- ERP deployment: VIGO4U OS Web App `@13`
+- ERP deployment: VIGO4U OS Web App `@14`
 - ERP status: Production blocked by CEO/Google approval items
 
 ## Factory MVP Scope

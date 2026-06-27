@@ -12,8 +12,8 @@ No mission is done until it has evidence for implementation, testing, reporting,
 - `control-center/BLOCKERS.md` is updated when any blocker remains.
 
 ## Current QA State
-- Code syntax checks passed in the previous production-readiness run.
-- Live Web App returns HTTP 200.
+- Code syntax checks passed for `Code.gs` and embedded browser JavaScript after the version 14 hardening patch.
+- Live Web App version `@14` returns HTTP 200.
 - Full production QA is blocked until CEO-approved user mapping and Google authorization are completed.
 
 ## QA Evidence To Capture Later
